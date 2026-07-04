@@ -1,0 +1,339 @@
+name: CI
+
+# Triggers:
+#   push / pull_request — standard code-review gate on the main branch.
+#   schedule            — weekly cron exists ONLY to run the SCA job
+#                         periodically even when no code is committed.
+#                         All other jobs guard against the schedule trigger
+#                         via `if: github.event_name != 'schedule'`.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday 06:00 UTC
+
+# Least-privilege default. Jobs that need additional permissions declare them
+# explicitly; this keeps fork PRs safe (they cannot elevate beyond read).
+permissions:
+  contents: read
+
+# Cancel superseded runs on feature branches to save runner minutes.
+# Never cancel in-progress runs on main to avoid interrupted post-merge work.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # build
+  # No `needs`. First node in the dependency graph.
+  # Wrapper-JAR checksum validation is handled by setup-gradle (validate-wrappers)
+  # in this and every other Gradle job, so a tampered wrapper fails fast wherever
+  # it would run — not just here.
+  # ────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Do not run on the weekly schedule — that trigger exists only for SCA.
+    if: github.event_name != 'schedule'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      # AGP 9.2 / Gradle 9 require JDK 17 at runtime.
+      # compileOptions { sourceCompatibility = JavaVersion.VERSION_11 } sets the
+      # bytecode *target*, not the runtime JDK — 17 is still required here.
+      # cache: gradle is intentionally NOT set; setup-gradle below owns caching.
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # setup-gradle manages the Gradle home cache end-to-end.
+      # No additional actions/cache steps are added anywhere in this file —
+      # duplicate caches would cause cache-key collisions and wasted storage.
+      # PRs (including from forks) only read the cache; only pushes to main
+      # are allowed to write, preventing cache poisoning from untrusted code.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          # Validate the Gradle wrapper JAR checksum in every job that runs the
+          # wrapper. lint / static-analysis / detekt have no `needs: build`, so
+          # they must validate independently rather than trust the build job.
+          validate-wrappers: true
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # test
+  # needs: [build] — explicit sequencing decision: run JVM unit tests only
+  # after a successful assemble. Prevents spending runner minutes on test
+  # compilation when the production build is already broken.
+  # ────────────────────────────────────────────────────────────────────────────
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name != 'schedule'
+    needs: [build]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          # Validate the Gradle wrapper JAR checksum in every job that runs the
+          # wrapper. lint / static-analysis / detekt have no `needs: build`, so
+          # they must validate independently rather than trust the build job.
+          validate-wrappers: true
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      # Upload even when tests fail so the report is always available for triage.
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: test-reports
+          path: |
+            app/build/reports/tests/
+            app/build/test-results/
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # lint
+  # NO `needs` — explicit decision: Android Lint performs its own compilation
+  # pass independently of assembleDebug (it drives the AGP lint task directly).
+  # Running it in parallel with the build job reduces total wall-clock time and
+  # surfaces lint errors earlier without any correctness risk.
+  # ────────────────────────────────────────────────────────────────────────────
+  lint:
+    name: Android Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name != 'schedule'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          # Validate the Gradle wrapper JAR checksum in every job that runs the
+          # wrapper. lint / static-analysis / detekt have no `needs: build`, so
+          # they must validate independently rather than trust the build job.
+          validate-wrappers: true
+
+      - name: Run Android Lint
+        run: ./gradlew lintDebug
+
+      - name: Upload Lint reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lint-reports
+          # Glob captures both lint-results-debug.html and lint-results-debug.xml.
+          path: app/build/reports/lint-results-*.*
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # static-analysis
+  # NO `needs` — explicit decision: ktlint reads raw source files and does not
+  # invoke the Kotlin compiler, so it runs safely in parallel with the build job
+  # for faster overall CI feedback.
+  # BLOCKING gate: ktlintCheck exits 1 on any style violation (ignoreFailures =
+  # false in the vpnis.ktlint convention plugin). No continue-on-error here —
+  # a ktlint violation must turn this job red while all other jobs stay green.
+  # ────────────────────────────────────────────────────────────────────────────
+  static-analysis:
+    name: ktlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name != 'schedule'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          # Validate the Gradle wrapper JAR checksum in every job that runs the
+          # wrapper. lint / static-analysis / detekt have no `needs: build`, so
+          # they must validate independently rather than trust the build job.
+          validate-wrappers: true
+
+      # Blocking: no continue-on-error. A style violation exits 1 and fails the job.
+      - name: Run ktlint (blocking gate)
+        run: ./gradlew ktlintCheck
+
+      - name: Upload ktlint reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ktlint-reports
+          path: app/build/reports/ktlint/
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # detekt
+  # NO `needs`: detekt reads source files and runs independently.
+  # REPORTING-ONLY (non-blocking): `continue-on-error: true` on the Gradle step
+  # means detekt findings do not fail the pipeline. The intent is to collect a
+  # baseline before enforcing. Remove continue-on-error to promote to a gate.
+  #
+  # permissions.security-events: write is required to push SARIF to GitHub Code
+  # Scanning. Fork PRs do not receive this permission, so the upload step is
+  # also guarded with continue-on-error so it silently no-ops on forks or when
+  # Advanced Security is unavailable.
+  # ────────────────────────────────────────────────────────────────────────────
+  detekt:
+    name: Detekt
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name != 'schedule'
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          # Validate the Gradle wrapper JAR checksum in every job that runs the
+          # wrapper. lint / static-analysis / detekt have no `needs: build`, so
+          # they must validate independently rather than trust the build job.
+          validate-wrappers: true
+
+      # Non-blocking: findings are collected but do not fail CI at this stage.
+      - name: Run detekt (reporting-only)
+        run: ./gradlew detekt
+        continue-on-error: true
+
+      # Always upload the artifact so reports are available even when detekt found issues.
+      - name: Upload detekt reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: detekt-reports
+          # Captures detekt.sarif plus any per-variant SARIF files.
+          path: app/build/reports/detekt/
+          retention-days: 7
+
+      # Push SARIF to GitHub Code Scanning for inline PR annotations.
+      # continue-on-error: true — silently no-ops when:
+      #   - the SARIF file was not generated (detekt failed before writing it)
+      #   - Advanced Security / Code Scanning is not enabled on the repo
+      #   - the job runs in a fork PR context (no security-events: write token)
+      - name: Upload detekt SARIF to GitHub Code Scanning
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@411c4c9a36b3fca4d674f06b6396b2c6d23522c6 # v3.36.3
+        with:
+          sarif_file: app/build/reports/detekt/detekt.sarif
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # sca (Supply-Chain Analysis)
+  # Runs ONLY on pull_request and the weekly schedule — not on direct pushes
+  # to main (no dependency manifest changes happen without a PR anyway, and
+  # avoiding redundant runs on main keeps costs down).
+  # NON-BLOCKING: continue-on-error: true while the project establishes a clean
+  # OSV baseline. Promote to blocking by removing continue-on-error.
+  #
+  # permissions.security-events: write — needed for SARIF upload to Code
+  # Scanning. Fork PRs degrade gracefully because the SARIF upload step is
+  # independently guarded with continue-on-error.
+  # ────────────────────────────────────────────────────────────────────────────
+  sca:
+    name: Supply-Chain Analysis (OSV)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'pull_request' || github.event_name == 'schedule'
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      # Scan the full repository recursively for known vulnerabilities in
+      # dependency manifests and lock files. Non-blocking while baselining.
+      # This composite action passes `scan-args` straight to the osv-scanner
+      # binary (it exposes no other inputs), so the SARIF format and output
+      # file are requested via CLI flags here rather than a dedicated input.
+      - name: Run OSV-Scanner (non-blocking)
+        continue-on-error: true
+        uses: google/osv-scanner-action/osv-scanner-action@9a498708959aeaef5ef730655706c5a1df1edbc2 # v2.3.8
+        with:
+          scan-args: |-
+            --format=sarif
+            --output=results.sarif
+            --recursive
+            ./
+
+      # Upload SARIF for inline PR annotations. Silently no-ops when:
+      #   - OSV-Scanner did not emit a SARIF file (no manifest found, or it failed)
+      #   - Advanced Security is not enabled on the repo
+      #   - Fork PR context has no security-events: write permission
+      - name: Upload OSV-Scanner SARIF to GitHub Code Scanning
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@411c4c9a36b3fca4d674f06b6396b2c6d23522c6 # v3.36.3
+        with:
+          sarif_file: results.sarif
