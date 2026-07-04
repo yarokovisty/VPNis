@@ -1,0 +1,22 @@
+# Normalize line endings to LF in the repo and on checkout for all platforms.
+# ktlint enforces `end_of_line = lf` (.editorconfig); without this, a fresh
+# checkout on Windows (core.autocrlf=true) would fail ktlintCheck on every file.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF.
+*.bat text eol=crlf
+
+# Unix shell scripts / wrapper stay LF.
+gradlew text eol=lf
+*.sh text eol=lf
+
+# Binary assets — never touch.
+*.jar binary
+*.keystore binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.so binary
