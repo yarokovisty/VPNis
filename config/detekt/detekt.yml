@@ -1,0 +1,19 @@
+# detekt override config — buildUponDefaultConfig = true, so only delta rules are listed here.
+# Formatting rules (whitespace, indentation, imports) are owned by ktlint.
+# Note: detekt 2.x has NO built-in "formatting" ruleset (the detekt-formatting wrapper plugin was
+# a 1.x add-on); no formatting block is needed or valid here.
+# The style and naming rules below overlap with ktlint and are disabled to avoid duplicate findings.
+
+style:
+  WildcardImport:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+
+naming:
+  MatchingDeclarationName:
+    active: false
+  # Compose @Composable/@Preview functions are PascalCase by convention.
+  # Mirrors .editorconfig's ktlint_function_naming_ignore_when_annotated_with.
+  FunctionNaming:
+    ignoreAnnotated: ['Composable', 'Preview']
