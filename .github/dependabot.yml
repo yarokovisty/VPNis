@@ -1,0 +1,20 @@
+version: 2
+
+updates:
+  # Keep GitHub Actions SHA-pinned versions up to date.
+  # Dependabot opens PRs to bump the SHA and version comment whenever a new
+  # release is published, so the CI pins never go stale silently.
+  # Gradle/Maven ecosystem is intentionally excluded — dependency updates for
+  # the build itself will be handled separately when that workflow is defined.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    # Cap concurrent PRs to avoid noise; raise when adoption velocity increases.
+    open-pull-requests-limit: 5
+    commit-message:
+      # Produces commits like: ci(deps): bump actions/checkout from v4.3.0 to v4.3.1
+      prefix: "ci(deps)"
