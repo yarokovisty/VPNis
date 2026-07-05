@@ -118,8 +118,8 @@ jobs:
         with:
           name: test-reports
           path: |
-            app/build/reports/tests/
-            app/build/test-results/
+            **/build/reports/tests/
+            **/build/test-results/
           retention-days: 7
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -164,8 +164,8 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: lint-reports
-          # Glob captures both lint-results-debug.html and lint-results-debug.xml.
-          path: app/build/reports/lint-results-*.*
+          # Glob captures both lint-results-debug.html and lint-results-debug.xml across all modules.
+          path: "**/build/reports/lint-results-*.*"
           retention-days: 7
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -213,7 +213,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ktlint-reports
-          path: app/build/reports/ktlint/
+          path: "**/build/reports/ktlint/"
           retention-days: 7
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -269,8 +269,8 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: detekt-reports
-          # Captures detekt.sarif plus any per-variant SARIF files.
-          path: app/build/reports/detekt/
+          # Captures detekt.sarif plus any per-variant SARIF files across all modules.
+          path: "**/build/reports/detekt/"
           retention-days: 7
 
       # Push SARIF to GitHub Code Scanning for inline PR annotations.
