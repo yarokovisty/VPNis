@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "VPNis"
 include(":app")
+include(":design:theme")
