@@ -1,8 +1,10 @@
 package org.yarokovisty.vpnis.design.theme
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +31,31 @@ private fun VPNisThemeDarkPreview() {
 @Composable
 private fun ThemePreviewContent() {
     Surface {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "VPNis Theme Preview")
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = "VPNis Design System",
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Text(
+                text = "Secure. Private. Fast.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             Button(onClick = {}) {
                 Text(text = "Connect")
+            }
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surfaceContainer,
+            ) {
+                Text(
+                    text = "surfaceContainer · medium shape · labelMedium",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(12.dp),
+                )
             }
         }
     }

@@ -8,11 +8,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.yarokovisty.vpnis.design.theme.VPNisTheme
 
 /**
- * Primary action button for the VPNis design system.
+ * Primary filled action button for the VPNis design system.
  *
- * **Stub until issue #17.** Real VPNis Material 3 token-based styling (colours,
- * shape, typography) will be applied when the DesignSync import lands. The
- * public signature is stable; only the visual appearance will change.
+ * Wraps M3 [Button] — background primary, label onPrimary. Brand tokens are
+ * applied automatically via [VPNisTheme].
  *
  * @param text Label displayed inside the button.
  * @param onClick Callback invoked when the button is tapped.
@@ -30,18 +29,11 @@ public fun VPNisButton(text: String, onClick: () -> Unit, modifier: Modifier = M
     }
 }
 
-// ---------------------------------------------------------------------------
-// Previews
-// ---------------------------------------------------------------------------
-
 @Preview(showBackground = true)
 @Composable
 private fun VPNisButtonEnabledLightPreview() {
     VPNisTheme(darkTheme = false) {
-        VPNisButton(
-            text = "Connect",
-            onClick = {},
-        )
+        VPNisButton(text = "Connect", onClick = {})
     }
 }
 
@@ -49,11 +41,7 @@ private fun VPNisButtonEnabledLightPreview() {
 @Composable
 private fun VPNisButtonDisabledLightPreview() {
     VPNisTheme(darkTheme = false) {
-        VPNisButton(
-            text = "Connect",
-            onClick = {},
-            enabled = false,
-        )
+        VPNisButton(text = "Connect", onClick = {}, enabled = false)
     }
 }
 
@@ -61,10 +49,7 @@ private fun VPNisButtonDisabledLightPreview() {
 @Composable
 private fun VPNisButtonEnabledDarkPreview() {
     VPNisTheme(darkTheme = true) {
-        VPNisButton(
-            text = "Connect",
-            onClick = {},
-        )
+        VPNisButton(text = "Connect", onClick = {})
     }
 }
 
@@ -72,10 +57,6 @@ private fun VPNisButtonEnabledDarkPreview() {
 @Composable
 private fun VPNisButtonDisabledDarkPreview() {
     VPNisTheme(darkTheme = true) {
-        VPNisButton(
-            text = "Connect",
-            onClick = {},
-            enabled = false,
-        )
+        VPNisButton(text = "Connect", onClick = {}, enabled = false)
     }
 }
