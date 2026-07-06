@@ -66,16 +66,16 @@ Legend:
 | headlineMedium | BRANDED | 32sp / Normal / lh 40sp |
 | headlineSmall | M3 DEFAULT | — |
 | titleLarge | BRANDED | 22sp / Medium / lh 28sp |
-| titleMedium | M3 DEFAULT | — |
-| titleSmall | M3 DEFAULT | — |
+| titleMedium | BRANDED | 16sp / Medium / lh 24sp / ls 0.15sp |
+| titleSmall | BRANDED | 14sp / Medium / lh 20sp / ls 0.1sp |
 | bodyLarge | BRANDED | 16sp / Normal / lh 24sp / ls 0.5sp |
-| bodyMedium | M3 DEFAULT | — |
-| bodySmall | M3 DEFAULT | — |
-| labelLarge | M3 DEFAULT | — |
+| bodyMedium | BRANDED | 14sp / Normal / lh 20sp / ls 0.25sp |
+| bodySmall | BRANDED | 12sp / Normal / lh 16sp / ls 0.4sp |
+| labelLarge | BRANDED | 14sp / Medium / lh 20sp / ls 0.1sp |
 | labelMedium | BRANDED | 12sp / Medium / lh 16sp / ls 0.5sp |
 | labelSmall | M3 DEFAULT | — |
 
-**Summary:** 5 BRANDED · 10 M3 DEFAULT  
+**Summary:** 10 BRANDED · 5 M3 DEFAULT  
 Font family: `FontFamily.Default` (Roboto on Android) — no custom font resource added.
 
 ---
