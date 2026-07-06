@@ -10,3 +10,6 @@ build/
 .cxx
 local.properties
 CLAUDE.local.md
+
+# Local emulator showcase captures (not versioned)
+.showcase-shots/
