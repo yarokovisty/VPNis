@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.yarokovisty.vpnis.design.theme.VPNisTheme
 import org.yarokovisty.vpnis.showcase.ButtonShowcaseSection
+import org.yarokovisty.vpnis.showcase.SelectionShowcaseSection
 
 /**
  * Debug entry point: the VPNis design-system showcase gallery.
@@ -63,6 +64,7 @@ fun AppRoot() {
             ) {
                 // Each design-system family registers its section here.
                 item { ShowcaseSection(title = "Buttons") { ButtonShowcaseSection() } }
+                item { ShowcaseSection(title = "Selection controls") { SelectionShowcaseSection() } }
             }
         }
     }
