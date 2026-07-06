@@ -94,3 +94,23 @@ All five corner families set explicitly from the design spec.
 
 Button shape: M3 `Button` / `FilledTonalButton` / `OutlinedButton` use the
 theme's `shapes.full` (fully-rounded pill) by default — no per-button override needed.
+
+---
+
+## Semantic colors (DERIVED — not in the design canvas)
+
+Introduced in issue #30 (banner component). Material 3 has no `warning` colour role; the
+values below follow the M3 tonal-palette construction for a warm amber source colour
+(Hue ≈ 35 °). Owned by `VPNisSemanticColors` in `SemanticColors.kt`; provided by `VPNisTheme`
+via `LocalVPNisSemanticColors`.
+
+| Role | Light | Dark |
+|---|---|---|
+| warning | DERIVED `#7E5700` (tone 40) | DERIVED `#FFB951` (tone 80) |
+| onWarning | DERIVED `#FFFFFF` (tone 100) | DERIVED `#422C00` (tone 20) |
+| warningContainer | DERIVED `#FFDDB0` (tone 90) | DERIVED `#5F4100` (tone 30) |
+| onWarningContainer | DERIVED `#281800` (tone 10) | DERIVED `#FFDDB0` (tone 90) |
+
+**Decision:** `tertiary` was considered but rejected — it is already a branded accent (teal)
+and would visually clash with amber warning semantics. A dedicated `VPNisSemanticColors` type
+was chosen to keep the warning role distinct and extensible (issue #30, §4 of uikit README).
