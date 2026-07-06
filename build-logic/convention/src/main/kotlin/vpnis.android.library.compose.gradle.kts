@@ -32,7 +32,10 @@ val libs = extensions.getByType<org.gradle.api.artifacts.VersionCatalogsExtensio
 dependencies {
     // Import the Compose BOM so all Compose artifact versions are aligned.
     implementation(platform(libs.findLibrary("androidx-compose-bom").get()))
-    // Minimal Compose UI surface — additional Compose libs are declared per-module.
-    implementation(libs.findLibrary("androidx-compose-ui").get())
+    // compose-ui is `api`, not `implementation`: design modules already expose
+    // compose-ui types in their public API (e.g. Modifier on every component,
+    // brand Color / Shapes from :design:theme). Consumers must receive these
+    // transitively — see the visibility matrix in design/uikit/README.md.
+    api(libs.findLibrary("androidx-compose-ui").get())
     implementation(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
 }
