@@ -1,4 +1,4 @@
-package org.yarokovisty.vpnis.design.uikit
+package org.yarokovisty.vpnis.design.uikit.button
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.ButtonDefaults
