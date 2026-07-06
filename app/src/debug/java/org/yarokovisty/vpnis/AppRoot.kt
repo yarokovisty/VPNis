@@ -25,6 +25,7 @@ import org.yarokovisty.vpnis.showcase.BannerShowcaseSection
 import org.yarokovisty.vpnis.showcase.ButtonShowcaseSection
 import org.yarokovisty.vpnis.showcase.CardShowcaseSection
 import org.yarokovisty.vpnis.showcase.InputShowcaseSection
+import org.yarokovisty.vpnis.showcase.ListShowcaseSection
 import org.yarokovisty.vpnis.showcase.SelectionShowcaseSection
 
 /**
@@ -71,6 +72,7 @@ fun AppRoot() {
                 item { ShowcaseSection(title = "Cards") { CardShowcaseSection() } }
                 item { ShowcaseSection(title = "Banners") { BannerShowcaseSection() } }
                 item { ShowcaseSection(title = "Input fields") { InputShowcaseSection() } }
+                item { ShowcaseSection(title = "List items") { ListShowcaseSection() } }
             }
         }
     }
