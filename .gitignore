@@ -13,3 +13,6 @@ CLAUDE.local.md
 
 # Local emulator showcase captures (not versioned)
 .showcase-shots/
+
+# Local swarm/planning artifacts (not versioned)
+swarm-report/

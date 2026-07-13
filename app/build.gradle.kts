@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    // Koin — BOM aligns all koin-* artifact versions; koin-android provides startKoin + androidContext.
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
     implementation(project(":design:theme"))
     implementation(project(":design:uikit"))
     implementation(platform(libs.androidx.compose.bom))
