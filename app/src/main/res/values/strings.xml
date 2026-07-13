@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">VPNis</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_servers">Servers</string>
+    <string name="nav_bypass">Bypass</string>
+    <string name="nav_settings">Settings</string>
+    <string name="placeholder_coming_soon">Coming soon</string>
 </resources>
