@@ -4,6 +4,8 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.yarokovisty.vpnis.data.fake.fakeVpnModule
+import org.yarokovisty.vpnis.feature.home.homeModule
 
 class VpnisApplication : Application() {
 
@@ -14,9 +16,10 @@ class VpnisApplication : Application() {
             androidLogger()
             // Bind the application context so Koin can inject it into Android-aware modules.
             androidContext(this@VpnisApplication)
-            // Feature and domain modules register their own Koin modules; they are collected
-            // and wired here in #50 (:feature:home) and #53 (:core:domain).
-            modules(emptyList())
+            // homeModule provides HomeViewModel; fakeVpnModule provides ConnectionController +
+            // ServerRepository backed by configurable fakes. Swap fakeVpnModule for the real
+            // :data:vpn module in epic B (#66) without touching any other module.
+            modules(homeModule, fakeVpnModule)
         }
     }
 }
