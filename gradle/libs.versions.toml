@@ -13,6 +13,7 @@ detekt = "2.0.0-alpha.5"
 koin = "4.1.0"
 kotlinxCoroutines = "1.10.2"
 kotlinxSerializationJson = "1.9.0"
+turbine = "1.2.0"
 navigationCompose = "2.9.8"
 lifecycle = "2.11.0"
 
@@ -50,6 +51,7 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 # Lifecycle (separate from lifecycleRuntimeKtx which the app already uses at 2.10.0)
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
