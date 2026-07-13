@@ -8,6 +8,9 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":design:theme"))
+    implementation(libs.androidx.compose.material.icons.core)
+    debugImplementation(libs.androidx.compose.ui.tooling)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
