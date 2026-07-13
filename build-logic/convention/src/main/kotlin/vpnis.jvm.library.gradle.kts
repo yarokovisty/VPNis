@@ -21,6 +21,11 @@ java {
 
 // Enforce explicit API mode: every public declaration must carry an explicit
 // visibility modifier and return type, keeping the module's public surface intentional.
+// Set jvmTarget to 11 to match the Java source/target above and avoid the
+// "Inconsistent JVM Target Compatibility" error from Gradle's consistency check.
 kotlin {
     explicitApi()
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    }
 }
