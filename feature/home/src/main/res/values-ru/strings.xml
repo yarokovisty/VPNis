@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Строки главного экрана — русская локализация. База (fallback) — values/strings.xml (English).
+  Тексты соответствуют дизайн-канве «VPNis Material 3».
+-->
+<resources>
+    <!-- App bar -->
+    <string name="home_title">VPNis</string>
+
+    <!-- Статусы подключения -->
+    <string name="home_status_connected">Подключено</string>
+    <string name="home_status_disconnected">Не подключено</string>
+    <string name="home_status_no_server">Сервер не выбран</string>
+    <string name="home_status_connecting">Подключение…</string>
+    <string name="home_status_connecting_detail">Рукопожатие Reality · VLESS</string>
+    <string name="home_status_error">Ошибка подключения</string>
+    <string name="home_status_error_detail">Сервер не отвечает</string>
+
+    <!-- Пустое состояние (нет сервера) -->
+    <string name="home_empty_title">Пока нет серверов</string>
+    <string name="home_empty_message">Добавьте сервер или подключитесь к сервису VPNis, чтобы начать</string>
+
+    <!-- Действия -->
+    <string name="home_action_connect">Подключиться к серверу</string>
+    <string name="home_action_add_server">Добавить свой сервер</string>
+    <string name="home_action_cancel">Отменить</string>
+    <string name="home_action_retry">Повторить</string>
+    <string name="home_action_choose_another">Выбрать другой сервер</string>
+
+    <!-- Карточка сервера -->
+    <string name="home_server_protocol_vless_reality">VLESS · Reality</string>
+    <string name="home_server_ping_ms">%1$d мс</string>
+
+    <!-- Плитки трафика (значения «—» на этом этапе; счётчик трафика — #69) -->
+    <string name="home_traffic_download">Загрузка</string>
+    <string name="home_traffic_upload">Отдача</string>
+    <string name="home_traffic_unit_mbps">МБ/с</string>
+
+    <!-- Баннер ошибки. %1$s — хост/имя сервера. -->
+    <string name="home_error_message">Не удалось подключиться к %1$s. Проверьте конфигурацию или выберите другой сервер.</string>
+
+    <!-- Доступность (TalkBack) -->
+    <string name="home_button_content_description">VPN-подключение</string>
+    <string name="home_button_state_connected">Подключено</string>
+    <string name="home_button_state_disconnected">Отключено</string>
+    <string name="home_button_state_connecting">Подключение</string>
+    <string name="home_button_state_error">Ошибка</string>
+    <!-- %1$s — отформатированное время сессии, напр. «00:12:47». -->
+    <string name="home_session_duration_content_description">Длительность сессии %1$s</string>
+</resources>

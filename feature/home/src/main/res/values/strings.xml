@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Home-screen strings — English base (default fallback for any locale without a
+  more specific resource). Russian override lives in values-ru/strings.xml.
+  Project constraint: RU + EN from day one. All user-facing home text resolves
+  from here; components take the resolved strings as parameters (i18n-ready).
+-->
+<resources>
+    <!-- App bar -->
+    <string name="home_title">VPNis</string>
+
+    <!-- Connection status labels -->
+    <string name="home_status_connected">Connected</string>
+    <string name="home_status_disconnected">Not connected</string>
+    <string name="home_status_no_server">No server selected</string>
+    <string name="home_status_connecting">Connecting…</string>
+    <string name="home_status_connecting_detail">Reality · VLESS handshake</string>
+    <string name="home_status_error">Connection error</string>
+    <string name="home_status_error_detail">Server is not responding</string>
+
+    <!-- Empty state (no server) -->
+    <string name="home_empty_title">No servers yet</string>
+    <string name="home_empty_message">Add a server or connect to the VPNis service to get started</string>
+
+    <!-- Actions -->
+    <string name="home_action_connect">Connect to server</string>
+    <string name="home_action_add_server">Add your own server</string>
+    <string name="home_action_cancel">Cancel</string>
+    <string name="home_action_retry">Retry</string>
+    <string name="home_action_choose_another">Choose another server</string>
+
+    <!-- Server card -->
+    <string name="home_server_protocol_vless_reality">VLESS · Reality</string>
+    <!-- Ping value, e.g. "42 ms". Ping measurement itself is a later feature (#71). -->
+    <string name="home_server_ping_ms">%1$d ms</string>
+
+    <!-- Traffic tiles (values are "—" on this milestone; the traffic counter is #69) -->
+    <string name="home_traffic_download">Download</string>
+    <string name="home_traffic_upload">Upload</string>
+    <string name="home_traffic_unit_mbps">MB/s</string>
+
+    <!-- Error banner. %1$s is the server host/name. -->
+    <string name="home_error_message">Couldn\'t connect to %1$s. Check the configuration or choose another server.</string>
+
+    <!-- Neutral placeholder for a not-yet-available numeric value (ping, traffic). -->
+    <string name="home_value_placeholder" translatable="false">—</string>
+
+    <!-- Accessibility -->
+    <string name="home_button_content_description">VPN connection</string>
+    <string name="home_button_state_connected">Connected</string>
+    <string name="home_button_state_disconnected">Disconnected</string>
+    <string name="home_button_state_connecting">Connecting</string>
+    <string name="home_button_state_error">Error</string>
+    <!-- %1$s is the formatted elapsed time, e.g. "00:12:47". -->
+    <string name="home_session_duration_content_description">Session duration %1$s</string>
+</resources>
