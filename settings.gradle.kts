@@ -25,5 +25,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "VPNis"
 include(":app")
+include(":core:domain")
 include(":design:theme")
 include(":design:uikit")
