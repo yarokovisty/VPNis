@@ -67,7 +67,7 @@ public fun SessionTimer(since: Instant, modifier: Modifier = Modifier, contentDe
             fontWeight = FontWeight.Medium,
             fontFeatureSettings = "tnum",
         ),
-        color = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier.then(semanticsModifier),
     )
 }
@@ -116,7 +116,7 @@ private fun SessionTimerElapsedLightPreview() {
                 fontWeight = FontWeight.Medium,
                 fontFeatureSettings = "tnum",
             ),
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -143,7 +143,7 @@ private fun SessionTimerElapsedDarkPreview() {
                 fontWeight = FontWeight.Medium,
                 fontFeatureSettings = "tnum",
             ),
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.yarokovisty.vpnis.design.theme.VPNisTheme
 import org.yarokovisty.vpnis.feature.home.components.icons.HomeIcons
 
@@ -100,8 +101,9 @@ private fun TrafficTile(label: String, value: String, isDownload: Boolean, modif
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 19.sp,
                     fontFeatureSettings = "tnum",
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                 ),
                 color = MaterialTheme.colorScheme.onSurface,
             )
