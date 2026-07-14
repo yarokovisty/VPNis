@@ -12,6 +12,11 @@ val buildNative = providers.gradleProperty("vpnis.buildNative")
 
 android {
     namespace = "org.yarokovisty.vpnis.data.vpn"
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
+    }
 
     if (buildNative) {
         defaultConfig {
@@ -37,6 +42,9 @@ dependencies {
     // ServiceCompat.startForeground / stopForeground, NotificationCompat.Builder
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.core)
+    // koin-android: provides androidContext() in Koin module DSL and KoinComponent
+    // `by inject()` support inside VpnTunnelService (an Android Service, not a ViewModel).
+    implementation(libs.koin.android)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 }

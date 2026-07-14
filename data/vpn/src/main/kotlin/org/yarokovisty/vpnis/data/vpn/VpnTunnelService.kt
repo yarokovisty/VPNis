@@ -19,6 +19,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 
 /**
  * Establishes and manages the Android TUN interface for the VPNis tunnel.
@@ -78,6 +80,23 @@ internal class VpnTunnelService :
     VpnSocketProtector {
 
     // -------------------------------------------------------------------------
+    // Koin injections (issue #63)
+    // -------------------------------------------------------------------------
+
+    /**
+     * The process-scoped state-machine sink. Injected as [TunnelStateSink] so the
+     * service depends only on the narrow callback interface, not on [ConnectionControllerImpl].
+     * [ConnectionControllerImpl] implements [TunnelStateSink] alongside [ConnectionController].
+     */
+    private val stateSink: TunnelStateSink by inject()
+
+    /**
+     * Xray-core proxy lifecycle. [NoOpXrayCore] in all builds until issue #72 lands.
+     * Start before the hev loop so the SOCKS inbound is ready when hev begins forwarding.
+     */
+    private val xrayCore: XrayCore by inject()
+
+    // -------------------------------------------------------------------------
     // Companion — actions and intent factories
     // -------------------------------------------------------------------------
 
@@ -90,6 +109,17 @@ internal class VpnTunnelService :
 
         /** Intent action to stop the VPN tunnel. */
         const val ACTION_DISCONNECT = "org.yarokovisty.vpnis.data.vpn.action.DISCONNECT"
+
+        /**
+         * Optional String extra on [ACTION_CONNECT] intents carrying the target server's id
+         * ([org.yarokovisty.vpnis.core.domain.model.ServerId.value]).
+         *
+         * The service does not need the id for its own operation — [ConnectionControllerImpl]
+         * already holds [ConnectionControllerImpl.currentTarget]. This extra is informational:
+         * future issues may use it to display the server name in the notification before
+         * [TunnelStateSink.onTunnelEstablished] fires.
+         */
+        const val EXTRA_SERVER_ID = "org.yarokovisty.vpnis.data.vpn.extra.SERVER_ID"
 
         /** Creates a start-tunnel intent pre-filled with [ACTION_CONNECT]. */
         fun connectIntent(context: Context): Intent =
@@ -192,21 +222,21 @@ internal class VpnTunnelService :
 
         val config = TunConfig()
 
-        // Promote to foreground BEFORE establish() so the OS cannot kill us
-        // while we are building the TUN interface.
+        // 1. Promote to foreground BEFORE establish() so the OS cannot kill us
+        //    while we are building the TUN interface.
         //
-        // ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED requires:
-        //   - FOREGROUND_SERVICE_SYSTEM_EXEMPTED uses-permission  ─┐ both from issue #65
-        //   - android:foregroundServiceType="systemExempted"       ─┘
+        //    ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED requires:
+        //      - FOREGROUND_SERVICE_SYSTEM_EXEMPTED uses-permission  ─┐ both from issue #65
+        //      - android:foregroundServiceType="systemExempted"       ─┘
         //
-        // On API 34+ (Android 14) startForeground throws if the manifest type is not
-        // declared. We catch that here and tear down cleanly instead of crashing the process.
-        // Once #65 adds the manifest entry this catch branch will never execute.
+        //    On API 34+ (Android 14) startForeground throws if the manifest type is not
+        //    declared. We catch that here and tear down cleanly instead of crashing the process.
+        //    Once #65 adds the manifest entry this catch branch will never execute.
         //
-        // NOTE: POST_NOTIFICATIONS runtime permission is NOT checked here. On API 33+,
-        // if the permission is absent the notification simply will not display in the
-        // shade, but the foreground service itself still runs. Requesting the permission
-        // at the Activity layer belongs to issue #67.
+        //    NOTE: POST_NOTIFICATIONS runtime permission is NOT checked here. On API 33+,
+        //    if the permission is absent the notification simply will not display in the
+        //    shade, but the foreground service itself still runs. Requesting the permission
+        //    at the Activity layer belongs to issue #67.
         try {
             val notification = TunnelNotifications.build(context = this)
             ServiceCompat.startForeground(
@@ -221,15 +251,44 @@ internal class VpnTunnelService :
             // and any other startForeground failure. Log and abort — no tunnel without FGS
             // on modern API levels since the service would be immediately killed.
             Log.e(TAG, "startTunnel: startForeground failed — manifest type from #65 required on API 34+", e)
+            stateSink.onTunnelError(reason = ConnectionError.TunnelSetupFailed)
             stopSelf()
             return
         }
 
+        // 2. Start Xray-core BEFORE establishing the TUN and starting hev, so the SOCKS5
+        //    inbound port is ready when hev starts forwarding traffic.
+        //
+        //    configJson: the MVP stub passes an empty JSON config because [NoOpXrayCore]
+        //    ignores it. The real implementation (issue #72) will parse [Server.config]
+        //    (the VLESS/Reality URI from the current target server) into a full Xray JSON
+        //    config. The server config arrives from [ConnectionControllerImpl.currentTarget]
+        //    via [TunnelLauncher.launch]'s EXTRA_SERVER_ID; look it up from the repository
+        //    if needed — or pass it directly through a richer intent extra in issue #72.
+        //
+        //    Socket protection: the real XrayCore impl must protect its own outbound sockets
+        //    to avoid looping through the TUN. The seam for that (passing a VpnSocketProtector
+        //    to XrayCore.start) is documented in [XrayCore] and intentionally deferred to #72
+        //    since [NoOpXrayCore] creates no sockets.
+        val xrayStarted = xrayCore.start(configJson = "")
+        if (!xrayStarted) {
+            Log.e(TAG, "startTunnel: xrayCore.start() returned false — aborting tunnel setup")
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            stateSink.onTunnelError(reason = ConnectionError.TunnelSetupFailed)
+            stopSelf()
+            return
+        }
+
+        // 3. Establish the TUN interface (calls VpnService.Builder.establish()).
         val pfd: ParcelFileDescriptor = buildTun(config) ?: run {
-            // null from establish() means VPN permission was not granted. Issue #57's
-            // permission-request flow is the gate that should prevent us from reaching here
-            // without consent. Treat it as a defensive fallback.
+            // null from establish() means VPN permission was not granted.
+            // Issue #57's permission-request flow is the gate that should prevent reaching
+            // here without consent. Treat it defensively and signal the controller so the
+            // presentation layer can trigger VpnService.prepare() again.
             Log.e(TAG, "startTunnel: establish() returned null — VPN permission not granted")
+            xrayCore.stop() // roll back Xray — TUN never came up
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            stateSink.onPermissionRequired()
             stopSelf()
             return
         }
@@ -237,23 +296,16 @@ internal class VpnTunnelService :
         tunPfd = pfd
         isRunning = true
 
-        // Start monitoring the underlying (non-VPN) network so we can call
-        // setUnderlyingNetworks() as the physical network changes.
+        // 4. Start monitoring the underlying (non-VPN) network so we can call
+        //    setUnderlyingNetworks() as the physical network changes.
         networkMonitor = UnderlyingNetworkMonitor(
             service = this,
             connectivityManager = getSystemService(ConnectivityManager::class.java),
         ).also { it.register() }
 
-        // TODO(#63): Notify ConnectionController that the TUN is established and the
-        //   tunnel is now in the Connecting → Connected transition. A hook here might look
-        //   like:
-        //     connectionController.onTunnelEstablished(tunFd = pfd.fd)
-        //   and the controller would then start Xray-core and update VpnConnectionState.
-        //   Do NOT start Xray here — the ConnectionController owns that lifecycle.
-
-        // Launch the blocking hev event loop on a background thread (Dispatchers.IO).
-        // pfd.fd is borrowed; pfd itself is kept alive in tunPfd and closed in stopTunnel()
-        // after this job completes, guaranteeing the fd remains valid for the native loop.
+        // 5. Launch the blocking hev event loop on a background thread (Dispatchers.IO).
+        //    pfd.fd is borrowed; pfd itself is kept alive in tunPfd and closed in stopTunnel()
+        //    after this job completes, guaranteeing the fd remains valid for the native loop.
         val tunFd = pfd.fd
         val yamlConfig = config.toTun2SocksConfig().toYaml()
 
@@ -262,6 +314,12 @@ internal class VpnTunnelService :
             val exitCode = Tun2SocksBridge.nativeStart(configYaml = yamlConfig, tunFd = tunFd)
             Log.i(TAG, "startTunnel: hev native loop exited (code=$exitCode)")
         }
+
+        // 6. Notify the ConnectionController that the TUN is up and the tunnel is active.
+        //    This drives Connecting → Connected in the state machine and updates the
+        //    notification with live content.
+        stateSink.onTunnelEstablished()
+        updateNotification(content = NotificationContent.Default)
     }
 
     private fun stopTunnel() {
@@ -296,14 +354,19 @@ internal class VpnTunnelService :
         tunPfd?.close()
         tunPfd = null
 
-        // TODO(#63): Notify ConnectionController that the tunnel has stopped so it can
-        //   update VpnConnectionState to Disconnected (or Error if the exit was unexpected).
-        //   A hook here might look like:
-        //     connectionController.onTunnelStopped()
+        // 5. Stop Xray-core. Order matters: hev is already signalled to stop (step 1),
+        //    so no more SOCKS forwarding is expected. Stopping Xray releases the local
+        //    inbound port for reuse on the next connect.
+        xrayCore.stop()
 
-        // Remove the foreground notification now that the tunnel is stopped.
-        // STOP_FOREGROUND_REMOVE dismisses the notification immediately; the service
-        // continues running until stopSelf() below causes it to be destroyed.
+        // 6. Notify the ConnectionController that the tunnel has stopped. This drives
+        //    Connected/Connecting → Disconnected in the state machine. isLegalTransition
+        //    guards against this being called when already Disconnected.
+        stateSink.onTunnelStopped()
+
+        // 7. Remove the foreground notification now that the tunnel is stopped.
+        //    STOP_FOREGROUND_REMOVE dismisses the notification immediately; the service
+        //    continues running until stopSelf() below causes it to be destroyed.
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
 
         isRunning = false
