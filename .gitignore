@@ -16,3 +16,8 @@ CLAUDE.local.md
 
 # Local swarm/planning artifacts (not versioned)
 swarm-report/
+
+# CI-built gomobile binding (XrayCore.aar). Never vendored in VCS:
+# F-Droid main prohibits prebuilt .aar in libs/ (ADR 0001); the native-build
+# job (#72) rebuilds it from the pinned libXray submodule each run.
+/data/vpn/libs/
