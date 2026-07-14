@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Minimal manifest for the :data:vpn library module.
+    Manifest for the :data:vpn library module (issue #65).
 
-    The <service> declaration for VpnTunnelService, the BIND_VPN_SERVICE permission,
-    INTERNET, CHANGE_NETWORK_STATE, and FOREGROUND_SERVICE declarations all belong to
-    the :app manifest and are wired in issue #65. This library manifest intentionally
-    contains no component entries so that the merge does not accidentally include the
-    service before #65 is ready.
+    The <service> and permissions live here — in the module that DEFINES VpnTunnelService —
+    rather than in :app, so the tunnel is self-contained. They merge into the application
+    manifest once :app depends on :data:vpn (the fakeVpnModule -> vpnModule swap, issue #66).
 -->
-<manifest />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Tunnel + Xray outbound traffic. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- registerNetworkCallback() in UnderlyingNetworkMonitor (underlying-network tracking). -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Foreground service that hosts the tunnel (issue #62). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    <!-- API 33+: post the ongoing tunnel notification. The runtime grant is requested at the
+         app/Activity layer; declaring it here lets the notification display once granted. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <!--
+            VpnTunnelService (issues #61/#62/#63).
+            - android:permission="BIND_VPN_SERVICE" + the android.net.VpnService intent action
+              are what the OS VPN framework requires to bind a VpnService.
+            - android:foregroundServiceType="systemExempted" matches the
+              ServiceCompat.startForeground(..., FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED) call.
+            - android:exported="false" — only this app may start it.
+        -->
+        <!--
+            tools:ignore="ForegroundServicePermission" — lint statically requires an exact-alarm
+            permission (SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM) alongside a systemExempted FGS
+            type, but a VpnService qualifies for the system-exempted category at RUNTIME on its
+            own. Adding an exact-alarm permission to a VPN app would be semantically wrong and
+            Play-Store-scrutinised, so we suppress the check rather than declare a false capability.
+        -->
+        <service
+            android:name="org.yarokovisty.vpnis.data.vpn.VpnTunnelService"
+            android:exported="false"
+            android:foregroundServiceType="systemExempted"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            tools:ignore="ForegroundServicePermission">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
