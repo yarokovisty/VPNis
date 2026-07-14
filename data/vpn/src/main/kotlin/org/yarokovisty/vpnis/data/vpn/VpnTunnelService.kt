@@ -17,7 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.android.ext.android.inject
 import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 
@@ -119,6 +121,20 @@ internal class VpnTunnelService :
          */
         const val EXTRA_SERVER_ID = "org.yarokovisty.vpnis.data.vpn.extra.SERVER_ID"
 
+        /**
+         * Grace period after the hev native loop returns before the TUN fd and SOCKS port are
+         * released, so a fast disconnect→reconnect does not hit an "address already in use"
+         * (issue #64, v2rayNG pitfall). Kept short — the real wait is the [Job.join] below.
+         */
+        private const val GRACE_STOP_DELAY_MS = 100L
+
+        /**
+         * Upper bound on waiting for the hev native loop to return after [Tun2SocksBridge.nativeStop].
+         * If hev misbehaves and never returns, teardown proceeds anyway rather than hanging the
+         * service forever.
+         */
+        private const val STOP_JOIN_TIMEOUT_MS = 2_000L
+
         /** Creates a start-tunnel intent pre-filled with [ACTION_CONNECT]. */
         fun connectIntent(context: Context): Intent =
             Intent(ACTION_CONNECT).apply { setClass(context, VpnTunnelService::class.java) }
@@ -149,6 +165,23 @@ internal class VpnTunnelService :
 
     /** Tracks whether a tunnel is already running to prevent double-start. */
     private var isRunning = false
+
+    /**
+     * Set for the duration of a teardown so a second [stopTunnel] (e.g. onRevoke racing
+     * onDestroy, or ACTION_DISCONNECT arriving twice) becomes a no-op — guards against
+     * double-close of the fd and a duplicate [TunnelStateSink.onTunnelStopped].
+     */
+    @Volatile
+    private var isStopping = false
+
+    /**
+     * Guards the small critical sections that mutate [isRunning] / [isStopping] / [tunPfd] /
+     * [tunnelJob]. Lifecycle callbacks can arrive on different threads — onStartCommand /
+     * onDestroy on main, onRevoke on a binder thread, and the teardown coroutine on IO — so
+     * the transitions are synchronized while the long-running work (join, native calls) runs
+     * outside the lock.
+     */
+    private val lifecycleLock = Any()
 
     /** Manages the underlying (non-VPN) network callback. */
     private var networkMonitor: UnderlyingNetworkMonitor? = null
@@ -193,19 +226,28 @@ internal class VpnTunnelService :
     }
 
     override fun onRevoke() {
-        // The system revoked consent (e.g. user toggled VPN off from Settings, or another
-        // VPN app was started). Tear down cleanly.
-        // NOTE: connect/disconnect race hardening and automatic reconnect are issue #64.
-        // Keep this minimal — just stop.
+        // The system revoked consent (user toggled VPN off in Settings, or another VPN app
+        // started). onRevoke is delivered on a BINDER thread, NOT the main thread — but
+        // stopTunnel() only does thread-safe synchronous work here (guard flip + nativeStop +
+        // callback unregister) and hands the blocking teardown to serviceScope, so it is safe
+        // to call from any thread. The UI transition is driven by stateSink.onTunnelStopped().
         Log.i(TAG, "onRevoke: VPN permission revoked by system, stopping tunnel")
         stopTunnel()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        // Ensure cleanup even if onRevoke / stopTunnel was not called (e.g. process kill).
-        stopTunnel()
+        // Best-effort SYNCHRONOUS cleanup for the case where the service is destroyed without a
+        // completed stopTunnel() (e.g. a low-memory kill). If the async teardown already ran,
+        // tunPfd is null and the close is a no-op — guarded against double-close. Cancelling the
+        // scope last stops any in-flight teardown coroutine (which, if it ran, already finished).
+        Tun2SocksBridge.nativeStop()
+        synchronized(lifecycleLock) {
+            runCatching { tunPfd?.close() }
+            tunPfd = null
+            isRunning = false
+        }
         serviceScope.cancel()
+        super.onDestroy()
     }
 
     // -------------------------------------------------------------------------
@@ -219,9 +261,14 @@ internal class VpnTunnelService :
     //   identically (log, report error, tear down), so catching the common base is intentional.
     @Suppress("ReturnCount", "TooGenericExceptionCaught")
     private fun startTunnel() {
-        if (isRunning) {
-            Log.d(TAG, "startTunnel: tunnel already running, ignoring duplicate start")
-            return
+        synchronized(lifecycleLock) {
+            if (isRunning || isStopping) {
+                // Ignore a start that arrives while running, or while a teardown is still
+                // releasing the fd/port (a too-fast reconnect) — the caller retries once the
+                // state settles to Disconnected.
+                Log.d(TAG, "startTunnel: already running or stopping, ignoring start")
+                return
+            }
         }
 
         val config = TunConfig()
@@ -297,8 +344,10 @@ internal class VpnTunnelService :
             return
         }
 
-        tunPfd = pfd
-        isRunning = true
+        synchronized(lifecycleLock) {
+            tunPfd = pfd
+            isRunning = true
+        }
 
         // 4. Start monitoring the underlying (non-VPN) network so we can call
         //    setUnderlyingNetworks() as the physical network changes.
@@ -327,53 +376,67 @@ internal class VpnTunnelService :
     }
 
     private fun stopTunnel() {
-        if (!isRunning && tunnelJob == null) {
-            // Already stopped — idempotent.
-            return
+        synchronized(lifecycleLock) {
+            if (isStopping || (!isRunning && tunnelJob == null)) {
+                // Already stopped, or a teardown is already in progress — idempotent. This is
+                // the double-close guard: onRevoke, onDestroy and a duplicate ACTION_DISCONNECT
+                // can all race, but only the first drives the teardown.
+                return
+            }
+            isStopping = true
         }
 
         Log.i(TAG, "stopTunnel: signalling hev to quit")
 
-        // 1. Signal hev to exit its event loop asynchronously.
-        //    nativeStop() is safe to call from any thread and is a no-op if no tunnel runs.
+        // 1. Signal hev to exit its event loop. Thread-safe and a no-op if nothing is running,
+        //    so this is safe to invoke from onRevoke's binder thread.
         Tun2SocksBridge.nativeStop()
 
-        // 2. Cancel the coroutine wrapper and wait for hev to drain in-flight events.
-        //    We do NOT use runBlocking here — stopTunnel() may be called from the main
-        //    thread (onRevoke, onDestroy) and blocking it would risk an ANR if hev takes
-        //    too long. Instead we cancel the job; the fd is closed after the job's
-        //    cooperative cancellation (hev returns from nativeStart once nativeStop() is
-        //    processed). A future issue (#64) may add a timeout + forced fd close here.
-        tunnelJob?.cancel()
-        tunnelJob = null
-
-        // 3. Unregister the network callback before closing the fd to avoid callbacks
-        //    arriving on a torn-down service.
+        // 2. Unregister the underlying-network callback now — no further updates are wanted,
+        //    and doing it before the async release avoids callbacks landing on a torn service.
         networkMonitor?.unregister()
         networkMonitor = null
 
-        // 4. Close the ParcelFileDescriptor. The native side has already returned from
-        //    nativeStart (or will when the cancelled coroutine resumes), so this is safe.
-        //    Closing the PFD closes the underlying fd and releases the TUN interface.
-        tunPfd?.close()
-        tunPfd = null
+        // 3. Finish teardown OFF the calling thread. We await the hev loop's actual return
+        //    (Job.join, bounded by STOP_JOIN_TIMEOUT_MS) BEFORE releasing the fd and the SOCKS
+        //    port, then a short grace delay. This is the correct form of v2rayNG's
+        //    stopSelf -> sleep -> close ordering: closing the fd while hev still holds it, or
+        //    reclaiming the SOCKS port too early, is exactly what leaves a busy port on the
+        //    next connect. Crucially we never block the caller (main / binder), so no ANR.
+        serviceScope.launch {
+            withTimeoutOrNull(STOP_JOIN_TIMEOUT_MS) { tunnelJob?.join() }
+            delay(GRACE_STOP_DELAY_MS)
+            finishTeardown()
+        }
+    }
 
-        // 5. Stop Xray-core. Order matters: hev is already signalled to stop (step 1),
-        //    so no more SOCKS forwarding is expected. Stopping Xray releases the local
-        //    inbound port for reuse on the next connect.
+    /**
+     * Releases tunnel resources after the hev loop has returned. Runs on [serviceScope] (IO).
+     *
+     * The body has no suspension points, so once it begins it runs to completion even if
+     * [serviceScope] is cancelled concurrently by [onDestroy] — no half-torn state. The
+     * fd-close is guarded by [lifecycleLock] against a concurrent [onDestroy] double-close.
+     */
+    private fun finishTeardown() {
+        synchronized(lifecycleLock) {
+            tunnelJob = null
+            runCatching { tunPfd?.close() }
+            tunPfd = null
+        }
+
+        // Stop Xray-core last: releases the local SOCKS inbound port for the next connect.
         xrayCore.stop()
 
-        // 6. Notify the ConnectionController that the tunnel has stopped. This drives
-        //    Connected/Connecting → Disconnected in the state machine. isLegalTransition
-        //    guards against this being called when already Disconnected.
+        // Drive the state machine to Disconnected (isLegalTransition makes it a no-op if already so).
         stateSink.onTunnelStopped()
 
-        // 7. Remove the foreground notification now that the tunnel is stopped.
-        //    STOP_FOREGROUND_REMOVE dismisses the notification immediately; the service
-        //    continues running until stopSelf() below causes it to be destroyed.
+        // Drop the foreground notification; stopSelf() then destroys the service.
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
 
-        isRunning = false
+        synchronized(lifecycleLock) {
+            isRunning = false
+            isStopping = false
+        }
         stopSelf()
     }
 
