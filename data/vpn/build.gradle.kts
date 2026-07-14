@@ -37,6 +37,14 @@ android {
     }
 }
 
+// XrayCore.aar (gomobile bind of the libXray submodule) is built by
+// `buildXrayCore.sh`, invoked directly by the native-build CI job (#72) — not
+// through Gradle. libXray's own module graph lacks golang.org/x/mobile, so the
+// bind must run from a throwaway wrapper module (mirroring SaeedDev94/Xray's
+// buildXrayCore.sh); that is shell territory, kept out of the AGP build. The AAR
+// is not consumed as a dependency yet — the real LibXrayCoreImpl swap is #66.
+// The hev .so IS built by AGP ndkBuild above when -Pvpnis.buildNative=true.
+
 dependencies {
     api(project(":core:domain"))
     // ServiceCompat.startForeground / stopForeground, NotificationCompat.Builder

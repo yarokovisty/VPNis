@@ -1,3 +1,6 @@
 [submodule "data/vpn/src/main/jni/hev-socks5-tunnel"]
 	path = data/vpn/src/main/jni/hev-socks5-tunnel
 	url = https://github.com/heiher/hev-socks5-tunnel.git
+[submodule "data/vpn/libXray"]
+	path = data/vpn/libXray
+	url = https://github.com/SaeedDev94/libXray.git

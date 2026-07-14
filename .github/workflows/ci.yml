@@ -123,6 +123,144 @@ jobs:
           retention-days: 7
 
   # ────────────────────────────────────────────────────────────────────────────
+  # changes (native paths filter)
+  # Cheap gate for the expensive native-build job (#72). The gomobile bind of
+  # Xray-core + NDK build of hev takes 5–15 min, so we only run it when native
+  # inputs actually change. Implemented with a plain `git diff` (no third-party
+  # action to vet) so it honours the repo's pinned-SHA / minimal-dependency ethos.
+  # ────────────────────────────────────────────────────────────────────────────
+  changes:
+    name: Detect native changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name != 'schedule'
+    outputs:
+      native: ${{ steps.filter.outputs.native }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+          # Full history so the base..HEAD diff below can be computed.
+          fetch-depth: 0
+
+      # Emits native=true when any Go / JNI / native-build input changed, or when
+      # the base commit is unavailable (new branch / force push) — fail safe by
+      # rebuilding rather than silently skipping.
+      - name: Filter native paths
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+          else
+            base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --name-only "$base" HEAD \
+              | grep -qE '^(\.gitmodules|data/vpn/libXray|data/vpn/src/main/jni/|data/vpn/build\.gradle\.kts|build-logic/convention/src/main/kotlin/AndroidCommon\.kt|\.github/workflows/ci\.yml)'; then
+            echo "native=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "native=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # native-build (#72)
+  # Builds the two native artifacts on demand:
+  #   XrayCore.aar — gomobile bind of the pinned SaeedDev94/libXray submodule
+  #   libhev*.so   — NDK build of hev-socks5-tunnel (via :data:vpn ndkBuild)
+  # Gated on `changes.outputs.native` so it is skipped on non-native PRs (that
+  # skip is what keeps the normal critical path — build/test/lint — un-doubled;
+  # per #72 cycle-2 the `build` job intentionally does NOT `needs: native-build`).
+  # The whole toolchain (Go, gomobile, NDK r29) is pinned to ADR-0001 values.
+  # First real exercise of the toolchain — see ADR 0001 §Consequences.
+  # ────────────────────────────────────────────────────────────────────────────
+  native-build:
+    name: Native Build (gomobile AAR + hev .so)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    if: github.event_name != 'schedule' && needs.changes.outputs.native == 'true'
+    needs: [changes]
+    env:
+      # Single source of truth mirrors ADR 0001 / AndroidCommon.kt. Keep in sync.
+      GO_VERSION: '1.26.3'
+      NDK_VERSION: '29.0.14206865'
+      GOMOBILE_VERSION: 'v0.0.0-20260520154334-0e4426e1883d'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+          # gomobile binds the libXray submodule; hev's Android.mk pulls its own
+          # transitive submodules — both required, so recurse.
+          submodules: recursive
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Go module/build cache keyed on the pinned libXray go.sum. This is the
+      # primary speedup on reruns (Xray-core's dependency graph is large); the
+      # AAR itself is not cached — the `changes` gate already skips this whole
+      # job when native inputs are unchanged (AAR-output cache = follow-up).
+      # gomobile itself is installed by buildXrayCore.sh at the pinned version.
+      - name: Set up Go ${{ env.GO_VERSION }}
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: data/vpn/libXray/go.sum
+
+      # r29 is the NDK of the adopted recipe; must equal AndroidCommon.kt's pin so
+      # gomobile and AGP ndkBuild produce ABI-compatible artifacts. r29 currently
+      # ships on the sdkmanager canary channel (--channel=3), matching the adopted
+      # recipe's buildGo.sh. sdkmanager path resolved dynamically because the
+      # runner image's cmdline-tools dir name is not guaranteed to be `latest`.
+      - name: Install Android NDK ${{ env.NDK_VERSION }}
+        run: |
+          sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | head -1)"
+          if [ -z "$sdkmanager" ]; then echo "sdkmanager not found" >&2; exit 1; fi
+          yes | "$sdkmanager" --install "ndk;${NDK_VERSION}" --channel=3 2>&1 | tail -5
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+
+      # Turn a cryptic gomobile "NDK not found" into an obvious path failure.
+      - name: Verify NDK
+        run: |
+          echo "NDK at: $ANDROID_NDK_HOME"
+          test -f "$ANDROID_NDK_HOME/source.properties" || { echo "NDK missing at $ANDROID_NDK_HOME" >&2; exit 1; }
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          validate-wrappers: true
+
+      # XrayCore.aar via gomobile (throwaway wrapper module — see the script).
+      - name: Build XrayCore.aar (gomobile bind)
+        run: bash data/vpn/buildXrayCore.sh
+
+      # hev .so via AGP ndkBuild (packaged into the module's debug AAR).
+      - name: Build hev native lib (ndkBuild)
+        run: ./gradlew :data:vpn:assembleDebug -Pvpnis.buildNative=true
+
+      - name: Upload native artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-artifacts
+          path: |
+            data/vpn/libs/XrayCore.aar
+            data/vpn/build/outputs/aar/*.aar
+          if-no-files-found: warn
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────────────────
   # lint
   # NO `needs` — explicit decision: Android Lint performs its own compilation
   # pass independently of assembleDebug (it drives the AGP lint task directly).
