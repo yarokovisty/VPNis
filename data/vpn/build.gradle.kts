@@ -34,6 +34,8 @@ android {
 
 dependencies {
     api(project(":core:domain"))
+    // ServiceCompat.startForeground / stopForeground, NotificationCompat.Builder
+    implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

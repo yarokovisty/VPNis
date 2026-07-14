@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Monochrome status-bar icon for the VPNis foreground service notification.
+
+    Requirements for notification small icons (Android status bar):
+    - Must be fully monochrome (single-colour, alpha only). The system applies the tint;
+      colour information in the vector is ignored and can produce unexpected rendering.
+    - 24×24 dp canvas, icon content should live within the 22×22 dp "safe zone" to
+      avoid clipping on round launchers and the status bar.
+
+    This lock-with-shield shape signals "VPN active" in a universally understood symbol.
+    It intentionally avoids the Android stock VPN key icon so it is recognisable as
+    a distinct VPNis notification.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!--
+        Shield outline with keyhole cut-out — a single filled path for a clean
+        monochrome notification icon. Even fill (fillType evenOdd) creates the
+        transparent keyhole via the inner oval + rectangular slot.
+    -->
+    <path
+        android:fillColor="#FF000000"
+        android:fillType="evenOdd"
+        android:pathData="
+            M12,1 L20,4.5 L20,11 C20,15.97 16.55,20.59 12,22
+            C7.45,20.59 4,15.97 4,11 L4,4.5 Z
+            M12,7 C10.9,7 10,7.9 10,9 C10,9.88 10.55,10.63 11.33,10.88
+            L11,15 L13,15 L12.67,10.88 C13.45,10.63 14,9.88 14,9
+            C14,7.9 13.1,7 12,7 Z
+            M12,8.5 C12.28,8.5 12.5,8.72 12.5,9 C12.5,9.28 12.28,9.5 12,9.5
+            C11.72,9.5 11.5,9.28 11.5,9 C11.5,8.72 11.72,8.5 12,8.5 Z" />
+</vector>

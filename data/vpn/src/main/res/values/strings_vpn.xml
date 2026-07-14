@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    String resources for the :data:vpn module.
+
+    These are the only strings owned by this library module. They are intentionally minimal
+    to avoid polluting the merged resource namespace. Localised variants belong alongside
+    the :app module's per-locale values folders (issue out of scope here).
+-->
+<resources>
+    <!-- Notification channel name shown in the system Settings → App notifications UI. -->
+    <string name="vpn_notification_channel_name" translatable="true">VPN Tunnel</string>
+
+    <!-- Notification channel description shown in Settings → App notifications → VPN Tunnel. -->
+    <string name="vpn_notification_channel_description" translatable="true">Shows while the VPN tunnel is active</string>
+
+    <!-- Label for the Disconnect action button inside the tunnel notification. -->
+    <string name="vpn_notification_action_disconnect" translatable="true">Disconnect</string>
+</resources>

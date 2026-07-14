@@ -1,8 +1,10 @@
 package org.yarokovisty.vpnis.data.vpn
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -10,6 +12,7 @@ import android.net.NetworkRequest
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import androidx.core.app.ServiceCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,17 +25,30 @@ import kotlinx.coroutines.launch
  *
  * ## Responsibility scope
  *
- * This service covers issue #61 only:
+ * This service covers issues #61 and #62:
  * - Building the TUN via [VpnService.Builder]
  * - Protecting sockets via [VpnSocketProtector]
  * - Tracking the underlying (non-VPN) network via [ConnectivityManager]
  * - Running the hev-socks5-tunnel native loop in a background coroutine
+ * - Foreground service with a user notification that has a Disconnect action (issue #62)
  *
  * Intentionally OUT OF SCOPE for this service:
- * - Foreground service notification → issue #62. See [TODO #62] comment in [startTunnel].
  * - ConnectionController state machine, libXray start/stop → issue #63. See [TODO #63]
- *   comments marking the seam points.
- * - `<service>` AndroidManifest entry, `BIND_VPN_SERVICE` permission → issue #65.
+ *   comments marking the seam points. Live notification content also arrives via #63
+ *   through [updateNotification].
+ * - `<service>` AndroidManifest entry, `BIND_VPN_SERVICE` permission, and
+ *   `android:foregroundServiceType="systemExempted"` → issue #65.
+ *
+ * ## Foreground service (issue #62)
+ *
+ * [startTunnel] calls [ServiceCompat.startForeground] with
+ * [ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED] BEFORE [VpnService.Builder.establish]
+ * so the OS does not kill the service when the user navigates away.
+ *
+ * **Android 14+ caveat:** [ServiceCompat.startForeground] will throw if the manifest
+ * `android:foregroundServiceType="systemExempted"` attribute is absent (issue #65 adds it).
+ * Until #65 lands, the throw is caught, logged, and [stopTunnel] is called so the process
+ * does not crash — the tunnel simply will not start on API 34+ without the manifest entry.
  *
  * ## Threading model
  *
@@ -129,6 +145,14 @@ internal class VpnTunnelService :
     // Service lifecycle
     // -------------------------------------------------------------------------
 
+    override fun onCreate() {
+        super.onCreate()
+        // Create the notification channel once at service start.
+        // NotificationChannel is available since API 26 (our minSdk) — no version guard needed.
+        // createNotificationChannel is idempotent: safe to call on every onCreate.
+        TunnelNotifications.createChannel(this)
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = when (intent?.action) {
         ACTION_DISCONNECT -> {
             stopTunnel()
@@ -168,11 +192,38 @@ internal class VpnTunnelService :
 
         val config = TunConfig()
 
-        // TODO(#62): ServiceCompat.startForeground(...) must run here before establish()
-        //   so Android does not kill the service on API 26+ when the user navigates away.
-        //   Notification channel creation and the actual startForeground call belong to
-        //   issue #62. Until then, the service runs as a background service — this is
-        //   acceptable for development but must NOT ship to production.
+        // Promote to foreground BEFORE establish() so the OS cannot kill us
+        // while we are building the TUN interface.
+        //
+        // ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED requires:
+        //   - FOREGROUND_SERVICE_SYSTEM_EXEMPTED uses-permission  ─┐ both from issue #65
+        //   - android:foregroundServiceType="systemExempted"       ─┘
+        //
+        // On API 34+ (Android 14) startForeground throws if the manifest type is not
+        // declared. We catch that here and tear down cleanly instead of crashing the process.
+        // Once #65 adds the manifest entry this catch branch will never execute.
+        //
+        // NOTE: POST_NOTIFICATIONS runtime permission is NOT checked here. On API 33+,
+        // if the permission is absent the notification simply will not display in the
+        // shade, but the foreground service itself still runs. Requesting the permission
+        // at the Activity layer belongs to issue #67.
+        try {
+            val notification = TunnelNotifications.build(context = this)
+            ServiceCompat.startForeground(
+                this,
+                TunnelNotifications.NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED,
+            )
+        } catch (e: Exception) {
+            // Covers SecurityException (manifest foregroundServiceType missing on API 34+),
+            // ForegroundServiceStartNotAllowedException (API 31+, background-start restriction),
+            // and any other startForeground failure. Log and abort — no tunnel without FGS
+            // on modern API levels since the service would be immediately killed.
+            Log.e(TAG, "startTunnel: startForeground failed — manifest type from #65 required on API 34+", e)
+            stopSelf()
+            return
+        }
 
         val pfd: ParcelFileDescriptor = buildTun(config) ?: run {
             // null from establish() means VPN permission was not granted. Issue #57's
@@ -250,8 +301,47 @@ internal class VpnTunnelService :
         //   A hook here might look like:
         //     connectionController.onTunnelStopped()
 
+        // Remove the foreground notification now that the tunnel is stopped.
+        // STOP_FOREGROUND_REMOVE dismisses the notification immediately; the service
+        // continues running until stopSelf() below causes it to be destroyed.
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+
         isRunning = false
         stopSelf()
+    }
+
+    // -------------------------------------------------------------------------
+    // Notification update seam (issue #63)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Re-posts the foreground service notification with updated [content].
+     *
+     * Must be called from the main thread (or any thread — [NotificationManager.notify]
+     * is thread-safe). Callers on a background coroutine can invoke this directly.
+     *
+     * ## Seam for issue #63
+     *
+     * ConnectionController will call this as the VPN connection state changes
+     * (e.g. Connecting → Connected → with server name and session timer).
+     * The notification is only re-posted when the tunnel is already running; calling
+     * this when [isRunning] is false is a no-op so callers do not need to guard against
+     * timing races during startup.
+     *
+     * Example from issue #63:
+     * ```kotlin
+     * // TODO(#63): connectionController.state.onEach { state ->
+     * //     updateNotification(state.toNotificationContent())
+     * // }.launchIn(serviceScope)
+     * ```
+     *
+     * @param content New content to display. Defaults to [NotificationContent.Default].
+     */
+    internal fun updateNotification(content: NotificationContent = NotificationContent.Default) {
+        if (!isRunning) return
+        val notification = TunnelNotifications.build(context = this, content = content)
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.notify(TunnelNotifications.NOTIFICATION_ID, notification)
     }
 
     // -------------------------------------------------------------------------
