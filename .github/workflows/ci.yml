@@ -273,9 +273,20 @@ jobs:
           path: "**/build/reports/detekt/"
           retention-days: 7
 
+      # Collect every module's detekt SARIF into one directory so Code Scanning receives
+      # findings from ALL modules (:app, :core:*, :data:*, :design:*, :feature:*), not just
+      # :app. `cp --parents` preserves each file's module path so the copies stay unique
+      # (every module emits its own detekt.sarif). upload-sarif accepts a directory and
+      # uploads all *.sarif within it recursively.
+      - name: Collect detekt SARIF (all modules)
+        if: always()
+        run: |
+          mkdir -p build/detekt-sarif
+          find . -path '*/build/reports/detekt/*.sarif' -exec cp --parents {} build/detekt-sarif/ \;
+
       # Push SARIF to GitHub Code Scanning for inline PR annotations.
       # continue-on-error: true — silently no-ops when:
-      #   - the SARIF file was not generated (detekt failed before writing it)
+      #   - no SARIF was generated (detekt failed before writing any)
       #   - Advanced Security / Code Scanning is not enabled on the repo
       #   - the job runs in a fork PR context (no security-events: write token)
       - name: Upload detekt SARIF to GitHub Code Scanning
@@ -283,7 +294,7 @@ jobs:
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@411c4c9a36b3fca4d674f06b6396b2c6d23522c6 # v3.36.3
         with:
-          sarif_file: app/build/reports/detekt/detekt.sarif
+          sarif_file: build/detekt-sarif
 
   # ────────────────────────────────────────────────────────────────────────────
   # sca (Supply-Chain Analysis)
