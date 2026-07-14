@@ -21,5 +21,12 @@ fun configureAndroidCommon(commonExtension: CommonExtension) {
         defaultConfig.minSdk = 26
         compileOptions.sourceCompatibility = JavaVersion.VERSION_11
         compileOptions.targetCompatibility = JavaVersion.VERSION_11
+        // Single project-wide NDK pin (spike #59 / ADR 0001). The value matches the adopted
+        // SaeedDev94/Xray v12.3.0 build recipe and must stay identical across the gomobile AAR
+        // build (#60) and the native CI job (#72) — divergent NDK versions produce
+        // incompatible ABIs. Setting the property here is inert for modules without native
+        // code (AGP only resolves the NDK when a module actually has native build inputs);
+        // it takes effect once :data:vpn adds the Xray-core .aar / hev .so.
+        ndkVersion = "29.0.14206865"
     }
 }
