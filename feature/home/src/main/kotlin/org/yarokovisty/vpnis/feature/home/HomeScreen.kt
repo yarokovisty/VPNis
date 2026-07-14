@@ -2,6 +2,7 @@ package org.yarokovisty.vpnis.feature.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,12 +54,15 @@ internal val HomeAppBarHeight = 56.dp
 internal val HomeSectionSpacing = 16.dp
 internal val HomeButtonSectionSpacing = 12.dp
 private val EmptyCardCornerRadius = 22.dp
-private val EmptyCardIconSize = 48.dp
-private val EmptyCardInternalPadding = 24.dp
-private val EmptyCardTitleSubtitleSpacing = 6.dp
-private val EmptyCardIconTitleSpacing = 12.dp
+private val EmptyCardIconContainerSize = 44.dp
+private val EmptyCardIconContainerRadius = 14.dp
+private val EmptyCardIconSize = 24.dp
+private val EmptyCardInternalPadding = 18.dp
+private val EmptyCardIconTextGap = 14.dp
 private val StatusToTimerSpacing = 8.dp
 private val ButtonBlockTopSpacing = 24.dp
+private val ButtonTopSpacing = 30.dp
+private val ButtonTopSpacingEmpty = 34.dp
 
 // ---------------------------------------------------------------------------
 // Public screen composable
@@ -204,7 +209,7 @@ private fun HomeEmptyContent(onIntent: (HomeIntent) -> Unit) {
     val contentLabel = stringResource(R.string.home_button_content_description)
     val stateLabel = stringResource(R.string.home_button_state_disconnected)
 
-    Spacer(modifier = Modifier.height(HomeSectionSpacing))
+    Spacer(modifier = Modifier.height(ButtonTopSpacingEmpty))
 
     ConnectionButton(
         state = ConnectionButtonState.Disconnected,
@@ -248,32 +253,43 @@ private fun HomeEmptyPromptCard() {
         color = MaterialTheme.colorScheme.secondaryContainer,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            verticalAlignment = Alignment.Top,
             modifier = Modifier.padding(EmptyCardInternalPadding),
         ) {
-            Icon(
-                imageVector = HomeIcons.Language,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.size(EmptyCardIconSize),
-            )
+            // Leading icon in a surface container to match the canvas
+            Surface(
+                shape = RoundedCornerShape(EmptyCardIconContainerRadius),
+                color = MaterialTheme.colorScheme.surface,
+                modifier = Modifier.size(EmptyCardIconContainerSize),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = HomeIcons.CloudOff,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(EmptyCardIconSize),
+                    )
+                }
+            }
 
-            Spacer(modifier = Modifier.height(EmptyCardIconTitleSpacing))
+            Spacer(modifier = Modifier.width(EmptyCardIconTextGap))
 
-            Text(
-                text = stringResource(R.string.home_empty_title),
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
+            Column {
+                Text(
+                    text = stringResource(R.string.home_empty_title),
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
 
-            Spacer(modifier = Modifier.height(EmptyCardTitleSubtitleSpacing))
+                Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = stringResource(R.string.home_empty_message),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
+                Text(
+                    text = stringResource(R.string.home_empty_message),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
+                )
+            }
         }
     }
 }
@@ -287,7 +303,7 @@ private fun HomeDisconnectedWithServerContent(server: Server, onIntent: (HomeInt
     val uploadLabel = stringResource(R.string.home_traffic_upload)
     val placeholder = stringResource(R.string.home_value_placeholder)
 
-    Spacer(modifier = Modifier.height(HomeSectionSpacing))
+    Spacer(modifier = Modifier.height(ButtonTopSpacing))
 
     ConnectionButton(
         state = ConnectionButtonState.Disconnected,
@@ -343,7 +359,7 @@ private fun HomeConnectingContent(
         val uploadLabel = stringResource(R.string.home_traffic_upload)
         val placeholder = stringResource(R.string.home_value_placeholder)
 
-        Spacer(modifier = Modifier.height(HomeSectionSpacing))
+        Spacer(modifier = Modifier.height(ButtonTopSpacing))
 
         ConnectionButton(
             state = ConnectionButtonState.Connecting,
@@ -411,7 +427,7 @@ private fun HomeConnectedContent(
         val downloadValue = state.traffic?.let { formatBitrate(it.rxBps) } ?: placeholder
         val uploadValue = state.traffic?.let { formatBitrate(it.txBps) } ?: placeholder
 
-        Spacer(modifier = Modifier.height(HomeSectionSpacing))
+        Spacer(modifier = Modifier.height(ButtonTopSpacing))
 
         ConnectionButton(
             state = ConnectionButtonState.Connected,
@@ -473,7 +489,7 @@ private fun HomeErrorContent(state: HomeUiState.Error, onIntent: (HomeIntent) ->
         val stateLabel = stringResource(R.string.home_button_state_error)
         val serverHost = state.server?.name ?: ""
 
-        Spacer(modifier = Modifier.height(HomeSectionSpacing))
+        Spacer(modifier = Modifier.height(ButtonTopSpacing))
 
         ConnectionButton(
             state = ConnectionButtonState.Error,

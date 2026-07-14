@@ -116,7 +116,7 @@ public fun ServerCard(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)) {
             ServerCardLeadingIcon()
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(14.dp))
             ServerCardTextContent(name = name, subtitle = subtitle, modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
             ServerCardTrailing(
