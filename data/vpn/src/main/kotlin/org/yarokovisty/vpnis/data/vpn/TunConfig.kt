@@ -37,13 +37,13 @@ internal data class TunConfig(
     val localSocksPort: Int = 10808,
 ) {
     init {
-        require(prefixLength in 0..32) {
+        require(prefixLength in 0..MAX_PREFIX_LENGTH) {
             "prefixLength must be in 0..32, got $prefixLength"
         }
         require(mtu > 0) {
             "mtu must be positive, got $mtu"
         }
-        require(localSocksPort in 1..65535) {
+        require(localSocksPort in 1..MAX_PORT) {
             "localSocksPort must be in 1..65535, got $localSocksPort"
         }
         require(clientAddress.isNotBlank()) {
@@ -58,6 +58,14 @@ internal data class TunConfig(
         require(session.isNotBlank()) {
             "session must not be blank"
         }
+    }
+
+    internal companion object {
+        /** Maximum IPv4 network prefix length (CIDR /32). */
+        const val MAX_PREFIX_LENGTH = 32
+
+        /** Maximum valid TCP/UDP port number. */
+        const val MAX_PORT = 65_535
     }
 }
 

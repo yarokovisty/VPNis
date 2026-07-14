@@ -1,6 +1,5 @@
 package org.yarokovisty.vpnis.data.vpn
 
-import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -74,7 +73,6 @@ import org.yarokovisty.vpnis.core.domain.model.ConnectionError
  * [Tun2SocksBridge]'s `init` block will throw [UnsatisfiedLinkError]. This is expected
  * and documented — the service cannot function until #72 lands on a device.
  */
-@Suppress("Registered") // issue #65 registers <service> + BIND_VPN_SERVICE in the manifest
 internal class VpnTunnelService :
     VpnService(),
     VpnSocketProtector {
@@ -214,6 +212,12 @@ internal class VpnTunnelService :
     // Tunnel management
     // -------------------------------------------------------------------------
 
+    // ReturnCount: guard-clause early returns (foreground / xray / establish failures) read
+    //   more clearly than nested conditionals for this linear startup sequence.
+    // TooGenericExceptionCaught: startForeground() can throw SecurityException,
+    //   ForegroundServiceStartNotAllowedException, or IllegalStateException — all handled
+    //   identically (log, report error, tear down), so catching the common base is intentional.
+    @Suppress("ReturnCount", "TooGenericExceptionCaught")
     private fun startTunnel() {
         if (isRunning) {
             Log.d(TAG, "startTunnel: tunnel already running, ignoring duplicate start")
@@ -436,7 +440,7 @@ internal class VpnTunnelService :
             if (parts.size == 2) {
                 val address = parts[0]
                 val prefix = parts[1].toIntOrNull()
-                if (prefix != null && prefix in 0..32) {
+                if (prefix != null && prefix in 0..TunConfig.MAX_PREFIX_LENGTH) {
                     builder.addRoute(address, prefix)
                 } else {
                     Log.w(TAG, "buildTun: skipping malformed route prefix '$cidr'")
@@ -495,11 +499,8 @@ private class UnderlyingNetworkMonitor(
         .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
         .build()
 
-    // ACCESS_NETWORK_STATE is declared in :app's AndroidManifest — issue #65.
-    // The library manifest intentionally omits permissions; the merged manifest at
-    // build time includes them from :app. Suppress here; the permission IS present
-    // at runtime when the service runs inside the assembled APK.
-    @SuppressLint("MissingPermission")
+    // ACCESS_NETWORK_STATE is declared in this module's AndroidManifest (issue #65),
+    // so registerNetworkCallback() is permitted.
     fun register() {
         connectivityManager.registerNetworkCallback(networkRequest, callback)
     }

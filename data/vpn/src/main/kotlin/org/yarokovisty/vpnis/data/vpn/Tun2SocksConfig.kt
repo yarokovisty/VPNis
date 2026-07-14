@@ -34,7 +34,7 @@ internal data class Tun2SocksConfig(
     val logLevel: String = "warn",
 ) {
     init {
-        require(socksPort in 1..65535) {
+        require(socksPort in 1..MAX_PORT) {
             "socksPort must be in 1..65535, got $socksPort"
         }
         require(mtu > 0) {
@@ -43,6 +43,11 @@ internal data class Tun2SocksConfig(
         require(taskStackSize > 0) {
             "taskStackSize must be positive, got $taskStackSize"
         }
+    }
+
+    internal companion object {
+        /** Maximum valid TCP/UDP port number. */
+        const val MAX_PORT = 65_535
     }
 }
 
