@@ -27,6 +27,7 @@ rootProject.name = "VPNis"
 include(":app")
 include(":core:domain")
 include(":data:fake")
+include(":data:server")
 include(":design:theme")
 include(":design:uikit")
 include(":feature:home")

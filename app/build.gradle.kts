@@ -47,6 +47,7 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
     implementation(project(":data:fake"))
+    implementation(project(":data:server"))
     implementation(project(":design:theme"))
     implementation(project(":design:uikit"))
     implementation(project(":feature:home"))
