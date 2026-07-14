@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":design:theme"))
     implementation(project(":design:uikit"))
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material.icons.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
     testImplementation(libs.junit)

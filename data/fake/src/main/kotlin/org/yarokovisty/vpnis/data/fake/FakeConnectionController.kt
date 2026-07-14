@@ -34,18 +34,46 @@ import java.time.Instant
  *
  * All state transitions satisfy [isLegalTransition].
  *
- * @param scenario          Initial simulation scenario — can be changed via [scenario].
- * @param dispatcher        Dispatcher for the fake's internal timed-transition coroutines.
- *                          Inject [kotlinx.coroutines.test.UnconfinedTestDispatcher] or a
- *                          [kotlinx.coroutines.test.TestCoroutineScheduler]-controlled dispatcher
- *                          in tests (#58) to make time controllable.
- * @param handshakeDelayMs  Simulated handshake duration for [FakeScenario.HappyPath]
- *                          and [FakeScenario.ConnectDisconnectRace].
- * @param timeoutDelayMs    Simulated timeout duration for [FakeScenario.HandshakeTimeout].
- * @param quickDelayMs      Short delay before an immediate failure ([FakeScenario.ServerError]).
- * @param revokeDelayMs     Time after Connected before the tunnel is revoked
- *                          ([FakeScenario.SuddenRevoke]).
- * @param trafficTickMs     Interval between traffic-counter updates while Connected.
+ * ## VPN consent gate
+ *
+ * When [requirePermissionOnFirstConnect] is `true` (the default), the first [connect] call
+ * of the process emits [VpnConnectionState.PermissionRequired] instead of proceeding to
+ * [VpnConnectionState.Connecting]. This mirrors `VpnService.prepare()` returning a non-null
+ * `Intent` the first time it is called within a process, and `null` on all subsequent calls.
+ *
+ * Once consent is granted — modelled by the caller invoking [connect] again while the state
+ * is already [VpnConnectionState.PermissionRequired] — the internal `permissionGranted` flag
+ * is set to `true` and the connection proceeds normally. Consent persists for the rest of the
+ * process lifetime and is NOT reset by [disconnect], matching real `VpnService` behaviour where
+ * OS consent survives individual disconnect/reconnect cycles.
+ *
+ * Consent refusal is modelled by the caller invoking [disconnect] while in
+ * [VpnConnectionState.PermissionRequired]. That transitions the state to
+ * [VpnConnectionState.Disconnected] (a legal edge), leaving `permissionGranted = false`
+ * so the next [connect] will ask again.
+ *
+ * Because this fake is bound as a process-scoped Koin `single` (see `fakeVpnModule`),
+ * the `permissionGranted` flag also demonstrates process-death restore: on a cold start the
+ * flag resets to `false` (new process = new instance), faithfully reproducing the OS behaviour
+ * where a freshly-launched process must call `VpnService.prepare()` again.
+ *
+ * @param scenario                      Initial simulation scenario — can be changed via [scenario].
+ * @param dispatcher                    Dispatcher for the fake's internal timed-transition coroutines.
+ *                                      Inject [kotlinx.coroutines.test.UnconfinedTestDispatcher] or a
+ *                                      [kotlinx.coroutines.test.TestCoroutineScheduler]-controlled dispatcher
+ *                                      in tests (#58) to make time controllable.
+ * @param handshakeDelayMs              Simulated handshake duration for [FakeScenario.HappyPath]
+ *                                      and [FakeScenario.ConnectDisconnectRace].
+ * @param timeoutDelayMs                Simulated timeout duration for [FakeScenario.HandshakeTimeout].
+ * @param quickDelayMs                  Short delay before an immediate failure ([FakeScenario.ServerError]).
+ * @param revokeDelayMs                 Time after Connected before the tunnel is revoked
+ *                                      ([FakeScenario.SuddenRevoke]).
+ * @param trafficTickMs                 Interval between traffic-counter updates while Connected.
+ * @param requirePermissionOnFirstConnect When `true`, the first [connect] call emits
+ *                                      [VpnConnectionState.PermissionRequired] instead of
+ *                                      proceeding immediately to [VpnConnectionState.Connecting],
+ *                                      mirroring `VpnService.prepare()` returning a non-null Intent.
+ *                                      Set to `false` in tests that do not exercise the consent flow.
  */
 public class FakeConnectionController(
     scenario: FakeScenario = FakeScenario.HappyPath,
@@ -55,6 +83,7 @@ public class FakeConnectionController(
     public val quickDelayMs: Long = 300L,
     public val revokeDelayMs: Long = 3_000L,
     public val trafficTickMs: Long = 1_000L,
+    public val requirePermissionOnFirstConnect: Boolean = true,
 ) : ConnectionController {
 
     /** Switch the simulation scenario; takes effect on the next [connect] call. */
@@ -76,9 +105,27 @@ public class FakeConnectionController(
     private var rxBytes = 0L
     private var txBytes = 0L
 
+    // Tracks whether OS VPN consent has been granted for this process lifetime.
+    // Mirrors VpnService.prepare() returning null after the first successful prepare().
+    // NOT reset on disconnect — real OS consent survives individual tunnel cycles.
+    private var permissionGranted = false
+
     override suspend fun connect(server: Server) {
         // Cancel any existing handshake/traffic progression — this is the race guard.
         cancelProgression()
+
+        // VPN consent gate: mirrors VpnService.prepare() returning a non-null Intent on the
+        // first connect of a process. If the current state is already PermissionRequired, this
+        // call represents the post-grant retry — grant consent and fall through to Connecting.
+        // Otherwise, emit PermissionRequired and return without launching a progression job.
+        if (requirePermissionOnFirstConnect && !permissionGranted) {
+            if (_state.value is VpnConnectionState.PermissionRequired) {
+                permissionGranted = true
+            } else {
+                transition(VpnConnectionState.PermissionRequired)
+                return
+            }
+        }
 
         transition(VpnConnectionState.Connecting(server))
 
