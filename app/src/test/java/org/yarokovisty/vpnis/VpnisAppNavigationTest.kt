@@ -15,7 +15,6 @@ import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.yarokovisty.vpnis.data.fake.fakeVpnModule
 import org.yarokovisty.vpnis.data.server.serverModule
 import org.yarokovisty.vpnis.feature.home.homeModule
 
@@ -111,7 +110,9 @@ internal class VpnisAppNavigationTest {
         if (GlobalContext.getOrNull() == null) {
             startKoin {
                 androidContext(ApplicationProvider.getApplicationContext())
-                modules(homeModule, serverModule, fakeVpnModule)
+                // VpnBindings.module tracks the active variant — the default (unit-test)
+                // variant resolves it to fakeVpnModule (issue #66).
+                modules(homeModule, serverModule, VpnBindings.module)
             }
         }
     }

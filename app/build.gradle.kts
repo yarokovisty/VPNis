@@ -6,6 +6,27 @@ plugins {
     id("vpnis.detekt")
 }
 
+// Gate the real-tunnel wiring behind the same opt-in property used by :data:vpn.
+// Default (false): the app depends on :data:fake and loads fakeVpnModule, so
+// `./gradlew :app:assembleDebug` needs no NDK/AAR and ships the fake controller
+// (F-Droid / default channel). Native (`-Pvpnis.buildNative=true`): the app depends
+// on :data:vpn and loads the real vpnModule — the production ConnectionControllerImpl
+// swap (issue #66). Mirrors data/vpn/build.gradle.kts and XrayCoreProvider.
+val buildNative = providers.gradleProperty("vpnis.buildNative")
+    .map { it.toBoolean() }
+    .getOrElse(false)
+
+// Inject exactly one VpnBindings source dir per variant. The active variant's object
+// exposes VpnBindings.module (fakeVpnModule vs vpnModule), which VpnisApplication loads
+// without a compile-time reference to either data module. Lazy onVariants registration
+// (not a config-time srcDir call) keeps the task graph stable when the flag flips —
+// same rationale and AGP 9 API (addStaticSourceDirectory) as :data:vpn.
+androidComponents.onVariants { v ->
+    v.sources.kotlin?.addStaticSourceDirectory(
+        if (buildNative) "src/buildNative/kotlin" else "src/default/kotlin",
+    )
+}
+
 android {
     namespace = "org.yarokovisty.vpnis"
     compileSdk {
@@ -52,7 +73,14 @@ dependencies {
     // Koin — BOM aligns all koin-* artifact versions; koin-android provides startKoin + androidContext.
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
-    implementation(project(":data:fake"))
+    // Variant-aware VPN backend (issue #66). Default builds bind the fake controller;
+    // native builds (-Pvpnis.buildNative=true) bind the real :data:vpn tunnel and merge
+    // its <service> + VPN permissions. VpnBindings (source-set-selected) picks the module.
+    if (buildNative) {
+        implementation(project(":data:vpn"))
+    } else {
+        implementation(project(":data:fake"))
+    }
     implementation(project(":data:server"))
     implementation(project(":design:theme"))
     implementation(project(":design:uikit"))
