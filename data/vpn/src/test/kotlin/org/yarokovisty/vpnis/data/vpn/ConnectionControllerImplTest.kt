@@ -28,8 +28,19 @@ class ConnectionControllerImplTest {
     // Test fixtures
     // -------------------------------------------------------------------------
 
-    private val server = Server(id = ServerId("srv-1"), name = "Test Server", config = "vless://stub")
-    private val otherServer = Server(id = ServerId("srv-2"), name = "Other Server", config = "vless://other")
+    // Valid VLESS/Reality URIs so XrayConfigBuilder.build succeeds in the happy path.
+    private val server = Server(
+        id = ServerId("srv-1"),
+        name = "Test Server",
+        config = "vless://00000000-0000-0000-0000-000000000001@example.com:443" +
+            "?type=tcp&security=reality&pbk=pubkey1&fp=chrome&sni=example.com&sid=abcd1234",
+    )
+    private val otherServer = Server(
+        id = ServerId("srv-2"),
+        name = "Other Server",
+        config = "vless://00000000-0000-0000-0000-000000000002@other.com:443" +
+            "?type=tcp&security=reality&pbk=pubkey2&fp=firefox&sni=other.com&sid=ef012345",
+    )
 
     private fun makeController(launcher: FakeTunnelLauncher = FakeTunnelLauncher()): ConnectionControllerImpl =
         ConnectionControllerImpl(launcher)
@@ -416,6 +427,98 @@ class ConnectionControllerImplTest {
         val state = controller.state.first() as VpnConnectionState.Connected
         assertEquals(otherServer, state.server)
     }
+
+    // -------------------------------------------------------------------------
+    // T-2 — config flow: valid URI → launcher receives non-blank configJson
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `connect with valid VLESS URI EXPECT launcher launch called with non-null configJson`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(server)
+
+        // Then
+        assertNotNull(launcher.lastLaunchedConfigJson)
+    }
+
+    @Test
+    fun `connect with valid VLESS URI EXPECT launcher launch called with non-blank configJson`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(server)
+
+        // Then
+        assertTrue(launcher.lastLaunchedConfigJson!!.isNotBlank())
+    }
+
+    @Test
+    fun `connect with valid VLESS URI EXPECT state reaches Connecting`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(server)
+
+        // Then
+        val state = controller.state.first()
+        assertTrue(state is VpnConnectionState.Connecting)
+    }
+
+    // -------------------------------------------------------------------------
+    // T-2 — config flow: malformed URI → Error, launcher never called
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `connect with malformed config URI EXPECT final state is Error`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val malformedServer = server.copy(config = "not-a-vless-uri")
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(malformedServer)
+
+        // Then
+        val state = controller.state.first()
+        assertTrue(state is VpnConnectionState.Error)
+    }
+
+    @Test
+    fun `connect with malformed config URI EXPECT Error reason is TunnelSetupFailed`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val malformedServer = server.copy(config = "not-a-vless-uri")
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(malformedServer)
+
+        // Then
+        val state = controller.state.first() as VpnConnectionState.Error
+        assertEquals(org.yarokovisty.vpnis.core.domain.model.ConnectionError.TunnelSetupFailed, state.reason)
+    }
+
+    @Test
+    fun `connect with malformed config URI EXPECT launcher launch is never called`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val malformedServer = server.copy(config = "not-a-vless-uri")
+        val controller = makeController(launcher)
+
+        // When
+        controller.connect(malformedServer)
+
+        // Then
+        assertEquals(0, launcher.launchCount)
+    }
 }
 
 // -------------------------------------------------------------------------
@@ -425,8 +528,8 @@ class ConnectionControllerImplTest {
 /**
  * Recording fake [TunnelLauncher].
  *
- * Tracks every [launch] and [stop] call so tests can assert interaction counts
- * and the server argument without a mocking framework.
+ * Tracks every [launch] and [stop] call so tests can assert interaction counts,
+ * the server argument, and the config JSON without a mocking framework.
  */
 private class FakeTunnelLauncher : TunnelLauncher {
 
@@ -439,9 +542,13 @@ private class FakeTunnelLauncher : TunnelLauncher {
     var lastLaunchedServer: Server? = null
         private set
 
-    override fun launch(server: Server) {
+    var lastLaunchedConfigJson: String? = null
+        private set
+
+    override fun launch(server: Server, configJson: String) {
         launchCount++
         lastLaunchedServer = server
+        lastLaunchedConfigJson = configJson
     }
 
     override fun stop() {

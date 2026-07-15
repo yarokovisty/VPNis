@@ -122,6 +122,22 @@ internal class VpnTunnelService :
         const val EXTRA_SERVER_ID = "org.yarokovisty.vpnis.data.vpn.extra.SERVER_ID"
 
         /**
+         * String extra on [ACTION_CONNECT] intents carrying the Xray-core JSON configuration.
+         *
+         * Built by [XrayConfigBuilder.build] inside [ConnectionControllerImpl.connect] from the
+         * target server's VLESS URI, and transported here via [AndroidTunnelLauncher.launch].
+         *
+         * **This value MUST NOT be logged** — it contains server credentials (security plan
+         * issue 1). Only its length may be logged for diagnostic purposes.
+         *
+         * If this extra is absent or blank (e.g. on a sticky-restart where the OS drops extras
+         * because [ACTION_CONNECT] uses [START_NOT_STICKY]), [startTunnel] treats it as a
+         * [org.yarokovisty.vpnis.core.domain.model.ConnectionError.TunnelSetupFailed] and stops
+         * the service rather than starting with an empty or missing config.
+         */
+        const val EXTRA_CONFIG_JSON = "org.yarokovisty.vpnis.data.vpn.extra.CONFIG_JSON"
+
+        /**
          * Grace period after the hev native loop returns before the TUN fd and SOCKS port are
          * released, so a fast disconnect→reconnect does not hit an "address already in use"
          * (issue #64, v2rayNG pitfall). Kept short — the real wait is the [Job.join] below.
@@ -220,8 +236,13 @@ internal class VpnTunnelService :
             START_NOT_STICKY
         }
         else -> {
-            startTunnel()
-            START_STICKY
+            // Pass the intent so startTunnel() can read EXTRA_CONFIG_JSON.
+            // START_NOT_STICKY: avoids persisting the credential-bearing EXTRA_CONFIG_JSON in
+            // the OS sticky-intent store. If the service is killed and restarted by the OS, the
+            // extras are dropped — startTunnel() treats a missing config as TunnelSetupFailed
+            // and stops cleanly. The controller (#64 reconnect logic) drives re-establishment.
+            startTunnel(connectIntent = intent)
+            START_NOT_STICKY
         }
     }
 
@@ -254,13 +275,15 @@ internal class VpnTunnelService :
     // Tunnel management
     // -------------------------------------------------------------------------
 
-    // ReturnCount: guard-clause early returns (foreground / xray / establish failures) read
-    //   more clearly than nested conditionals for this linear startup sequence.
+    // ReturnCount: guard-clause early returns (config-missing / foreground / xray / establish
+    //   failures) read more clearly than nested conditionals for this linear startup sequence.
     // TooGenericExceptionCaught: startForeground() can throw SecurityException,
     //   ForegroundServiceStartNotAllowedException, or IllegalStateException — all handled
     //   identically (log, report error, tear down), so catching the common base is intentional.
-    @Suppress("ReturnCount", "TooGenericExceptionCaught")
-    private fun startTunnel() {
+    // LongMethod: the linear connect sequence (guard → read config → foreground → xray →
+    //   establish → hev → notify) is clearest kept together; each step is short and commented.
+    @Suppress("ReturnCount", "TooGenericExceptionCaught", "LongMethod")
+    private fun startTunnel(connectIntent: Intent?) {
         synchronized(lifecycleLock) {
             if (isRunning || isStopping) {
                 // Ignore a start that arrives while running, or while a teardown is still
@@ -270,6 +293,22 @@ internal class VpnTunnelService :
                 return
             }
         }
+
+        // Read the Xray JSON config from the connect intent. A null or blank value means the
+        // intent was either missing (framework-restarted with no extras after a kill, which
+        // cannot happen here because we use START_NOT_STICKY) or the caller did not attach
+        // the extra. In either case, starting with no config would open a listening SOCKS port
+        // pointing at nothing — treat it as TunnelSetupFailed and stop cleanly.
+        //
+        // EXTRA_CONFIG_JSON is NOT logged — it contains server credentials.
+        val configJson = connectIntent?.getStringExtra(EXTRA_CONFIG_JSON)
+        if (configJson.isNullOrBlank()) {
+            Log.e(TAG, "startTunnel: EXTRA_CONFIG_JSON is null or blank — aborting tunnel setup")
+            stateSink.onTunnelError(reason = ConnectionError.TunnelSetupFailed)
+            stopSelf()
+            return
+        }
+        Log.d(TAG, "startTunnel: configJson length=${configJson.length}")
 
         val config = TunConfig()
 
@@ -310,18 +349,12 @@ internal class VpnTunnelService :
         // 2. Start Xray-core BEFORE establishing the TUN and starting hev, so the SOCKS5
         //    inbound port is ready when hev starts forwarding traffic.
         //
-        //    configJson: the MVP stub passes an empty JSON config because [NoOpXrayCore]
-        //    ignores it. The real implementation (issue #72) will parse [Server.config]
-        //    (the VLESS/Reality URI from the current target server) into a full Xray JSON
-        //    config. The server config arrives from [ConnectionControllerImpl.currentTarget]
-        //    via [TunnelLauncher.launch]'s EXTRA_SERVER_ID; look it up from the repository
-        //    if needed — or pass it directly through a richer intent extra in issue #72.
-        //
-        //    Socket protection: the real XrayCore impl must protect its own outbound sockets
-        //    to avoid looping through the TUN. The seam for that (passing a VpnSocketProtector
-        //    to XrayCore.start) is documented in [XrayCore] and intentionally deferred to #72
-        //    since [NoOpXrayCore] creates no sockets.
-        val xrayStarted = xrayCore.start(configJson = "")
+        //    configJson was read from EXTRA_CONFIG_JSON above (built by XrayConfigBuilder in
+        //    ConnectionControllerImpl.connect). Passing `this` as the VpnSocketProtector so
+        //    LibXrayCoreImpl can register it with libXray's DialerController before starting
+        //    the proxy — every outbound socket Xray creates will then bypass the TUN.
+        //    NoOpXrayCore ignores the protector (it opens no sockets).
+        val xrayStarted = xrayCore.start(configJson = configJson, protector = this)
         if (!xrayStarted) {
             Log.e(TAG, "startTunnel: xrayCore.start() returned false — aborting tunnel setup")
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)

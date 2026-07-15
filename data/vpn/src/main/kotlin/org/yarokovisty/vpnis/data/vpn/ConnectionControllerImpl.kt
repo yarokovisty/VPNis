@@ -28,13 +28,20 @@ import java.time.Instant
  * ```
  * Disconnected      → Connecting (via connect)
  * Connecting        → Connected (via onTunnelEstablished)
- * Connecting        → Error     (via onTunnelError)
+ * Connecting        → Error     (via onTunnelError or config-build failure in connect)
  * Connecting        → Disconnected (via disconnect or onTunnelStopped)
  * Connected         → Disconnected (via disconnect or onTunnelStopped)
  * Connected         → Error     (via onTunnelError)
  * Disconnected/Error → PermissionRequired (via onPermissionRequired)
  * PermissionRequired → Connecting (on next connect)
  * ```
+ *
+ * ## Config build failure path
+ *
+ * [connect] transitions to [VpnConnectionState.Connecting] before attempting to build
+ * the Xray config (so the UI reflects the in-progress state immediately), then calls
+ * [XrayConfigBuilder.build]. If [XrayConfigBuilder.build] returns `null` the state is
+ * advanced to [VpnConnectionState.Error] and [TunnelLauncher.launch] is NOT called.
  *
  * ## Connect / disconnect race
  *
@@ -87,6 +94,12 @@ internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
      * Read by [onTunnelEstablished] (which may run on a background thread) to populate
      * [VpnConnectionState.Connected.server]. Marked [@Volatile] for safe cross-thread
      * visibility — see concurrency model in class KDoc.
+     *
+     * Note: on config-build failure (when [XrayConfigBuilder.build] returns `null`),
+     * [currentTarget] is intentionally left set to the server that was passed to [connect].
+     * This is harmless: [VpnConnectionState.Error] has no legal edge to
+     * [VpnConnectionState.Connected], so a stale [onTunnelEstablished] arriving in the
+     * Error state would be silently dropped by the [isLegalTransition] guard.
      */
     @Volatile
     private var currentTarget: Server? = null
@@ -98,11 +111,11 @@ internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
     /**
      * Requests a VPN connection to [server].
      *
-     * Transitions the state to [VpnConnectionState.Connecting] and delegates to
-     * [TunnelLauncher.launch]. If a connection is already in progress [disconnect] should
-     * be called first, or call this again — the [isLegalTransition] guard drops the new
-     * Connecting if the current state does not allow it (e.g. already Connected; the
-     * presentation layer is responsible for preventing that).
+     * Transitions the state to [VpnConnectionState.Connecting], then builds the Xray
+     * JSON config via [XrayConfigBuilder.build]. If the build fails (returns `null`),
+     * the state advances to [VpnConnectionState.Error] with
+     * [ConnectionError.TunnelSetupFailed] and [TunnelLauncher.launch] is NOT called.
+     * On success, [TunnelLauncher.launch] is called with the server and the built config.
      *
      * The `PermissionRequired → Connecting` edge: [connect] is called again after the user
      * grants OS consent in the permission dialog. [VpnConnectionState.PermissionRequired]
@@ -112,7 +125,17 @@ internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
         Log.d(TAG, "connect: server=${server.id.value}")
         currentTarget = server
         transition(VpnConnectionState.Connecting(server))
-        launcher.launch(server)
+
+        val json = XrayConfigBuilder.build(server.config)
+        if (json == null) {
+            Log.e(TAG, "connect: XrayConfigBuilder.build returned null for server=${server.id.value} — moving to Error")
+            transition(VpnConnectionState.Error(ConnectionError.TunnelSetupFailed))
+            // currentTarget is intentionally left set. Error has no legal edge to Connected,
+            // so a stale onTunnelEstablished callback (if any) will be silently dropped.
+            return
+        }
+
+        launcher.launch(server = server, configJson = json)
     }
 
     /**
