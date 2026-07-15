@@ -42,7 +42,6 @@ import org.yarokovisty.vpnis.feature.home.components.ServerCard
 import org.yarokovisty.vpnis.feature.home.components.SessionTimer
 import org.yarokovisty.vpnis.feature.home.components.StatusIndicator
 import org.yarokovisty.vpnis.feature.home.components.TrafficStats
-import org.yarokovisty.vpnis.feature.home.components.formatDuration
 import org.yarokovisty.vpnis.feature.home.components.icons.HomeIcons
 
 // ---------------------------------------------------------------------------
@@ -446,12 +445,13 @@ private fun HomeConnectedContent(
         Spacer(modifier = Modifier.height(StatusToTimerSpacing))
 
         // Session timer sits directly under the status title as the "subtitle" line.
-        // The a11y content description contains the time — SessionTimer recomputes it live.
+        // Pass the raw i18n template (with its %1$s placeholder intact) — SessionTimer
+        // substitutes the live elapsed time into the a11y label on every tick, so TalkBack
+        // reads the current duration rather than a value frozen at first composition.
         SessionTimer(
             since = state.since,
-            contentDescription = stringResource(
+            contentDescriptionTemplate = stringResource(
                 R.string.home_session_duration_content_description,
-                formatDuration(0L),
             ),
         )
 
