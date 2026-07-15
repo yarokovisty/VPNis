@@ -9,10 +9,18 @@ name: CI
 on:
   push:
     branches: [main]
+    # Tag pushes matching v*.*.* trigger only the sign-and-publish job (see below).
+    # All other jobs guard themselves with `github.event_name != 'schedule'` /
+    # event-specific `if:` conditions that exclude tag pushes — so a tag push
+    # does NOT re-run build/test/lint/etc., only sign-and-publish.
+    tags: ['v*.*.*']
   pull_request:
     branches: [main]
   schedule:
     - cron: '0 6 * * 1' # Every Monday 06:00 UTC
+  # workflow_dispatch lets a maintainer test the signing pipeline manually
+  # (e.g. to verify a new keystore) without publishing a real tag/release.
+  workflow_dispatch:
 
 # Least-privilege default. Jobs that need additional permissions declare them
 # explicitly; this keeps fork PRs safe (they cannot elevate beyond read).
@@ -538,3 +546,195 @@ jobs:
         uses: github/codeql-action/upload-sarif@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4.37.0
         with:
           sarif_file: results.sarif
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # sign-and-publish  (issue #72 — "signing half", epic #44)
+  #
+  # Builds the SIGNED fallback-channel release APK and publishes it to a GitHub
+  # Release. Per ADR-0001 the fallback distribution channel is a self-signed APK
+  # of the REAL tunnel, so this job takes the full native path:
+  #   1. gomobile bind → XrayCore.aar
+  #   2. NDK build     → libhev*.so  (via :data:vpn ndkBuild inside assembleRelease)
+  #   3. assembleRelease -Pvpnis.buildNative=true
+  #   4. Keystore injection via -Pandroid.injected.signing.* Gradle properties
+  #   5. gh release create + upload
+  #
+  # TRIGGER RATIONALE:
+  #   Only fires for `push: tags: v*.*.*` and `workflow_dispatch`. All other CI
+  #   jobs (build/test/lint/etc.) guard with `github.event_name != 'schedule'`
+  #   and have no tag-aware `if:`, so a tag push will technically also fan them
+  #   out — but their `if:` conditions pass for a tag-push event_name ('push').
+  #   This job therefore uses a strict `if:` to gate itself; the others remain
+  #   unchanged because assembling the debug APK on a release tag is harmless
+  #   and avoids introducing asymmetric `if:` conditions across many jobs.
+  #   The explicit guard here is what matters: signing secrets are NEVER exposed
+  #   to the normal branch-push / PR / schedule path.
+  #
+  # KEYSTORE SECURITY:
+  #   - The base64-encoded keystore is decoded into $RUNNER_TEMP (ephemeral per
+  #     job) and is never written to the workspace or any artifact.
+  #   - Passwords are passed directly on the Gradle command line; GitHub Actions
+  #     automatically masks secret values in logs so they do not appear in plain
+  #     text. We additionally avoid `set -x` and `echo` of any secret variable.
+  #   - A cleanup step with `if: always()` removes the decoded keystore file even
+  #     when the build step fails, so the file never lingers on the runner.
+  #   - `persist-credentials: false` on checkout — the GH_TOKEN used for
+  #     `gh release` is injected only in the upload step's env, not into git creds.
+  #
+  # WORKFLOW_DISPATCH (no tag):
+  #   The build + sign steps always run so a maintainer can verify a new keystore
+  #   without publishing. The `gh release` upload steps are skipped when
+  #   `github.ref` is not a tag (guarded individually — see step `if:` below).
+  # ────────────────────────────────────────────────────────────────────────────
+  sign-and-publish:
+    name: Sign & Publish Release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # Fire only for tag pushes (v*.*.*) and manual workflow_dispatch.
+    # This keeps signing secrets completely out of the normal CI path.
+    if: >
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+      github.event_name == 'workflow_dispatch'
+    # contents: write is required for `gh release create` / `gh release upload`.
+    # Declared at job level so all other jobs stay at the workflow default (read).
+    permissions:
+      contents: write
+    env:
+      # Single source of truth mirrors ADR 0001 / AndroidCommon.kt. Keep in sync
+      # with native-build above — these three values must stay identical.
+      GO_VERSION: '1.26.3'
+      NDK_VERSION: '29.0.14206865'
+      GOMOBILE_VERSION: 'v0.0.0-20260520154334-0e4426e1883d'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          # gomobile binds the libXray submodule; hev pulls transitive submodules —
+          # both required, identical rationale to native-build.
+          submodules: recursive
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Go module/build cache keyed on libXray go.sum — same strategy as native-build.
+      - name: Set up Go ${{ env.GO_VERSION }}
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: data/vpn/libXray/go.sum
+
+      # r29 on sdkmanager canary channel — identical to native-build.
+      - name: Install Android NDK ${{ env.NDK_VERSION }}
+        run: |
+          sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | head -1)"
+          if [ -z "$sdkmanager" ]; then echo "sdkmanager not found" >&2; exit 1; fi
+          yes | "$sdkmanager" --install "ndk;${NDK_VERSION}" --channel=3 2>&1 | tail -5
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Verify NDK
+        run: |
+          echo "NDK at: $ANDROID_NDK_HOME"
+          test -f "$ANDROID_NDK_HOME/source.properties" || { echo "NDK missing at $ANDROID_NDK_HOME" >&2; exit 1; }
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          # Release tags are not PRs; allow cache writes so reruns are faster.
+          cache-read-only: false
+          validate-wrappers: true
+
+      - name: Build XrayCore.aar (gomobile bind)
+        run: bash data/vpn/buildXrayCore.sh
+
+      # Assert pinned SHA — identical guard to native-build (see comment there).
+      - name: Assert libXray submodule at pinned SHA
+        run: |
+          EXPECTED="f6ce61228b5630f7bcf3c3c9a19d7e1db50b88d1"
+          ACTUAL=$(git -C data/vpn/libXray rev-parse HEAD)
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "libXray submodule SHA mismatch:" >&2
+            echo "  expected: $EXPECTED" >&2
+            echo "  actual:   $ACTUAL" >&2
+            echo "Update the submodule pin or the ADR to keep them in sync." >&2
+            exit 1
+          fi
+          echo "libXray submodule SHA verified: $ACTUAL"
+
+      # SECURITY: Decode the base64 keystore into $RUNNER_TEMP (ephemeral, job-scoped).
+      # We do NOT echo the decoded bytes or the raw secret at any point.
+      # $RUNNER_TEMP is outside the workspace so it is never accidentally archived.
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "$RUNNER_TEMP/release.keystore"
+
+      # The release build type has NO signingConfig block in app/build.gradle.kts
+      # (intentional — see issue #72 and the job description above). AGP picks up
+      # signing exclusively from these injected Gradle properties.
+      #
+      # SECURITY NOTE: GitHub Actions automatically redacts secret values from the
+      # runner log, so -Pandroid.injected.signing.store.password=<value> will appear
+      # as "***" in any captured output. We additionally avoid `set -x` here so Bash
+      # does not expand and print the interpolated command before running it.
+      # VPNIS_DEFAULT_SERVER_CONFIG is scoped to this step only (same rationale as
+      # the `build` job's Assemble step — minimise exposure surface).
+      - name: Assemble signed release APK
+        env:
+          VPNIS_DEFAULT_SERVER_CONFIG: ${{ secrets.VPNIS_DEFAULT_SERVER_CONFIG }}
+        run: |
+          ./gradlew :app:assembleRelease \
+            -Pvpnis.buildNative=true \
+            "-Pandroid.injected.signing.store.file=$RUNNER_TEMP/release.keystore" \
+            "-Pandroid.injected.signing.store.password=${{ secrets.STORE_PASSWORD }}" \
+            "-Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }}" \
+            "-Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}"
+
+      # Always remove the decoded keystore — even if the build step above failed.
+      # This prevents the file from lingering in $RUNNER_TEMP for the rest of the
+      # job's lifetime in the unlikely event a later step tries to read the temp dir.
+      - name: Delete keystore temp file
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.keystore"
+
+      # Upload the signed APK as a workflow artifact so it is retrievable from the
+      # Actions run page regardless of whether the GitHub Release upload succeeds,
+      # and to support the workflow_dispatch (no-tag) case where the release step
+      # is skipped.
+      - name: Upload signed APK artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-apk-signed
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      # Create the GitHub Release for this tag and attach the signed APK.
+      # Skipped on workflow_dispatch (no tag → no release to create).
+      # `gh release create` is idempotent if the release already exists (exits 1
+      # with "already exists" — treated as a hard failure, not silenced, because
+      # re-releasing the same tag would be an operator error worth investigating).
+      # --generate-notes pulls the auto-generated changelog GitHub builds from
+      # commits between this tag and the previous one.
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
+
+      - name: Upload APK to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.ref_name }}" \
+            app/build/outputs/apk/release/*.apk \
+            --clobber
