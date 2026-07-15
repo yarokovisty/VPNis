@@ -175,7 +175,7 @@ jobs:
             exit 0
           fi
           if git diff --name-only "$base" HEAD \
-              | grep -qE '^(\.gitmodules|data/vpn/libXray|data/vpn/src/main/jni/|data/vpn/src/buildNative/|data/vpn/src/default/|data/vpn/build\.gradle\.kts|build-logic/convention/src/main/kotlin/AndroidCommon\.kt|\.github/workflows/ci\.yml)'; then
+              | grep -qE '^(\.gitmodules|data/vpn/libXray|data/vpn/src/main/jni/|data/vpn/src/buildNative/|data/vpn/src/default/|data/vpn/build\.gradle\.kts|app/src/buildNative/|app/build\.gradle\.kts|build-logic/convention/src/main/kotlin/AndroidCommon\.kt|\.github/workflows/ci\.yml)'; then
             echo "native=true" >> "$GITHUB_OUTPUT"
           else
             echo "native=false" >> "$GITHUB_OUTPUT"
@@ -291,6 +291,15 @@ jobs:
       # The hev .so (ndkBuild) is also produced by this same Gradle invocation.
       - name: Compile :data:vpn against XrayCore.aar + package .so (assembleDebug)
         run: ./gradlew :data:vpn:assembleDebug -Pvpnis.buildNative=true
+
+      # #66: assemble the app on the native path to prove the whole fake→real swap
+      # links end-to-end — :app depends on :data:vpn (conditional), VpnBindings resolves
+      # to the real vpnModule, the XrayCore.aar is consumed via the flatDir coordinate,
+      # and :data:vpn's <service> + VPN permissions merge into the app manifest. This is
+      # the acceptance that the AAR is actually consumed (no FileNotFoundException on
+      # the .aar) rather than merely built.
+      - name: Assemble :app on the native path (fake→real swap)
+        run: ./gradlew :app:assembleDebug -Pvpnis.buildNative=true
 
       - name: Upload native artifacts
         if: always()

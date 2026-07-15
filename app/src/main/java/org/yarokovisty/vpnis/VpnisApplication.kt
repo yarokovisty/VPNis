@@ -4,7 +4,6 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.yarokovisty.vpnis.data.fake.fakeVpnModule
 import org.yarokovisty.vpnis.data.server.serverModule
 import org.yarokovisty.vpnis.feature.home.homeModule
 
@@ -20,10 +19,12 @@ class VpnisApplication : Application() {
             // serverModule — real in-memory ServerRepository pre-seeded with the operator
             //   default server (FR-50, SRS §5.6, issue #56). Exactly one ServerRepository
             //   binding in the graph.
-            // fakeVpnModule — fake ConnectionController only (ServerRepository removed from
-            //   it in #56). Swap for :data:vpn in epic B (#66).
+            // VpnBindings.module — the ConnectionController backend, selected per build
+            //   variant (issue #66): fakeVpnModule in default builds, the real vpnModule
+            //   (:data:vpn) when -Pvpnis.buildNative=true. VpnBindings is the only seam that
+            //   flips the swap — no consumer (feature:home, etc.) is touched.
             // homeModule — HomeViewModel and its use-case dependencies.
-            modules(homeModule, serverModule, fakeVpnModule)
+            modules(homeModule, serverModule, VpnBindings.module)
         }
     }
 }
