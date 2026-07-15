@@ -116,12 +116,14 @@ jobs:
           # they must validate independently rather than trust the build job.
           validate-wrappers: true
 
-      # testDebugUnitTest is an AGP variant task: it compiles pure-JVM modules but does NOT run
-      # their `test` task. Add :data:server:test explicitly so DefaultServerTest and
-      # ServerRepositoryImplTest actually execute and gate. (Other pure-JVM modules e.g.
-      # :core:domain share this latent gap — tracked as a follow-up, out of scope for #56.)
+      # Use the `test` lifecycle task, not `testDebugUnitTest`. The AGP variant task
+      # `testDebugUnitTest` only compiles pure-JVM modules (vpnis.jvm.library, e.g.
+      # :core:domain / :data:fake / :data:server) — it never runs their `test` task, so their
+      # unit tests would silently not gate (issue #99). `gradle test` aggregates every module's
+      # unit test tasks (Android debug+release unit tests AND pure-JVM `test`), covering all
+      # current and future modules without enumerating them.
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest :data:server:test
+        run: ./gradlew test
 
       # Upload even when tests fail so the report is always available for triage.
       - name: Upload test reports
