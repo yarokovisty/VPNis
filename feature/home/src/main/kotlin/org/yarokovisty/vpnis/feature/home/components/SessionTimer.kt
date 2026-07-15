@@ -31,19 +31,22 @@ private const val PREVIEW_ELAPSED_SECONDS = 5_025L // 01:23:45
  * The ticking `LaunchedEffect` is keyed on [since] — a new session [Instant] restarts the effect
  * and resets the display.
  *
- * Accessibility: when [contentDescription] is non-null it is applied to the [Text] node so
- * TalkBack reads a meaningful label instead of the raw formatted string. Pass e.g.
- * "Session duration 00:01:23". Keep this NOT a live region — the [StatusIndicator] owns
- * connection-state announcements. Do NOT hardcode language strings here; pass i18n text from
- * the caller.
+ * Accessibility: when [contentDescriptionTemplate] is non-null it is formatted with the
+ * **live** elapsed time and applied to the [Text] node, so TalkBack always reads the current
+ * duration rather than a value frozen at first composition. Pass the raw i18n template that
+ * contains a single `%1$s` placeholder, e.g. `"Session duration %1$s"` (from a string
+ * resource) — [SessionTimer] substitutes the formatted `HH:MM:SS` string each tick. Keep this
+ * NOT a live region — the [StatusIndicator] owns connection-state announcements. Do NOT
+ * hardcode language strings here; pass the i18n template from the caller.
  *
  * @param since The moment the VPN tunnel became active.
  * @param modifier Optional [Modifier].
- * @param contentDescription Optional TalkBack label for the timer node. When null, TalkBack
- *   reads the formatted time string directly.
+ * @param contentDescriptionTemplate Optional TalkBack label template with a single `%1$s`
+ *   placeholder for the elapsed time. When null, TalkBack reads the formatted time string
+ *   directly.
  */
 @Composable
-public fun SessionTimer(since: Instant, modifier: Modifier = Modifier, contentDescription: String? = null) {
+public fun SessionTimer(since: Instant, modifier: Modifier = Modifier, contentDescriptionTemplate: String? = null) {
     var totalSeconds by remember(since) { mutableLongStateOf(0L) }
 
     LaunchedEffect(since) {
@@ -54,8 +57,11 @@ public fun SessionTimer(since: Instant, modifier: Modifier = Modifier, contentDe
         }
     }
 
-    val semanticsModifier = if (contentDescription != null) {
-        Modifier.semantics { this.contentDescription = contentDescription }
+    // Recomputed every tick (totalSeconds change) so the accessible name always reflects the
+    // current elapsed time — not a value baked in at first composition (WCAG 4.1.2).
+    val description = contentDescriptionTemplate?.format(formatDuration(totalSeconds))
+    val semanticsModifier = if (description != null) {
+        Modifier.semantics { this.contentDescription = description }
     } else {
         Modifier
     }
@@ -99,7 +105,7 @@ private fun SessionTimerZeroLightPreview() {
     VPNisTheme(darkTheme = false) {
         SessionTimer(
             since = Instant.now(),
-            contentDescription = "Session duration 00:00:00",
+            contentDescriptionTemplate = "Session duration %1\$s",
         )
     }
 }
@@ -127,7 +133,7 @@ private fun SessionTimerZeroDarkPreview() {
     VPNisTheme(darkTheme = true) {
         SessionTimer(
             since = Instant.now(),
-            contentDescription = "Session duration 00:00:00",
+            contentDescriptionTemplate = "Session duration %1\$s",
         )
     }
 }
