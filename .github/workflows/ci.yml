@@ -257,7 +257,9 @@ jobs:
       - name: Assert libXray submodule at pinned SHA
         run: |
           EXPECTED="f6ce61228b5630f7bcf3c3c9a19d7e1db50b88d1"
-          ACTUAL=$(git submodule status data/vpn/libXray | awk '{print $1}' | tr -d '-+U')
+          # rev-parse yields the clean 40-hex SHA with no submodule-status prefix
+          # char (avoids `tr`/awk parsing of the leading ' '/'-'/'+'/'U' marker).
+          ACTUAL=$(git -C data/vpn/libXray rev-parse HEAD)
           if [ "$ACTUAL" != "$EXPECTED" ]; then
             echo "libXray submodule SHA mismatch:" >&2
             echo "  expected: $EXPECTED" >&2
