@@ -128,7 +128,7 @@ jobs:
       # Upload even when tests fail so the report is always available for triage.
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: test-reports
           path: |
@@ -294,7 +294,7 @@ jobs:
 
       - name: Upload native artifacts
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: native-artifacts
           path: |
@@ -342,7 +342,7 @@ jobs:
 
       - name: Upload Lint reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lint-reports
           # Glob captures both lint-results-debug.html and lint-results-debug.xml across all modules.
@@ -391,7 +391,7 @@ jobs:
 
       - name: Upload ktlint reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ktlint-reports
           path: "**/build/reports/ktlint/"
@@ -447,7 +447,7 @@ jobs:
       # Always upload the artifact so reports are available even when detekt found issues.
       - name: Upload detekt reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: detekt-reports
           # Captures detekt.sarif plus any per-variant SARIF files across all modules.
