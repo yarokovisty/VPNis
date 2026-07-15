@@ -6,67 +6,67 @@ package org.yarokovisty.vpnis.data.vpn
 // (the `buildNative` source set is not added by the onVariants hook), so the missing class
 // is never a problem for ./gradlew assembleDebug without the flag.
 //
-// NOTE: The exact generated Java class names (package, class, method casing) must be confirmed
-// at the first CI bind against the real AAR. gomobile generates `libXray.Libxray` and the
-// method names below mirror the Go function names — adjust if the CI bind reveals differences.
+// Names below are CONFIRMED against the first CI bind (PR #97) by inspecting the built AAR:
+// gomobile capitalises the package name `libXray` → Java class `LibXray` (NOT `Libxray`),
+// and Go `int` maps to Java `long`, so DialerController.protectFd takes a `long`.
 import libXray.DialerController
-import libXray.Libxray
+import libXray.LibXray
 
 /**
- * Production [LibxrayApi] implementation that wraps the gomobile-generated [Libxray] class.
+ * Production [LibxrayApi] implementation that wraps the gomobile-generated [LibXray] class.
  *
  * This is the **only** class in `:data:vpn` that references `XrayCore.aar`. It lives in
  * the `buildNative` source set and is never compiled in default builds. All other
  * security-critical logic (register-before-start ordering, CallResponse decoding) lives
  * in [LibXrayCoreImpl] inside `main`, where it is JVM-unit-testable.
  *
- * ## gomobile name mapping
+ * ## gomobile name mapping (confirmed against the built AAR)
  *
- * | Kotlin call | Generated Java | Go function |
- * |---|---|---|
- * | `Libxray.registerDialerController(controller)` | `Libxray.registerDialerController` | `RegisterDialerController` |
- * | `Libxray.runXrayFromJSON(req)` | `Libxray.runXrayFromJSON` | `RunXrayFromJSON` |
- * | `Libxray.newXrayRunFromJSONRequest(datDir, configJson)` | `Libxray.newXrayRunFromJSONRequest` | `NewXrayRunFromJSONRequest` |
- * | `Libxray.stopXray()` | `Libxray.stopXray` | `StopXray` |
- *
- * **Confirm these names at the first CI bind** — gomobile lowercases the first letter of
- * exported Go identifiers when producing the JVM binding; the exact casing may differ from
- * the Go source.
+ * | Kotlin call | Generated Java |
+ * |---|---|
+ * | `LibXray.registerDialerController(controller)` | `LibXray.registerDialerController(DialerController)` |
+ * | `LibXray.newXrayRunFromJSONRequest(datDir, configJson)` | `LibXray.newXrayRunFromJSONRequest(String, String)` |
+ * | `LibXray.runXrayFromJSON(req)` | `LibXray.runXrayFromJSON(String)` |
+ * | `LibXray.stopXray()` | `LibXray.stopXray()` |
+ * | `DialerController.protectFd(fd)` | `protectFd(long): boolean` (Go `int` → Java `long`) |
  */
 internal class RealLibxrayApi : LibxrayApi {
 
     /**
      * Registers [onProtect] as the socket-protection callback by building a
-     * [DialerController] adapter and passing it to [Libxray.registerDialerController].
+     * [DialerController] adapter and passing it to [LibXray.registerDialerController].
      *
      * [onProtect] is called by libXray for every outbound socket file descriptor it creates.
      * Returning `true` protects the socket from the TUN (it communicates on the physical
      * network directly); `false` leaves the socket unprotected, which causes a routing loop.
+     *
+     * The generated [DialerController.protectFd] takes a `long` (gomobile maps Go `int` →
+     * Java `long`); a file descriptor always fits in an `Int`, so the narrowing is safe.
      */
     override fun registerDialerController(onProtect: (fd: Int) -> Boolean) {
         val controller = object : DialerController {
-            override fun protectFd(fd: Int): Boolean = onProtect(fd)
+            override fun protectFd(fd: Long): Boolean = onProtect(fd.toInt())
         }
-        Libxray.registerDialerController(controller)
+        LibXray.registerDialerController(controller)
     }
 
     /**
      * Starts the Xray proxy from [configJson] using [datDir] for asset files.
      *
-     * Builds the request via [Libxray.newXrayRunFromJSONRequest] and passes it to
-     * [Libxray.runXrayFromJSON], which returns a base64-encoded `CallResponse` JSON.
+     * Builds the request via [LibXray.newXrayRunFromJSONRequest] and passes it to
+     * [LibXray.runXrayFromJSON], which returns a base64-encoded `CallResponse` JSON.
      *
      * [configJson] is NOT logged — it contains server credentials.
      */
     override fun runFromJson(datDir: String, configJson: String): String {
-        val request = Libxray.newXrayRunFromJSONRequest(datDir, configJson)
-        return Libxray.runXrayFromJSON(request)
+        val request = LibXray.newXrayRunFromJSONRequest(datDir, configJson)
+        return LibXray.runXrayFromJSON(request)
     }
 
     /**
-     * Stops the running Xray proxy by calling [Libxray.stopXray].
+     * Stops the running Xray proxy by calling [LibXray.stopXray].
      */
     override fun stop() {
-        Libxray.stopXray()
+        LibXray.stopXray()
     }
 }
