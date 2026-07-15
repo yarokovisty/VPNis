@@ -16,12 +16,16 @@ import android.util.Log
 internal interface TunnelLauncher {
 
     /**
-     * Signals the OS to start the VPN tunnel for [server].
+     * Signals the OS to start the VPN tunnel for [server] using [configJson].
+     *
+     * [configJson] is the Xray-core JSON produced by [XrayConfigBuilder.build]. It is
+     * attached to the explicit connect intent as [VpnTunnelService.EXTRA_CONFIG_JSON]
+     * and must NOT be logged — it may contain server credentials.
      *
      * Implementations send a foreground-service start intent carrying the server
-     * identity so the service can retrieve the target server if needed.
+     * identity and the config so the service can start Xray without any repository lookup.
      */
-    fun launch(server: org.yarokovisty.vpnis.core.domain.model.Server)
+    fun launch(server: org.yarokovisty.vpnis.core.domain.model.Server, configJson: String)
 
     /**
      * Signals the OS to stop the VPN tunnel.
@@ -47,14 +51,14 @@ internal interface TunnelLauncher {
  */
 internal class AndroidTunnelLauncher(private val context: Context) : TunnelLauncher {
 
-    override fun launch(server: org.yarokovisty.vpnis.core.domain.model.Server) {
+    override fun launch(server: org.yarokovisty.vpnis.core.domain.model.Server, configJson: String) {
         Log.d(TAG, "launch: starting VpnTunnelService for server id=${server.id.value}")
+        // configJson length is logged for diagnostic purposes; the value itself is NOT logged
+        // — it may contain server credentials (security plan issue 1).
+        Log.d(TAG, "launch: configJson length=${configJson.length}")
         val intent = VpnTunnelService.connectIntent(context).apply {
-            // Carry the server id as an extra so the service can retrieve the active
-            // server from the repository if it needs to (e.g. for notification content).
-            // The real server lookup belongs to ConnectionControllerImpl which already
-            // holds currentTarget; this extra is informational only.
             putExtra(VpnTunnelService.EXTRA_SERVER_ID, server.id.value)
+            putExtra(VpnTunnelService.EXTRA_CONFIG_JSON, configJson)
         }
         context.startForegroundService(intent)
     }

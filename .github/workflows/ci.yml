@@ -175,7 +175,7 @@ jobs:
             exit 0
           fi
           if git diff --name-only "$base" HEAD \
-              | grep -qE '^(\.gitmodules|data/vpn/libXray|data/vpn/src/main/jni/|data/vpn/build\.gradle\.kts|build-logic/convention/src/main/kotlin/AndroidCommon\.kt|\.github/workflows/ci\.yml)'; then
+              | grep -qE '^(\.gitmodules|data/vpn/libXray|data/vpn/src/main/jni/|data/vpn/src/buildNative/|data/vpn/src/default/|data/vpn/build\.gradle\.kts|build-logic/convention/src/main/kotlin/AndroidCommon\.kt|\.github/workflows/ci\.yml)'; then
             echo "native=true" >> "$GITHUB_OUTPUT"
           else
             echo "native=false" >> "$GITHUB_OUTPUT"
@@ -259,8 +259,37 @@ jobs:
       - name: Build XrayCore.aar (gomobile bind)
         run: bash data/vpn/buildXrayCore.sh
 
-      # hev .so via AGP ndkBuild (packaged into the module's debug AAR).
-      - name: Build hev native lib (ndkBuild)
+      # T-6: Assert the libXray submodule is at its pinned SHA before compiling
+      # against the AAR it produced. This guarantees that what gomobile bound
+      # matches the source the project has pinned — a mismatch would mean either
+      # the submodule drifted or buildXrayCore.sh used a different tree.
+      # NOTE: this is the SaeedDev94/libXray *submodule* commit (f6ce612…), which is
+      # a DIFFERENT repo from the SaeedDev94/Xray *recipe* commit (7effa2b8…, ADR-0001
+      # line 37). ADR line 38's "submodule at that commit" wording conflates the two;
+      # the authoritative value is the actual data/vpn/libXray pin recorded in epic #44
+      # (PR #95: "submodule data/vpn/libXray … f6ce612").
+      - name: Assert libXray submodule at pinned SHA
+        run: |
+          EXPECTED="f6ce61228b5630f7bcf3c3c9a19d7e1db50b88d1"
+          # rev-parse yields the clean 40-hex SHA with no submodule-status prefix
+          # char (avoids `tr`/awk parsing of the leading ' '/'-'/'+'/'U' marker).
+          ACTUAL=$(git -C data/vpn/libXray rev-parse HEAD)
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "libXray submodule SHA mismatch:" >&2
+            echo "  expected: $EXPECTED" >&2
+            echo "  actual:   $ACTUAL" >&2
+            echo "Update the submodule pin or the ADR to keep them in sync." >&2
+            exit 1
+          fi
+          echo "libXray submodule SHA verified: $ACTUAL"
+
+      # T-6: Compile :data:vpn with the real XrayCore.aar (just built above).
+      # This verifies that RealLibxrayApi and LibXrayCoreImpl compile against the
+      # AAR and that the gomobile .so libs are packaged into the debug AAR.
+      # assembleDebug (not assembleRelease) — no R8/signing, faster, sufficient
+      # to prove the native seam links and the .so is extracted by AGP's AAR transform.
+      # The hev .so (ndkBuild) is also produced by this same Gradle invocation.
+      - name: Compile :data:vpn against XrayCore.aar + package .so (assembleDebug)
         run: ./gradlew :data:vpn:assembleDebug -Pvpnis.buildNative=true
 
       - name: Upload native artifacts

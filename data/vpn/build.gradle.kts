@@ -10,6 +10,23 @@ val buildNative = providers.gradleProperty("vpnis.buildNative")
     .map { it.toBoolean() }
     .getOrElse(false)
 
+// T-4: Inject exactly one XrayCoreProvider source dir per variant using the
+// provider-safe AGP 9 API. At configuration time `buildNative` is already a plain
+// Boolean (resolved via getOrElse above), so the lambda simply captures it.
+// Using onVariants (not a config-time sourceSets.main.kotlin.srcDir call) keeps
+// the registration lazy and avoids stale source roots when the flag flips between
+// builds — the configuration cache sees a stable task graph regardless.
+//
+// AGP 9.x API: Sources.getKotlin() returns SourceDirectories.Flat (non-nullable);
+// the correct registration method is addStaticSourceDirectory(String) — NOT the
+// non-existent addSrcDir(). "Static" means the directory is pre-existing on disk
+// (as opposed to addGeneratedSourceDirectory for task-produced directories).
+androidComponents.onVariants { v ->
+    v.sources.kotlin?.addStaticSourceDirectory(
+        if (buildNative) "src/buildNative/kotlin" else "src/default/kotlin",
+    )
+}
+
 android {
     namespace = "org.yarokovisty.vpnis.data.vpn"
     testOptions {
@@ -50,9 +67,21 @@ dependencies {
     // ServiceCompat.startForeground / stopForeground, NotificationCompat.Builder
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.core)
+    // kotlinx.serialization element API: buildJsonObject, parseToJsonElement, JsonPrimitive.
+    // Used by XrayConfigBuilder (URI → Xray JSON) and LibXrayCoreImpl (CallResponse decode).
+    // NOTE added for T-1/T-3 compilation — serialization compiler plugin is NOT applied;
+    // only the runtime (element API) is used.
+    implementation(libs.kotlinx.serialization.json)
     // koin-android: provides androidContext() in Koin module DSL and KoinComponent
     // `by inject()` support inside VpnTunnelService (an Android Service, not a ViewModel).
     implementation(libs.koin.android)
+    // T-5: XrayCore.aar (gomobile bind of libXray) — present only when -Pvpnis.buildNative=true.
+    // Consumed via a coordinate (NOT files()) so AGP's AAR transform runs and extracts the
+    // gomobile .so libs. The flatDir repo that makes ":XrayCore@aar" resolvable is declared
+    // in settings.gradle.kts (FAIL_ON_PROJECT_REPOS prevents a repo here even inside an if).
+    if (buildNative) {
+        implementation(":XrayCore@aar")
+    }
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 }
