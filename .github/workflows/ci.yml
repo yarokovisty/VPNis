@@ -71,7 +71,15 @@ jobs:
           # they must validate independently rather than trust the build job.
           validate-wrappers: true
 
+      # Operator builds inject the real default-server config via this secret; open/F-Droid
+      # builds (and fork PRs, which never receive secrets) resolve blank → the in-app placeholder
+      # (see :data:server DefaultServer / issue #56). Scoped to THIS step only (not job-level) to
+      # minimize exposure — it is read via a Gradle ValueSource/env, never echoed.
+      # SECURITY: relies on `pull_request` withholding secrets from forks. Do NOT switch this
+      # workflow to `pull_request_target` — that would expose the secret to untrusted fork code.
       - name: Assemble debug APK
+        env:
+          VPNIS_DEFAULT_SERVER_CONFIG: ${{ secrets.VPNIS_DEFAULT_SERVER_CONFIG }}
         run: ./gradlew assembleDebug
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -108,8 +116,12 @@ jobs:
           # they must validate independently rather than trust the build job.
           validate-wrappers: true
 
+      # testDebugUnitTest is an AGP variant task: it compiles pure-JVM modules but does NOT run
+      # their `test` task. Add :data:server:test explicitly so DefaultServerTest and
+      # ServerRepositoryImplTest actually execute and gate. (Other pure-JVM modules e.g.
+      # :core:domain share this latent gap — tracked as a follow-up, out of scope for #56.)
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest :data:server:test
 
       # Upload even when tests fail so the report is always available for triage.
       - name: Upload test reports
