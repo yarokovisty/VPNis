@@ -41,18 +41,15 @@ internal interface TunnelStateSink {
     /**
      * Called by [VpnTunnelService] when the tunnel encounters a fatal error.
      *
+     * The `establish()==null` backstop also uses this method (rather than a separate
+     * `onPermissionRequired`) because at that point the state machine is in `Connecting`,
+     * and `Connecting → PermissionRequired` is an illegal transition that would be silently
+     * dropped, leaving the UI stuck. `Connecting → Error` is legal and unblocks the user.
+     * The proactive consent gate in [ConnectionControllerImpl.connect] is the primary
+     * defence; this is the recoverable-error fallback.
+     *
      * @param reason The typed failure reason to surface in
      *   [org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState.Error].
      */
     fun onTunnelError(reason: ConnectionError)
-
-    /**
-     * Called by [VpnTunnelService] when [android.net.VpnService.Builder.establish] returns
-     * `null`, meaning the OS VPN permission has not been granted.
-     *
-     * Transitions to
-     * [org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState.PermissionRequired]
-     * so the presentation layer can trigger `VpnService.prepare()`.
-     */
-    fun onPermissionRequired()
 }

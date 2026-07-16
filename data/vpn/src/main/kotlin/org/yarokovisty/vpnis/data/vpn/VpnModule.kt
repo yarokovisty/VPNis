@@ -47,10 +47,14 @@ public val vpnModule: Module = module {
     // TunnelLauncher — dispatches intents to VpnTunnelService. Requires Android Context.
     single<TunnelLauncher> { AndroidTunnelLauncher(context = androidContext()) }
 
+    // VpnConsentChecker — queries OS VPN consent state via VpnService.prepare().
+    // Abstracted so ConnectionControllerImpl can be unit-tested with a fake stub.
+    single<VpnConsentChecker> { AndroidVpnConsentChecker(androidContext()) }
+
     // ConnectionControllerImpl is the single concrete class that satisfies both
     // ConnectionController (public domain interface) and TunnelStateSink (internal
     // callback interface). Create it once and expose under both types.
-    single { ConnectionControllerImpl(launcher = get()) }
+    single { ConnectionControllerImpl(launcher = get(), consentChecker = get()) }
     single<ConnectionController> { get<ConnectionControllerImpl>() }
     single<TunnelStateSink> { get<ConnectionControllerImpl>() }
 }

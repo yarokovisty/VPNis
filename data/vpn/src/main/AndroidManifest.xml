@@ -15,7 +15,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Foreground service that hosts the tunnel (issue #62). -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    <!--
+        specialUse FGS type (issue #106). systemExempted was wrong: on API 34+ it additionally
+        requires one of SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM / the android:activate_vpn appop
+        (granted only AFTER establish()), so startForeground() threw SecurityException before the
+        tunnel ever came up. specialUse is grantable to a VPN app without that coupling and is the
+        type VPN clients of the SaeedDev94/Xray family (ADR-0001) ship for their ongoing notification.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <!-- API 33+: post the ongoing tunnel notification. The runtime grant is requested at the
          app/Activity layer; declaring it here lets the notification display once granted. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -25,23 +32,23 @@
             VpnTunnelService (issues #61/#62/#63).
             - android:permission="BIND_VPN_SERVICE" + the android.net.VpnService intent action
               are what the OS VPN framework requires to bind a VpnService.
-            - android:foregroundServiceType="systemExempted" matches the
-              ServiceCompat.startForeground(..., FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED) call.
+            - android:foregroundServiceType="specialUse" matches the
+              ServiceCompat.startForeground(..., FOREGROUND_SERVICE_TYPE_SPECIAL_USE) call (issue #106).
             - android:exported="false" — only this app may start it.
-        -->
-        <!--
-            tools:ignore="ForegroundServicePermission" — lint statically requires an exact-alarm
-            permission (SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM) alongside a systemExempted FGS
-            type, but a VpnService qualifies for the system-exempted category at RUNTIME on its
-            own. Adding an exact-alarm permission to a VPN app would be semantically wrong and
-            Play-Store-scrutinised, so we suppress the check rather than declare a false capability.
         -->
         <service
             android:name="org.yarokovisty.vpnis.data.vpn.VpnTunnelService"
             android:exported="false"
-            android:foregroundServiceType="systemExempted"
-            android:permission="android.permission.BIND_VPN_SERVICE"
-            tools:ignore="ForegroundServicePermission">
+            android:foregroundServiceType="specialUse"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <!--
+                PROPERTY_SPECIAL_USE_FGS_SUBTYPE is a free-form justification string the Play review
+                team inspects manually; it must match the future Play declaration form. For the
+                self-distributed fallback channel it is still declared correctly.
+            -->
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="This VPN app runs a foreground service to keep the encrypted tunnel that carries user traffic active while the app is backgrounded." />
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
