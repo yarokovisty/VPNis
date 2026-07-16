@@ -14,7 +14,10 @@ package org.yarokovisty.vpnis.data.vpn
  *   inbound, typically `127.0.0.1` on the local device).
  * @param socksPort Port of the upstream SOCKS5 proxy. Must be in the range `1..65535`.
  * @param mtu Maximum transmission unit for the TUN interface in bytes. Must be positive.
- *   Default `8500` matches hev's own sample config and is appropriate for most links.
+ *   Default `1500` (standard Ethernet MTU). hev's own sample config uses `8500`, but that
+ *   oversizes the MSS on Xray's protected upstream socket and black-holes return traffic on
+ *   reduced-MTU server paths — see [TunConfig.mtu] KDoc (issue #111). Kept in sync with
+ *   [TunConfig.mtu] via [TunConfig.toTun2SocksConfig].
  * @param udpMode hev's SOCKS5 UDP relay mode. Accepted values are `"udp"` (UDP-native
  *   relay, default) and `"tcp"` (UDP-over-TCP relay for firewalled environments).
  * @param taskStackSize Size in bytes of the stack allocated per hev task. Must be
@@ -28,7 +31,7 @@ package org.yarokovisty.vpnis.data.vpn
 internal data class Tun2SocksConfig(
     val socksAddress: String = "127.0.0.1",
     val socksPort: Int,
-    val mtu: Int = 8500,
+    val mtu: Int = 1500,
     val udpMode: String = "udp",
     val taskStackSize: Int = 20480,
     val logLevel: String = "warn",
@@ -63,7 +66,7 @@ internal data class Tun2SocksConfig(
  * Example output for `Tun2SocksConfig(socksPort = 10808)`:
  * ```
  * tunnel:
- *   mtu: 8500
+ *   mtu: 1500
  * socks5:
  *   address: 127.0.0.1
  *   port: 10808

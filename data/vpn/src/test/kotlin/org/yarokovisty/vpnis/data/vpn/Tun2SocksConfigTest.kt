@@ -22,7 +22,7 @@ class Tun2SocksConfigTest {
         // Then
         val expected =
             "tunnel:\n" +
-                "  mtu: 8500\n" +
+                "  mtu: 1500\n" +
                 "socks5:\n" +
                 "  address: 127.0.0.1\n" +
                 "  port: 10808\n" +

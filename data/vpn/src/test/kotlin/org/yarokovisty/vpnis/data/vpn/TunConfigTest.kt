@@ -35,12 +35,14 @@ class TunConfigTest {
     }
 
     @Test
-    fun `construct with all defaults EXPECT mtu is 8500`() {
+    fun `construct with all defaults EXPECT mtu is 1500`() {
         // Given
         val config = TunConfig()
 
         // When / Then
-        assertEquals(8500, config.mtu)
+        // 1500 (standard Ethernet MTU) — not hev's 8500 sample: 8500 oversizes the upstream
+        // MSS and black-holes return traffic on reduced-MTU server paths (issue #111).
+        assertEquals(1500, config.mtu)
     }
 
     @Test

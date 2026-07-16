@@ -208,6 +208,15 @@ internal object XrayConfigBuilder {
         sid: String,
     ): String {
         val root = buildJsonObject {
+            // ---- log (TEMPORARY — issue #111 device diagnostics) ----
+            // loglevel=debug surfaces Xray's per-connection dial/REALITY-handshake results in
+            // logcat (GoLog tag) so the return-path fix can be verified on-device. REVERT to the
+            // Xray default (warning) before merging — debug logging is verbose and may echo
+            // destination hostnames. TODO(#111): remove this block after device verification.
+            putJsonObject("log") {
+                put("loglevel", JsonPrimitive("debug"))
+            }
+
             // ---- inbounds ----
             putJsonArray("inbounds") {
                 add(
