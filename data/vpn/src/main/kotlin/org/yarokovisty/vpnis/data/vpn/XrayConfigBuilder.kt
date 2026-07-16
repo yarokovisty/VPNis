@@ -33,24 +33,35 @@ import kotlinx.serialization.json.putJsonObject
  *
  * ```json
  * {
+ *   "dns": { "servers":["1.1.1.1","1.0.0.1"], "queryStrategy":"UseIPv4" },
  *   "inbounds": [{ "tag":"socks-in", "protocol":"socks", "listen":"127.0.0.1",
  *                  "port":<localSocksPort>,
- *                  "settings":{ "auth":"noauth", "udp":true } }],
- *   "outbounds": [{
- *     "tag":"proxy-out", "protocol":"vless",
- *     "settings":{ "vnext":[{ "address":"<host>", "port":<port>,
- *       "users":[{ "id":"<uuid>", "encryption":"none" [, "flow":"<flow>"] }] }] },
- *     "streamSettings":{
- *       "network":"tcp",
- *       "security":"reality",
- *       "realitySettings":{
- *         "serverName":"<sni>", "fingerprint":"<fp>",
- *         "publicKey":"<pbk>", "shortId":"<sid>"
+ *                  "settings":{ "auth":"noauth", "udp":true },
+ *                  "sniffing":{ "enabled":true, "destOverride":["http","tls","quic"] } }],
+ *   "outbounds": [
+ *     { "tag":"proxy-out", "protocol":"vless",
+ *       "settings":{ "vnext":[{ "address":"<host>", "port":<port>,
+ *         "users":[{ "id":"<uuid>", "encryption":"none" [, "flow":"<flow>"] }] }] },
+ *       "streamSettings":{
+ *         "network":"tcp",
+ *         "security":"reality",
+ *         "realitySettings":{
+ *           "serverName":"<sni>", "fingerprint":"<fp>",
+ *           "publicKey":"<pbk>", "shortId":"<sid>"
+ *         }
  *       }
- *     }
- *   }]
+ *     },
+ *     { "tag":"dns-out", "protocol":"dns" },
+ *     { "tag":"direct", "protocol":"freedom", "settings":{ "domainStrategy":"UseIP" } }
+ *   ],
+ *   "routing": { "domainStrategy":"IPIfNonMatch",
+ *                "rules":[{ "type":"field", "port":"53", "outboundTag":"dns-out" }] }
  * }
  * ```
+ *
+ * The `dns` object + port-53 → `dns-out` routing rule + inbound `sniffing` make Xray resolve
+ * DNS internally instead of tunnelling each app DNS query as a fresh vless connection — without
+ * them the per-query connection storm collapses the return path (issue #111).
  *
  * When `security` is NOT `reality`, [build] returns `null` (broader transport/security
  * coverage is tracked in issue #74).
@@ -69,6 +80,14 @@ internal object XrayConfigBuilder {
      * from the same authoritative source.
      */
     private val localSocksPort: Int = TunConfig().localSocksPort
+
+    /**
+     * DNS servers Xray's built-in resolver queries, sourced from [TunConfig.dnsServers] so the
+     * TUN's pushed DNS and Xray's internal DNS never drift. Consumed by the `dns` object which,
+     * paired with the port-53 → `dns-out` routing rule, stops the per-query connection storm
+     * (issue #111).
+     */
+    private val dnsServers: List<String> = TunConfig().dnsServers
 
     /**
      * Parses [uri] (a VLESS URI string) and returns an Xray-core JSON configuration, or
@@ -217,6 +236,20 @@ internal object XrayConfigBuilder {
                 put("loglevel", JsonPrimitive("debug"))
             }
 
+            // ---- dns (issue #111) ----
+            // Xray's internal DNS resolver. Paired with the port-53 → "dns-out" routing rule
+            // below, this makes Xray answer the app's DNS queries itself instead of proxying
+            // each one as a fresh UDP-over-vless session — which opened a NEW reality connection
+            // per query and stormed the server before any handshake could finish (the one-way
+            // -tunnel root cause). queryStrategy=UseIPv4 keeps resolution on the working IPv4
+            // path, complementing the IPv6 fail-closed TUN routing (issue #106).
+            putJsonObject("dns") {
+                putJsonArray("servers") {
+                    dnsServers.forEach { add(JsonPrimitive(it)) }
+                }
+                put("queryStrategy", JsonPrimitive("UseIPv4"))
+            }
+
             // ---- inbounds ----
             putJsonArray("inbounds") {
                 add(
@@ -229,6 +262,16 @@ internal object XrayConfigBuilder {
                         putJsonObject("settings") {
                             put("auth", JsonPrimitive("noauth"))
                             put("udp", JsonPrimitive(true))
+                        }
+                        // Sniff the real destination (SNI/host) so routing operates on
+                        // hostnames and DNS/routing behaves like v2rayNG (issue #111).
+                        putJsonObject("sniffing") {
+                            put("enabled", JsonPrimitive(true))
+                            putJsonArray("destOverride") {
+                                add(JsonPrimitive("http"))
+                                add(JsonPrimitive("tls"))
+                                add(JsonPrimitive("quic"))
+                            }
                         }
                     },
                 )
@@ -273,6 +316,44 @@ internal object XrayConfigBuilder {
                         }
                     },
                 )
+                // dns-out: Xray's built-in DNS handler. The port-53 routing rule sends the app's
+                // DNS queries here so they are resolved internally (via the `dns` object above)
+                // instead of tunneled per-query — this is what stops the connection storm (#111).
+                add(
+                    buildJsonObject {
+                        put("tag", JsonPrimitive("dns-out"))
+                        put("protocol", JsonPrimitive("dns"))
+                    },
+                )
+                // direct: freedom outbound (UseIP). Present for parity with standard Xray-Android
+                // clients (v2rayNG) as the non-tunneled path available to the DNS module; no
+                // routing rule sends user traffic to it, so all app traffic stays on proxy-out.
+                add(
+                    buildJsonObject {
+                        put("tag", JsonPrimitive("direct"))
+                        put("protocol", JsonPrimitive("freedom"))
+                        putJsonObject("settings") {
+                            put("domainStrategy", JsonPrimitive("UseIP"))
+                        }
+                    },
+                )
+            }
+
+            // ---- routing (issue #111) ----
+            // Route all port-53 (DNS) traffic to the dns-out handler; everything else falls
+            // through to the first outbound (proxy-out). MUST target dns-out, never direct —
+            // routing DNS to a freedom outbound would leak queries outside the tunnel.
+            putJsonObject("routing") {
+                put("domainStrategy", JsonPrimitive("IPIfNonMatch"))
+                putJsonArray("rules") {
+                    add(
+                        buildJsonObject {
+                            put("type", JsonPrimitive("field"))
+                            put("port", JsonPrimitive("53"))
+                            put("outboundTag", JsonPrimitive("dns-out"))
+                        },
+                    )
+                }
             }
         }
 

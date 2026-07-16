@@ -211,6 +211,77 @@ class XrayConfigBuilderTest {
     }
 
     // -------------------------------------------------------------------------
+    // DNS-storm fix (issue #111) — sniffing / dns / routing / dns-out
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `valid VLESS URI EXPECT socks inbound has sniffing with tls and quic destOverride`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val sniffing = root["inbounds"]!!.jsonArray[0].jsonObject["sniffing"]!!.jsonObject
+        assertEquals("true", sniffing["enabled"]!!.jsonPrimitive.content)
+        val destOverride = sniffing["destOverride"]!!.jsonArray.map { it.jsonPrimitive.content }
+        assertEquals(listOf("http", "tls", "quic"), destOverride)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT dns object has servers and IPv4 query strategy`() {
+        // Given
+        val expectedServers = TunConfig().dnsServers
+
+        // When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val dns = root["dns"]!!.jsonObject
+        val servers = dns["servers"]!!.jsonArray.map { it.jsonPrimitive.content }
+        assertEquals(expectedServers, servers)
+        assertEquals("UseIPv4", dns["queryStrategy"]!!.jsonPrimitive.content)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT a dns-out outbound with protocol dns exists`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val dnsOut = root["outbounds"]!!.jsonArray
+            .map { it.jsonObject }
+            .single { it["tag"]?.jsonPrimitive?.content == "dns-out" }
+        assertEquals("dns", dnsOut["protocol"]!!.jsonPrimitive.content)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT routing sends port 53 to dns-out (never leaks DNS)`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — a field rule routes DNS (port 53) to the dns-out handler, not direct/proxy.
+        val rule = root["routing"]!!.jsonObject["rules"]!!.jsonArray
+            .map { it.jsonObject }
+            .single { it["port"]?.jsonPrimitive?.content == "53" }
+        assertEquals("dns-out", rule["outboundTag"]!!.jsonPrimitive.content)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT proxy-out is the first outbound (default route)`() {
+        // Given / When — order matters: Xray routes unmatched traffic to the FIRST outbound,
+        // so proxy-out must stay first or all traffic would fall through to dns-out/direct.
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val firstTag = root["outbounds"]!!.jsonArray[0].jsonObject["tag"]!!.jsonPrimitive.content
+        assertEquals("proxy-out", firstTag)
+    }
+
+    // -------------------------------------------------------------------------
     // Injection-safety — special characters in sni are properly escaped
     // -------------------------------------------------------------------------
 
