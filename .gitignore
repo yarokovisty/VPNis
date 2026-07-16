@@ -21,3 +21,6 @@ swarm-report/
 # F-Droid main prohibits prebuilt .aar in libs/ (ADR 0001); the native-build
 # job (#72) rebuilds it from the pinned libXray submodule each run.
 /data/vpn/libs/
+
+# QA scratch artifacts (screenshots, logcat, uiautomator dumps from device runs)
+.qa-tmp/

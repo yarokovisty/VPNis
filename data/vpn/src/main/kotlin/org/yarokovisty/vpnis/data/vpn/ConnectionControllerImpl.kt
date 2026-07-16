@@ -26,14 +26,14 @@ import java.time.Instant
  *
  * The legal table (see [VpnConnectionState] KDoc for the full matrix):
  * ```
- * Disconnected      → Connecting (via connect)
- * Connecting        → Connected (via onTunnelEstablished)
- * Connecting        → Error     (via onTunnelError or config-build failure in connect)
- * Connecting        → Disconnected (via disconnect or onTunnelStopped)
- * Connected         → Disconnected (via disconnect or onTunnelStopped)
- * Connected         → Error     (via onTunnelError)
- * Disconnected/Error → PermissionRequired (via onPermissionRequired)
- * PermissionRequired → Connecting (on next connect)
+ * Disconnected       → Connecting        (via connect, when consent already granted)
+ * Disconnected/Error → PermissionRequired (via connect, when consent required — gate in connect())
+ * PermissionRequired → Connecting        (via connect, after user grants consent)
+ * Connecting         → Connected         (via onTunnelEstablished)
+ * Connecting         → Error             (via onTunnelError or config-build failure in connect)
+ * Connecting         → Disconnected      (via disconnect or onTunnelStopped)
+ * Connected          → Disconnected      (via disconnect or onTunnelStopped)
+ * Connected          → Error             (via onTunnelError)
  * ```
  *
  * ## Config build failure path
@@ -76,12 +76,29 @@ import java.time.Instant
  * libXray stats API) and emits [VpnConnectionState.Connected] updates with live
  * [org.yarokovisty.vpnis.core.domain.model.TrafficStats].
  *
+ * ## Consent gate
+ *
+ * [connect] checks [VpnConsentChecker.isConsentRequired] as its very first step — before
+ * any state transition. If consent is required, the state is advanced to
+ * [VpnConnectionState.PermissionRequired] and the function returns early without launching
+ * the service. The presentation layer observes [VpnConnectionState.PermissionRequired],
+ * triggers `VpnService.prepare()` to show the system dialog, and — after the user grants
+ * consent — calls [connect] again. On the second call `isConsentRequired()` returns `false`
+ * and the normal tunnel-start path is followed.
+ *
+ * The [VpnConsentChecker] abstraction keeps the controller free of Context and lets tests
+ * inject a simple boolean stub (see `FakeVpnConsentChecker` in the test source set).
+ *
  * @param launcher Seam for starting/stopping [VpnTunnelService] without depending on
  *   Android [android.app.Service] or [android.content.Context] types. Injected so the
  *   controller can be unit-tested with a fake [TunnelLauncher].
+ * @param consentChecker Seam for querying OS VPN consent state. Injected so the controller
+ *   can be unit-tested without a real [android.content.Context].
  */
-internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
-    ConnectionController,
+internal class ConnectionControllerImpl(
+    private val launcher: TunnelLauncher,
+    private val consentChecker: VpnConsentChecker,
+) : ConnectionController,
     TunnelStateSink {
 
     private val _state = MutableStateFlow<VpnConnectionState>(VpnConnectionState.Disconnected)
@@ -111,18 +128,37 @@ internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
     /**
      * Requests a VPN connection to [server].
      *
-     * Transitions the state to [VpnConnectionState.Connecting], then builds the Xray
-     * JSON config via [XrayConfigBuilder.build]. If the build fails (returns `null`),
-     * the state advances to [VpnConnectionState.Error] with
+     * **Step 0 — consent gate:** [consentChecker.isConsentRequired] is called first. If
+     * consent is required, the state is advanced to [VpnConnectionState.PermissionRequired]
+     * and the function returns immediately — [TunnelLauncher.launch] is NOT called. The
+     * presentation layer observes [VpnConnectionState.PermissionRequired], shows the system
+     * consent dialog, and calls [connect] again after the user grants consent.
+     *
+     * **Step 1 onwards (consent granted):** transitions to [VpnConnectionState.Connecting],
+     * builds the Xray JSON config via [XrayConfigBuilder.build]. If the build fails (returns
+     * `null`), the state advances to [VpnConnectionState.Error] with
      * [ConnectionError.TunnelSetupFailed] and [TunnelLauncher.launch] is NOT called.
      * On success, [TunnelLauncher.launch] is called with the server and the built config.
      *
-     * The `PermissionRequired → Connecting` edge: [connect] is called again after the user
-     * grants OS consent in the permission dialog. [VpnConnectionState.PermissionRequired]
-     * is a legal predecessor of [VpnConnectionState.Connecting], so the transition succeeds.
+     * The `PermissionRequired → Connecting` edge: after the user grants consent, [connect]
+     * is called again; `isConsentRequired()` now returns `false` and the normal path follows.
+     * [VpnConnectionState.PermissionRequired] is a legal predecessor of
+     * [VpnConnectionState.Connecting] in the state machine.
      */
     override suspend fun connect(server: Server) {
         Log.d(TAG, "connect: server=${server.id.value}")
+
+        // Gate: check OS VPN consent before any state transition. If consent is required,
+        // advance to PermissionRequired and return early — launcher.launch is NOT called.
+        // Disconnected/Error → PermissionRequired is a legal transition; PermissionRequired
+        // → Connecting is also legal, so a subsequent connect() call after grant follows the
+        // normal path.
+        if (consentChecker.isConsentRequired()) {
+            Log.d(TAG, "connect: VPN consent required — transitioning to PermissionRequired")
+            transition(VpnConnectionState.PermissionRequired)
+            return
+        }
+
         currentTarget = server
         transition(VpnConnectionState.Connecting(server))
 
@@ -205,20 +241,6 @@ internal class ConnectionControllerImpl(private val launcher: TunnelLauncher) :
     override fun onTunnelError(reason: ConnectionError) {
         Log.d(TAG, "onTunnelError: reason=$reason")
         transition(VpnConnectionState.Error(reason))
-    }
-
-    /**
-     * Called by [VpnTunnelService] when [android.net.VpnService.Builder.establish] returns
-     * `null` (OS VPN permission not granted).
-     *
-     * Transitions to [VpnConnectionState.PermissionRequired]. The presentation layer reacts
-     * to this state by triggering [android.net.VpnService.prepare] and showing the system
-     * permission dialog. After the user grants consent, the layer calls [connect] again,
-     * which sends the `PermissionRequired → Connecting` transition.
-     */
-    override fun onPermissionRequired() {
-        Log.d(TAG, "onPermissionRequired")
-        transition(VpnConnectionState.PermissionRequired)
     }
 
     // -------------------------------------------------------------------------

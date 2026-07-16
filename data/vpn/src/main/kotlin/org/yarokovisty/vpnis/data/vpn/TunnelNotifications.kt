@@ -33,12 +33,12 @@ import androidx.core.app.NotificationCompat
  * - Issue #63's ConnectionController can supply a [NotificationContent] with live server
  *   name / session timer and call [build] without touching channel or action logic.
  *
- * ## Issue #65 / #67 dependency
+ * ## Issue #106 / #67 dependency
  *
  * The [PendingIntent.FLAG_IMMUTABLE] flag is used; `FLAG_MUTABLE` is intentionally avoided
  * (it requires an explicit justification on API 31+). The manifest `<service>` declaration
- * with `android:foregroundServiceType="systemExempted"` and the
- * `FOREGROUND_SERVICE_SYSTEM_EXEMPTED` permission are registered in issue #65.
+ * with `android:foregroundServiceType="specialUse"` and the
+ * `FOREGROUND_SERVICE_SPECIAL_USE` permission are registered in issue #106.
  */
 internal object TunnelNotifications {
 

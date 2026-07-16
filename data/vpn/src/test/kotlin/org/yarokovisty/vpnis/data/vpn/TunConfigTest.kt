@@ -53,12 +53,30 @@ class TunConfigTest {
     }
 
     @Test
-    fun `construct with all defaults EXPECT routes contain catch-all route`() {
+    fun `construct with all defaults EXPECT routes contain both IPv4 and IPv6 catch-all routes`() {
+        // Given
+        val config = TunConfig()
+
+        // When / Then — IPv6 ::/0 is present alongside IPv4 for fail-closed leak prevention (#106)
+        assertEquals(listOf("0.0.0.0/0", "::/0"), config.routes)
+    }
+
+    @Test
+    fun `construct with all defaults EXPECT ipv6ClientAddress is fd00__1`() {
         // Given
         val config = TunConfig()
 
         // When / Then
-        assertEquals(listOf("0.0.0.0/0"), config.routes)
+        assertEquals("fd00::1", config.ipv6ClientAddress)
+    }
+
+    @Test
+    fun `construct with all defaults EXPECT ipv6PrefixLength is 128`() {
+        // Given
+        val config = TunConfig()
+
+        // When / Then
+        assertEquals(128, config.ipv6PrefixLength)
     }
 
     @Test
@@ -122,6 +140,65 @@ class TunConfigTest {
 
         // Then
         assertEquals("prefixLength must be in 0..32, got 33", exception.message)
+    }
+
+    // -------------------------------------------------------------------------
+    // ipv6PrefixLength — boundary validation (independent of IPv4 0..32)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `construct with ipv6PrefixLength 0 EXPECT no exception`() {
+        // Given / When / Then
+        TunConfig(ipv6PrefixLength = 0)
+    }
+
+    @Test
+    fun `construct with ipv6PrefixLength 128 EXPECT no exception`() {
+        // Given / When / Then — /128 must NOT fail (would if validated against IPv4 max of 32)
+        TunConfig(ipv6PrefixLength = 128)
+    }
+
+    @Test
+    fun `construct with ipv6PrefixLength 129 EXPECT IllegalArgumentException`() {
+        // Given / When / Then
+        assertThrows(IllegalArgumentException::class.java) {
+            TunConfig(ipv6PrefixLength = 129)
+        }
+    }
+
+    @Test
+    fun `construct with ipv6PrefixLength -1 EXPECT IllegalArgumentException`() {
+        // Given / When / Then
+        assertThrows(IllegalArgumentException::class.java) {
+            TunConfig(ipv6PrefixLength = -1)
+        }
+    }
+
+    @Test
+    fun `construct with ipv6PrefixLength 129 EXPECT error message matches spec`() {
+        // Given / When
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            TunConfig(ipv6PrefixLength = 129)
+        }
+
+        // Then
+        assertEquals("ipv6PrefixLength must be in 0..128, got 129", exception.message)
+    }
+
+    @Test
+    fun `construct with blank ipv6ClientAddress EXPECT IllegalArgumentException`() {
+        // Given / When / Then
+        assertThrows(IllegalArgumentException::class.java) {
+            TunConfig(ipv6ClientAddress = "   ")
+        }
+    }
+
+    @Test
+    fun `construct with IPv4 prefixLength 33 EXPECT still rejected after IPv6 added`() {
+        // Given / When / Then — IPv6 addition must NOT loosen IPv4's 0..32 constraint
+        assertThrows(IllegalArgumentException::class.java) {
+            TunConfig(prefixLength = 33)
+        }
     }
 
     // -------------------------------------------------------------------------

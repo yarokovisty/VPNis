@@ -39,19 +39,23 @@ import org.yarokovisty.vpnis.core.domain.model.ConnectionError
  * - ConnectionController state machine, libXray start/stop → issue #63. See [TODO #63]
  *   comments marking the seam points. Live notification content also arrives via #63
  *   through [updateNotification].
- * - `<service>` AndroidManifest entry, `BIND_VPN_SERVICE` permission, and
- *   `android:foregroundServiceType="systemExempted"` → issue #65.
+ * - `<service>` AndroidManifest entry, `BIND_VPN_SERVICE` permission, and the
+ *   `android:foregroundServiceType="specialUse"` declaration with its companion
+ *   `<property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE">` — fixed in
+ *   issue #106.
  *
- * ## Foreground service (issue #62)
+ * ## Foreground service (issues #62, #106)
  *
  * [startTunnel] calls [ServiceCompat.startForeground] with
- * [ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED] BEFORE [VpnService.Builder.establish]
+ * [ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE] BEFORE [VpnService.Builder.establish]
  * so the OS does not kill the service when the user navigates away.
  *
- * **Android 14+ caveat:** [ServiceCompat.startForeground] will throw if the manifest
- * `android:foregroundServiceType="systemExempted"` attribute is absent (issue #65 adds it).
- * Until #65 lands, the throw is caught, logged, and [stopTunnel] is called so the process
- * does not crash — the tunnel simply will not start on API 34+ without the manifest entry.
+ * **Android 14+ caveat:** `specialUse` requires only the `FOREGROUND_SERVICE_SPECIAL_USE`
+ * permission and the `<property>` sub-use declaration — no alarm or appop. The prior
+ * `systemExempted` type demanded `activate_vpn` appop (granted only after `establish()`),
+ * causing a `SecurityException` before the tunnel could start (issue #106). That regression
+ * is fixed here.  If [ServiceCompat.startForeground] still throws (e.g. missing manifest
+ * entry), the catch block reports `TunnelSetupFailed` and stops cleanly.
  *
  * ## Threading model
  *
@@ -315,13 +319,15 @@ internal class VpnTunnelService :
         // 1. Promote to foreground BEFORE establish() so the OS cannot kill us
         //    while we are building the TUN interface.
         //
-        //    ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED requires:
-        //      - FOREGROUND_SERVICE_SYSTEM_EXEMPTED uses-permission  ─┐ both from issue #65
-        //      - android:foregroundServiceType="systemExempted"       ─┘
+        //    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE requires (issue #106):
+        //      - FOREGROUND_SERVICE_SPECIAL_USE uses-permission        ─┐ both in AndroidManifest
+        //      - android:foregroundServiceType="specialUse" + <property> ─┘
+        //    specialUse (not systemExempted) because systemExempted additionally demands one of
+        //    SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM / the android:activate_vpn appop (granted only
+        //    after establish()), so it threw SecurityException here — before the tunnel came up.
         //
-        //    On API 34+ (Android 14) startForeground throws if the manifest type is not
-        //    declared. We catch that here and tear down cleanly instead of crashing the process.
-        //    Once #65 adds the manifest entry this catch branch will never execute.
+        //    On API 34+ startForeground throws if the manifest type/permission are missing. We
+        //    catch that here and tear down cleanly instead of crashing the process (defensive).
         //
         //    NOTE: POST_NOTIFICATIONS runtime permission is NOT checked here. On API 33+,
         //    if the permission is absent the notification simply will not display in the
@@ -333,14 +339,14 @@ internal class VpnTunnelService :
                 this,
                 TunnelNotifications.NOTIFICATION_ID,
                 notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
             )
         } catch (e: Exception) {
-            // Covers SecurityException (manifest foregroundServiceType missing on API 34+),
+            // Covers SecurityException (manifest foregroundServiceType/permission missing on API 34+),
             // ForegroundServiceStartNotAllowedException (API 31+, background-start restriction),
             // and any other startForeground failure. Log and abort — no tunnel without FGS
             // on modern API levels since the service would be immediately killed.
-            Log.e(TAG, "startTunnel: startForeground failed — manifest type from #65 required on API 34+", e)
+            Log.e(TAG, "startTunnel: startForeground failed on API 34+ (FGS type/permission)", e)
             stateSink.onTunnelError(reason = ConnectionError.TunnelSetupFailed)
             stopSelf()
             return
@@ -365,14 +371,20 @@ internal class VpnTunnelService :
 
         // 3. Establish the TUN interface (calls VpnService.Builder.establish()).
         val pfd: ParcelFileDescriptor = buildTun(config) ?: run {
-            // null from establish() means VPN permission was not granted.
-            // Issue #57's permission-request flow is the gate that should prevent reaching
-            // here without consent. Treat it defensively and signal the controller so the
-            // presentation layer can trigger VpnService.prepare() again.
-            Log.e(TAG, "startTunnel: establish() returned null — VPN permission not granted")
+            // null from establish() is a backstop — the consent gate in
+            // ConnectionControllerImpl.connect() (T-2/#107) should prevent reaching here
+            // without VPN permission. If we do reach here (e.g. consent was revoked between
+            // the gate check and service start), we are already in state Connecting.
+            // Connecting → PermissionRequired is ILLEGAL per isLegalTransition and would be
+            // silently dropped, leaving the UI stuck in Connecting. Signal TunnelSetupFailed
+            // instead: Connecting → Error is a legal transition and unblocks the user.
+            Log.e(
+                TAG,
+                "startTunnel: establish() returned null — VPN permission not granted; reporting TunnelSetupFailed",
+            )
             xrayCore.stop() // roll back Xray — TUN never came up
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-            stateSink.onPermissionRequired()
+            stateSink.onTunnelError(ConnectionError.TunnelSetupFailed)
             stopSelf()
             return
         }
@@ -397,8 +409,17 @@ internal class VpnTunnelService :
 
         tunnelJob = serviceScope.launch {
             Log.i(TAG, "startTunnel: starting hev native loop (tunFd=$tunFd)")
-            val exitCode = Tun2SocksBridge.nativeStart(configYaml = yamlConfig, tunFd = tunFd)
-            Log.i(TAG, "startTunnel: hev native loop exited (code=$exitCode)")
+            try {
+                val exitCode = Tun2SocksBridge.nativeStart(configYaml = yamlConfig, tunFd = tunFd)
+                Log.i(TAG, "startTunnel: hev native loop exited (code=$exitCode)")
+            } catch (t: Throwable) {
+                // Catches UnsatisfiedLinkError (native library not loaded) and any other
+                // Throwable from the native bridge. configYaml is NOT logged — it may
+                // contain port/routing info. Only the exception type and message are safe.
+                Log.e(TAG, "startTunnel: hev native loop threw ${t::class.simpleName}: ${t.message}")
+                stateSink.onTunnelError(ConnectionError.TunnelSetupFailed)
+                stopTunnel()
+            }
         }
 
         // 6. Notify the ConnectionController that the TUN is up and the tunnel is active.
@@ -517,13 +538,23 @@ internal class VpnTunnelService :
      * Returns the [ParcelFileDescriptor] on success, or `null` if the OS denies the
      * VPN permission ([VpnService.Builder.establish] returns null when consent is absent).
      *
-     * Route strings in [TunConfig.routes] must be in `"address/prefixLength"` format.
-     * Malformed entries are logged and skipped rather than crashing the service.
+     * Both an IPv4 and an IPv6 client address are added to the TUN interface (fail-closed
+     * for IPv6 — see [TunConfig] KDoc). Route strings in [TunConfig.routes] are processed
+     * with a **family-aware** prefix-length upper bound:
+     * - IPv6 routes (address contains `:`) → max prefix = [TunConfig.MAX_IPV6_PREFIX_LENGTH] (128)
+     * - IPv4 routes → max prefix = [TunConfig.MAX_PREFIX_LENGTH] (32)
+     *
+     * This ensures valid IPv6 routes (e.g. `::/0`) are never silently dropped due to the
+     * IPv4-only `0..32` guard that was previously applied to all routes.
+     *
+     * Malformed entries (wrong format, non-numeric prefix) are logged and skipped rather
+     * than crashing the service.
      */
     private fun buildTun(config: TunConfig): ParcelFileDescriptor? {
         val builder = Builder()
             .setSession(config.session)
             .addAddress(config.clientAddress, config.prefixLength)
+            .addAddress(config.ipv6ClientAddress, config.ipv6PrefixLength)
             .setMtu(config.mtu)
             .setBlocking(true)
 
@@ -536,7 +567,13 @@ internal class VpnTunnelService :
             if (parts.size == 2) {
                 val address = parts[0]
                 val prefix = parts[1].toIntOrNull()
-                if (prefix != null && prefix in 0..TunConfig.MAX_PREFIX_LENGTH) {
+                // Family-aware upper bound: IPv6 addresses contain ":", IPv4 do not.
+                val maxPrefix = if (address.contains(':')) {
+                    TunConfig.MAX_IPV6_PREFIX_LENGTH
+                } else {
+                    TunConfig.MAX_PREFIX_LENGTH
+                }
+                if (prefix != null && prefix in 0..maxPrefix) {
                     builder.addRoute(address, prefix)
                 } else {
                     Log.w(TAG, "buildTun: skipping malformed route prefix '$cidr'")

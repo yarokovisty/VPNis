@@ -42,8 +42,10 @@ class ConnectionControllerImplTest {
             "?type=tcp&security=reality&pbk=pubkey2&fp=firefox&sni=other.com&sid=ef012345",
     )
 
-    private fun makeController(launcher: FakeTunnelLauncher = FakeTunnelLauncher()): ConnectionControllerImpl =
-        ConnectionControllerImpl(launcher)
+    private fun makeController(
+        launcher: FakeTunnelLauncher = FakeTunnelLauncher(),
+        consentChecker: FakeVpnConsentChecker = FakeVpnConsentChecker(),
+    ): ConnectionControllerImpl = ConnectionControllerImpl(launcher, consentChecker)
 
     // -------------------------------------------------------------------------
     // Initial state
@@ -313,16 +315,16 @@ class ConnectionControllerImplTest {
     }
 
     // -------------------------------------------------------------------------
-    // onPermissionRequired
+    // Consent gate — PermissionRequired (migrated from onPermissionRequired)
     // -------------------------------------------------------------------------
 
     @Test
-    fun `onPermissionRequired from Disconnected EXPECT state is PermissionRequired`() = runTest {
+    fun `connect when consent required from Disconnected EXPECT state is PermissionRequired`() = runTest {
         // Given
-        val controller = makeController()
+        val controller = makeController(consentChecker = FakeVpnConsentChecker(consentRequired = true))
 
         // When
-        controller.onPermissionRequired()
+        controller.connect(server)
 
         // Then
         val state = controller.state.first()
@@ -330,12 +332,30 @@ class ConnectionControllerImplTest {
     }
 
     @Test
-    fun `connect after onPermissionRequired EXPECT state is Connecting`() = runTest {
+    fun `connect when consent required EXPECT launcher launch is never called`() = runTest {
         // Given
-        val controller = makeController()
-        controller.onPermissionRequired()
+        val launcher = FakeTunnelLauncher()
+        val controller = makeController(
+            launcher = launcher,
+            consentChecker = FakeVpnConsentChecker(consentRequired = true),
+        )
 
         // When
+        controller.connect(server)
+
+        // Then
+        assertEquals(0, launcher.launchCount)
+    }
+
+    @Test
+    fun `connect after consent granted from PermissionRequired EXPECT state is Connecting`() = runTest {
+        // Given — first connect triggers consent gate; second connect simulates grant
+        val consentChecker = FakeVpnConsentChecker(consentRequired = true)
+        val controller = makeController(consentChecker = consentChecker)
+        controller.connect(server)
+
+        // When — user grants consent; presentation layer calls connect() again
+        consentChecker.consentRequired = false
         controller.connect(server)
 
         // Then
@@ -344,17 +364,72 @@ class ConnectionControllerImplTest {
     }
 
     @Test
-    fun `connect after onPermissionRequired EXPECT Connecting carries the target server`() = runTest {
+    fun `connect after consent granted from PermissionRequired EXPECT Connecting carries target server`() = runTest {
         // Given
-        val controller = makeController()
-        controller.onPermissionRequired()
+        val consentChecker = FakeVpnConsentChecker(consentRequired = true)
+        val controller = makeController(consentChecker = consentChecker)
+        controller.connect(server)
 
         // When
+        consentChecker.consentRequired = false
         controller.connect(server)
 
         // Then
         val state = controller.state.first() as VpnConnectionState.Connecting
         assertEquals(server, state.server)
+    }
+
+    // -------------------------------------------------------------------------
+    // Consent gate — disconnect from PermissionRequired (refusal path)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `disconnect from PermissionRequired EXPECT state is Disconnected`() = runTest {
+        // Given — consent gate puts controller into PermissionRequired
+        val controller = makeController(consentChecker = FakeVpnConsentChecker(consentRequired = true))
+        controller.connect(server)
+
+        // When — user refuses the consent dialog; presentation layer calls disconnect()
+        controller.disconnect()
+
+        // Then
+        val state = controller.state.first()
+        assertEquals(VpnConnectionState.Disconnected, state)
+    }
+
+    // -------------------------------------------------------------------------
+    // Consent gate — repeated connect while consent is still required
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `repeated connect while consent still required EXPECT state is PermissionRequired`() = runTest {
+        // Given — first connect already produced PermissionRequired; consent not yet granted
+        val controller = makeController(consentChecker = FakeVpnConsentChecker(consentRequired = true))
+        controller.connect(server)
+
+        // When — presentation layer retries connect (e.g. user taps Connect again)
+        controller.connect(server)
+
+        // Then
+        val state = controller.state.first()
+        assertEquals(VpnConnectionState.PermissionRequired, state)
+    }
+
+    @Test
+    fun `repeated connect while consent still required EXPECT launcher launch is never called`() = runTest {
+        // Given
+        val launcher = FakeTunnelLauncher()
+        val controller = makeController(
+            launcher = launcher,
+            consentChecker = FakeVpnConsentChecker(consentRequired = true),
+        )
+        controller.connect(server)
+
+        // When
+        controller.connect(server)
+
+        // Then
+        assertEquals(0, launcher.launchCount)
     }
 
     // -------------------------------------------------------------------------
@@ -522,7 +597,7 @@ class ConnectionControllerImplTest {
 }
 
 // -------------------------------------------------------------------------
-// Fake collaborator
+// Fake collaborators
 // -------------------------------------------------------------------------
 
 /**
@@ -554,4 +629,16 @@ private class FakeTunnelLauncher : TunnelLauncher {
     override fun stop() {
         stopCount++
     }
+}
+
+/**
+ * Configurable fake [VpnConsentChecker].
+ *
+ * Defaults to [consentRequired] = `false` so that every existing happy-path test
+ * continues to exercise the normal Disconnected → Connecting path without modification.
+ * Tests that need the consent gate simply construct with `consentRequired = true`, or
+ * flip the flag between two [ConnectionControllerImpl.connect] calls to simulate a grant.
+ */
+private class FakeVpnConsentChecker(var consentRequired: Boolean = false) : VpnConsentChecker {
+    override fun isConsentRequired(): Boolean = consentRequired
 }
