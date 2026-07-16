@@ -45,9 +45,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Self-distribution signing (epic #44). We publish the release APK directly via
+    // GitHub Releases — no Play Store / F-Droid — so a single fixed keystore is committed
+    // to the repo and used to sign every release. Its credentials are the well-known
+    // Android debug values (nothing secret to protect); the ONLY requirement is that the
+    // key never changes, so update-over-install keeps the same signature.
+    signingConfigs {
+        create("release") {
+            storeFile = file("signing/vpnis-release.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",

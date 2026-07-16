@@ -555,9 +555,9 @@ jobs:
   # of the REAL tunnel, so this job takes the full native path:
   #   1. gomobile bind → XrayCore.aar
   #   2. NDK build     → libhev*.so  (via :data:vpn ndkBuild inside assembleRelease)
-  #   3. assembleRelease -Pvpnis.buildNative=true
-  #   4. Keystore injection via -Pandroid.injected.signing.* Gradle properties
-  #   5. gh release create + upload
+  #   3. assembleRelease -Pvpnis.buildNative=true  (signed by the committed release
+  #      signingConfig in app/build.gradle.kts — no secret injection)
+  #   4. gh release create + upload
   #
   # TRIGGER RATIONALE:
   #   Only fires for `push: tags: v*.*.*` and `workflow_dispatch`. All other CI
@@ -570,14 +570,13 @@ jobs:
   #   The explicit guard here is what matters: signing secrets are NEVER exposed
   #   to the normal branch-push / PR / schedule path.
   #
-  # KEYSTORE SECURITY:
-  #   - The base64-encoded keystore is decoded into $RUNNER_TEMP (ephemeral per
-  #     job) and is never written to the workspace or any artifact.
-  #   - Passwords are passed directly on the Gradle command line; GitHub Actions
-  #     automatically masks secret values in logs so they do not appear in plain
-  #     text. We additionally avoid `set -x` and `echo` of any secret variable.
-  #   - A cleanup step with `if: always()` removes the decoded keystore file even
-  #     when the build step fails, so the file never lingers on the runner.
+  # SIGNING:
+  #   - The release APK is signed by a FIXED keystore committed at
+  #     app/signing/vpnis-release.keystore, wired via the release signingConfig in
+  #     app/build.gradle.kts. Credentials are the well-known Android debug values —
+  #     nothing secret, so there are no signing secrets in this job.
+  #   - The only invariant that matters is that the key never changes, so that an
+  #     APK installed from one Release updates cleanly over a previous one.
   #   - `persist-credentials: false` on checkout — the GH_TOKEN used for
   #     `gh release` is injected only in the upload step's env, not into git creds.
   #
@@ -666,40 +665,16 @@ jobs:
           fi
           echo "libXray submodule SHA verified: $ACTUAL"
 
-      # SECURITY: Decode the base64 keystore into $RUNNER_TEMP (ephemeral, job-scoped).
-      # We do NOT echo the decoded bytes or the raw secret at any point.
-      # $RUNNER_TEMP is outside the workspace so it is never accidentally archived.
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "$RUNNER_TEMP/release.keystore"
-
-      # The release build type has NO signingConfig block in app/build.gradle.kts
-      # (intentional — see issue #72 and the job description above). AGP picks up
-      # signing exclusively from these injected Gradle properties.
-      #
-      # SECURITY NOTE: GitHub Actions automatically redacts secret values from the
-      # runner log, so -Pandroid.injected.signing.store.password=<value> will appear
-      # as "***" in any captured output. We additionally avoid `set -x` here so Bash
-      # does not expand and print the interpolated command before running it.
+      # Signing is handled by the release signingConfig committed in app/build.gradle.kts
+      # (fixed self-distribution keystore, well-known debug credentials — see that file and
+      # the job description above). No secret decode / injection needed.
       # VPNIS_DEFAULT_SERVER_CONFIG is scoped to this step only (same rationale as
       # the `build` job's Assemble step — minimise exposure surface).
       - name: Assemble signed release APK
         env:
           VPNIS_DEFAULT_SERVER_CONFIG: ${{ secrets.VPNIS_DEFAULT_SERVER_CONFIG }}
         run: |
-          ./gradlew :app:assembleRelease \
-            -Pvpnis.buildNative=true \
-            "-Pandroid.injected.signing.store.file=$RUNNER_TEMP/release.keystore" \
-            "-Pandroid.injected.signing.store.password=${{ secrets.STORE_PASSWORD }}" \
-            "-Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }}" \
-            "-Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}"
-
-      # Always remove the decoded keystore — even if the build step above failed.
-      # This prevents the file from lingering in $RUNNER_TEMP for the rest of the
-      # job's lifetime in the unlikely event a later step tries to read the temp dir.
-      - name: Delete keystore temp file
-        if: always()
-        run: rm -f "$RUNNER_TEMP/release.keystore"
+          ./gradlew :app:assembleRelease -Pvpnis.buildNative=true
 
       # Upload the signed APK as a workflow artifact so it is retrievable from the
       # Actions run page regardless of whether the GitHub Release upload succeeds,
