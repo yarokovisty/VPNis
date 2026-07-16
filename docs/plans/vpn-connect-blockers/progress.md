@@ -13,7 +13,7 @@ review_cycle: 3
 - [x] T-3 — IPv6 fail-closed: структурная правка `TunConfig` (v6-поля) + family-aware `buildTun`
 - [x] T-4 — nativeStart try/catch + backstop→`Error` + удаление `onPermissionRequired` из sink
 - [x] T-5 — юнит-тесты гейта/отказа/backstop + миграция старых permission-тестов
-- [ ] T-6 — верификация на устройстве (fail-closed IPv6/DNS доказаны активно; приёмка)
+- [~] T-6 — device-верификация: #106/#107 подтверждены исправленными на Pixel 7; полный прогон #67 (Connected/IPv6/DNS) заблокирован #109 (дефолт-сервер = placeholder, секрет не установлен)
 
 ## Learnings
 - T-1: `specialUse` прошёл `lintDebug` без `tools:ignore` — второе правило `SpecialPermission` не загорелось (AGP 9.2 + `<property>` присутствует).
