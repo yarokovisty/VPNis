@@ -34,9 +34,10 @@ import kotlinx.serialization.json.putJsonObject
  * ```json
  * {
  *   "dns": { "servers":["1.1.1.1","1.0.0.1"], "queryStrategy":"UseIPv4" },
+ *   "policy": { "levels":{ "8":{ "handshake":4,"connIdle":300,"uplinkOnly":1,"downlinkOnly":1 } } },
  *   "inbounds": [{ "tag":"socks-in", "protocol":"socks", "listen":"127.0.0.1",
  *                  "port":<localSocksPort>,
- *                  "settings":{ "auth":"noauth", "udp":true },
+ *                  "settings":{ "auth":"noauth", "udp":true, "userLevel":8 },
  *                  "sniffing":{ "enabled":true, "destOverride":["http","tls","quic"] } }],
  *   "outbounds": [
  *     { "tag":"proxy-out", "protocol":"vless",
@@ -60,8 +61,10 @@ import kotlinx.serialization.json.putJsonObject
  * ```
  *
  * The `dns` object + port-53 → `dns-out` routing rule + inbound `sniffing` make Xray resolve
- * DNS internally instead of tunnelling each app DNS query as a fresh vless connection — without
- * them the per-query connection storm collapses the return path (issue #111).
+ * DNS internally instead of tunnelling each app DNS query as a fresh vless connection. The
+ * `policy` (level 8, reaping half-closed connections after 1s) + the inbound `userLevel:8`
+ * keep the concurrent connection count low so reality handshakes are not dropped by the server's
+ * per-source concurrent-connection limit — together these restore the return path (issue #111).
  *
  * When `security` is NOT `reality`, [build] returns `null` (broader transport/security
  * coverage is tracked in issue #74).
@@ -250,6 +253,25 @@ internal object XrayConfigBuilder {
                 put("queryStrategy", JsonPrimitive("UseIPv4"))
             }
 
+            // ---- policy (issue #111) ----
+            // Level-8 connection policy, mirroring v2rayNG. uplinkOnly=1 / downlinkOnly=1 reap a
+            // connection 1s after one direction half-closes, so drained/stuck connections do not
+            // pile up. Without it (default level 0 = uplinkOnly 2 / downlinkOnly 5) our stuck
+            // reality handshakes accumulated to ~32 concurrent, tripping the server's per-source
+            // concurrent-connection limit so every new handshake's first segment was dropped —
+            // the residual dead-return-path cause. The socks inbound is tagged userLevel=8 below
+            // so this policy actually applies.
+            putJsonObject("policy") {
+                putJsonObject("levels") {
+                    putJsonObject("8") {
+                        put("handshake", JsonPrimitive(4))
+                        put("connIdle", JsonPrimitive(300))
+                        put("uplinkOnly", JsonPrimitive(1))
+                        put("downlinkOnly", JsonPrimitive(1))
+                    }
+                }
+            }
+
             // ---- inbounds ----
             putJsonArray("inbounds") {
                 add(
@@ -262,6 +284,9 @@ internal object XrayConfigBuilder {
                         putJsonObject("settings") {
                             put("auth", JsonPrimitive("noauth"))
                             put("udp", JsonPrimitive(true))
+                            // Tag traffic with level 8 so the `policy` above (aggressive
+                            // connection reaping) actually applies — issue #111.
+                            put("userLevel", JsonPrimitive(8))
                         }
                         // Sniff the real destination (SNI/host) so routing operates on
                         // hostnames and DNS/routing behaves like v2rayNG (issue #111).

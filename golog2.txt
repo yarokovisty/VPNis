@@ -1,0 +1,1002 @@
+07-17 00:10:32.307 22261 22354 I GoLog   : 2026/07/16 17:10:32.307600 [Debug] app/log: Logger started
+07-17 00:10:32.307 22261 22354 I GoLog   : 2026/07/16 17:10:32.307663 [Info] app/dns: DNS: created UDP client initialized for 1.1.1.1:53
+07-17 00:10:32.307 22261 22354 I GoLog   : 2026/07/16 17:10:32.307671 [Info] app/dns: DNS: created UDP client initialized for 1.0.0.1:53
+07-17 00:10:32.307 22261 22354 I GoLog   : 2026/07/16 17:10:32.307918 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:10808
+07-17 00:10:32.308 22261 22354 I GoLog   : 2026/07/16 17:10:32.308551 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:10808
+07-17 00:10:32.309 22261 22352 I GoLog   : 2026/07/16 17:10:32.308721 [Info] transport/internet/udp: listening UDP on 127.0.0.1:10808
+07-17 00:10:32.309 22261 22352 I GoLog   : 2026/07/16 17:10:32.308762 [Warning] core: Xray 26.5.9 started
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421102 [Info] [1214934868] proxy/socks: client UDP connection from udp:127.0.0.1:51722
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421131 [Debug] [1214934868] proxy/socks: send packet to udp:1.1.1.1:53 with 33 bytes
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421140 [Debug] [1214934868] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421147 [Info] [1214934868] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421269 [Info] [1304207998] proxy/socks: client UDP connection from udp:127.0.0.1:34987
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421283 [Debug] [1304207998] proxy/socks: send packet to udp:1.1.1.1:53 with 33 bytes
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421289 [Debug] [1304207998] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421296 [Info] [1304207998] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421400 [Info] [1304207998] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421413 [Info] [1214934868] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:32.421 22261 22358 I GoLog   : 2026/07/16 17:10:32.421418 [Info] [1304207998] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421482 from udp:127.0.0.1:34987 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421497 from udp:127.0.0.1:51722 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421541 [Info] [1214934868] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22361 I GoLog   : 2026/07/16 17:10:32.421581 [Debug] [1214934868] proxy/socks: writing back UDP response with 33 bytes
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421683 [Debug] app/dns: domain e4.whatsapp.net will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421712 from DNS accepted udp:1.1.1.1:53 [xray.system.96b95fb4-7bea-4bfe-b585-9736b5e4f15f -> dns-out]
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421717 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: e4.whatsapp.net.
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421733 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421752 [Info] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421808 [Info] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421838 [Info] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:32.421 22261 22350 I GoLog   : 2026/07/16 17:10:32.421849 [Debug] transport/internet: dialing to udp:1.1.1.1:53
+07-17 00:10:32.428 22261 22350 I GoLog   : 2026/07/16 17:10:32.428540 [Info] [2503419758] proxy/socks: TCP Connect request to tcp:15.197.206.217:80
+07-17 00:10:32.446 22261 22361 I GoLog   : 2026/07/16 17:10:32.446156 [Info] [1476089952] proxy/socks: TCP Connect request to tcp:1.0.0.1:853
+07-17 00:10:32.446 22261 22361 I GoLog   : 2026/07/16 17:10:32.446228 [Info] [1476089952] app/dispatcher: default route for tcp:1.0.0.1:853
+07-17 00:10:32.446 22261 22361 I GoLog   : 2026/07/16 17:10:32.446346 from tcp:127.0.0.1:38662 accepted tcp:1.0.0.1:853 [socks-in >> proxy-out]
+07-17 00:10:32.446 22261 22361 I GoLog   : 2026/07/16 17:10:32.446481 [Info] [1476089952] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:32.446 22261 22361 I GoLog   : 2026/07/16 17:10:32.446521 [Debug] [1476089952] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:32.449 22261 22358 I GoLog   : 2026/07/16 17:10:32.449205 [Info] [3750943722] proxy/socks: TCP Connect request to tcp:1.1.1.1:853
+07-17 00:10:32.450 22261 22358 I GoLog   : 2026/07/16 17:10:32.450455 from tcp:127.0.0.1:38676 accepted tcp:1.1.1.1:853 [socks-in >> proxy-out]
+07-17 00:10:32.450 22261 22358 I GoLog   : 2026/07/16 17:10:32.450509 [Info] [3750943722] app/dispatcher: default route for tcp:1.1.1.1:853
+07-17 00:10:32.450 22261 22358 I GoLog   : 2026/07/16 17:10:32.450545 [Info] [3750943722] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:32.450 22261 22358 I GoLog   : 2026/07/16 17:10:32.450571 [Debug] [3750943722] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:32.455 22261 22353 I GoLog   : 2026/07/16 17:10:32.455531 [Info] [2503419758] app/dispatcher: sniffed domain: c.whatsapp.net
+07-17 00:10:32.455 22261 22353 I GoLog   : 2026/07/16 17:10:32.455557 [Info] [2503419758] app/dispatcher: default route for tcp:c.whatsapp.net:80
+07-17 00:10:32.455 22261 22353 I GoLog   : 2026/07/16 17:10:32.455562 [Info] [2503419758] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:32.455 22261 22353 I GoLog   : 2026/07/16 17:10:32.455565 [Debug] [2503419758] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:32.455 22261 22353 I GoLog   : 2026/07/16 17:10:32.455663 from tcp:127.0.0.1:38648 accepted tcp:15.197.206.217:80 [socks-in >> proxy-out]
+07-17 00:10:32.475 22261 22353 I GoLog   : 2026/07/16 17:10:32.475167 [Info] app/dns: UDP:1.1.1.1:53 got answer: e4.whatsapp.net. TypeA -> [3.33.221.48], rtt: 53.455078ms, lock: 13.794µs
+07-17 00:10:32.475 22261 22353 I GoLog   : 2026/07/16 17:10:32.475338 [Debug] [1304207998] proxy/socks: writing back UDP response with 49 bytes
+07-17 00:10:32.497 22261 22358 I GoLog   : 2026/07/16 17:10:32.497850 [Info] [95435796] proxy/socks: client UDP connection from udp:127.0.0.1:57109
+07-17 00:10:32.497 22261 22358 I GoLog   : 2026/07/16 17:10:32.497869 [Debug] [95435796] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:10:32.497 22261 22358 I GoLog   : 2026/07/16 17:10:32.497873 [Debug] [95435796] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.497 22261 22358 I GoLog   : 2026/07/16 17:10:32.497877 [Info] [95435796] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:32.498 22261 22355 I GoLog   : 2026/07/16 17:10:32.497993 [Info] [95435796] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:32.498 22261 22355 I GoLog   : 2026/07/16 17:10:32.498000 from udp:127.0.0.1:57109 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:32.498 22261 22355 I GoLog   : 2026/07/16 17:10:32.498007 [Info] [95435796] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:32.498 22261 22358 I GoLog   : 2026/07/16 17:10:32.498126 [Debug] [95435796] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498915 [Info] [625660098] proxy/socks: client UDP connection from udp:127.0.0.1:52013
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498923 [Debug] [625660098] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498927 [Debug] [625660098] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498930 [Info] [625660098] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498973 [Info] [625660098] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498977 [Info] [625660098] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.498981 from udp:127.0.0.1:52013 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.499158 [Debug] app/dns: domain mtalk.google.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.499172 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: mtalk.google.com.
+07-17 00:10:32.499 22261 22353 I GoLog   : 2026/07/16 17:10:32.499176 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:32.551 22261 22353 I GoLog   : 2026/07/16 17:10:32.551257 [Info] app/dns: UDP:1.1.1.1:53 got answer: mtalk.google.com. TypeA -> [108.177.14.188], rtt: 52.095052ms, lock: 15.869µs
+07-17 00:10:32.551 22261 22355 I GoLog   : 2026/07/16 17:10:32.551675 [Debug] [625660098] proxy/socks: writing back UDP response with 50 bytes
+07-17 00:10:32.555 22261 22358 I GoLog   : 2026/07/16 17:10:32.555894 [Info] [774722878] proxy/socks: TCP Connect request to tcp:108.177.14.188:5228
+07-17 00:10:32.556 22261 22358 I GoLog   : 2026/07/16 17:10:32.556789 [Info] [774722878] app/dispatcher: sniffed domain: mtalk.google.com
+07-17 00:10:32.556 22261 22358 I GoLog   : 2026/07/16 17:10:32.556828 [Info] [774722878] app/dispatcher: default route for tcp:mtalk.google.com:5228
+07-17 00:10:32.556 22261 22358 I GoLog   : 2026/07/16 17:10:32.556844 [Info] [774722878] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:32.556 22261 22358 I GoLog   : 2026/07/16 17:10:32.556856 [Debug] [774722878] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:32.556 22261 22358 I GoLog   : 2026/07/16 17:10:32.556882 from tcp:127.0.0.1:38702 accepted tcp:108.177.14.188:5228 [socks-in >> proxy-out]
+07-17 00:10:32.636 22261 22358 I GoLog   : 2026/07/16 17:10:32.636275 [Info] [3750943722] proxy/vless/outbound: tunneling request to tcp:1.1.1.1:853 via 144.31.104.124:443
+07-17 00:10:32.637 22261 22361 I GoLog   : 2026/07/16 17:10:32.636993 [Debug] [3750943722] proxy: XtlsFilterTls found tls client hello! 228
+07-17 00:10:32.637 22261 22361 I GoLog   : 2026/07/16 17:10:32.637091 [Debug] [3750943722] proxy: XtlsPadding 228 1035 0
+07-17 00:10:32.637 22261 22361 I GoLog   : 2026/07/16 17:10:32.637665 [Info] [1476089952] proxy/vless/outbound: tunneling request to tcp:1.0.0.1:853 via 144.31.104.124:443
+07-17 00:10:32.640 22261 22361 I GoLog   : 2026/07/16 17:10:32.640402 [Debug] [1476089952] proxy: XtlsFilterTls found tls client hello! 228
+07-17 00:10:32.640 22261 22361 I GoLog   : 2026/07/16 17:10:32.640533 [Debug] [1476089952] proxy: XtlsPadding 228 685 0
+07-17 00:10:34.776 22261 22361 I GoLog   : 2026/07/16 17:10:34.776021 [Info] [2319018383] proxy/socks: client UDP connection from udp:127.0.0.1:51661
+07-17 00:10:34.776 22261 22361 I GoLog   : 2026/07/16 17:10:34.776080 [Debug] [2319018383] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:34.776 22261 22361 I GoLog   : 2026/07/16 17:10:34.776096 [Debug] [2319018383] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:34.776 22261 22361 I GoLog   : 2026/07/16 17:10:34.776109 [Info] [2319018383] transport/internet/udp: establishing new connection for udp:57.144.249.32:443
+07-17 00:10:34.776 22261 22358 I GoLog   : 2026/07/16 17:10:34.776327 [Info] [2319018383] app/dispatcher: sniffed domain: api.whatsapp.net
+07-17 00:10:34.776 22261 22358 I GoLog   : 2026/07/16 17:10:34.776346 [Info] [2319018383] app/dispatcher: default route for udp:api.whatsapp.net:443
+07-17 00:10:34.776 22261 22358 I GoLog   : 2026/07/16 17:10:34.776358 [Info] [2319018383] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:34.776 22261 22358 I GoLog   : 2026/07/16 17:10:34.776400 [Debug] [2319018383] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:34.776 22261 22358 I GoLog   : 2026/07/16 17:10:34.776448 from udp:127.0.0.1:51661 accepted udp:57.144.249.32:443 [socks-in >> proxy-out]
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839657 from udp:127.0.0.1:49390 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839656 [Info] [1101257719] proxy/socks: client UDP connection from udp:127.0.0.1:42448
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839684 [Info] [3554764488] proxy/socks: client UDP connection from udp:127.0.0.1:49390
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839690 [Debug] [3554764488] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839693 [Debug] [3554764488] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839696 [Info] [3554764488] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839699 [Debug] [1101257719] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839701 [Debug] [1101257719] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839704 [Info] [1101257719] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839707 [Info] [3554764488] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839710 [Info] [3554764488] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.839 22261 22353 I GoLog   : 2026/07/16 17:10:38.839714 [Debug] [3554764488] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:38.839 22261 22358 I GoLog   : 2026/07/16 17:10:38.839861 [Info] [1101257719] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.839 22261 22358 I GoLog   : 2026/07/16 17:10:38.839917 [Info] [1101257719] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.840 22261 22358 I GoLog   : 2026/07/16 17:10:38.839878 from udp:127.0.0.1:42448 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.840 22261 22358 I GoLog   : 2026/07/16 17:10:38.840089 [Debug] app/dns: domain example.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:38.840 22261 22358 I GoLog   : 2026/07/16 17:10:38.840411 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: example.com.
+07-17 00:10:38.840 22261 22358 I GoLog   : 2026/07/16 17:10:38.840464 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.890 22261 22355 I GoLog   : 2026/07/16 17:10:38.890608 [Info] app/dns: UDP:1.1.1.1:53 got answer: example.com. TypeA -> [8.47.69.0 8.6.112.0], rtt: 50.321086ms, lock: 12.289µs
+07-17 00:10:38.890 22261 22350 I GoLog   : 2026/07/16 17:10:38.890791 [Debug] [1101257719] proxy/socks: writing back UDP response with 61 bytes
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908821 [Info] [3221857291] proxy/socks: client UDP connection from udp:127.0.0.1:36839
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908838 [Debug] [3221857291] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908854 [Debug] [3221857291] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908858 [Info] [3221857291] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908941 [Info] [3221857291] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.908 22261 22358 I GoLog   : 2026/07/16 17:10:38.908945 [Info] [3221857291] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.909 22261 22358 I GoLog   : 2026/07/16 17:10:38.908951 from udp:127.0.0.1:36839 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.909 22261 22353 I GoLog   : 2026/07/16 17:10:38.909039 [Info] [3221857291] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.909 22261 22353 I GoLog   : 2026/07/16 17:10:38.909081 [Debug] [3221857291] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913620 [Info] [1549005697] proxy/socks: client UDP connection from udp:127.0.0.1:51419
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913654 [Debug] [1549005697] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913662 [Debug] [1549005697] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913667 [Info] [1549005697] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913773 [Info] [1549005697] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913784 [Info] [1549005697] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.913 22261 22353 I GoLog   : 2026/07/16 17:10:38.913808 from udp:127.0.0.1:51419 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.914 22261 22353 I GoLog   : 2026/07/16 17:10:38.914134 [Debug] [1549005697] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.922 22261 22353 I GoLog   : 2026/07/16 17:10:38.922683 [Info] [3983518002] proxy/socks: client UDP connection from udp:127.0.0.1:43925
+07-17 00:10:38.922 22261 22353 I GoLog   : 2026/07/16 17:10:38.922702 [Debug] [3983518002] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.922 22261 22353 I GoLog   : 2026/07/16 17:10:38.922707 [Debug] [3983518002] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.922 22261 22353 I GoLog   : 2026/07/16 17:10:38.922712 [Info] [3983518002] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.922 22261 22358 I GoLog   : 2026/07/16 17:10:38.922913 [Info] [3983518002] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.922 22261 22358 I GoLog   : 2026/07/16 17:10:38.922933 [Info] [3983518002] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.922 22261 22358 I GoLog   : 2026/07/16 17:10:38.922943 from udp:127.0.0.1:43925 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.923 22261 22353 I GoLog   : 2026/07/16 17:10:38.923132 [Debug] app/dns: domain chrome.cloudflare-dns.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:38.923 22261 22353 I GoLog   : 2026/07/16 17:10:38.923165 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: chrome.cloudflare-dns.com.
+07-17 00:10:38.923 22261 22353 I GoLog   : 2026/07/16 17:10:38.923179 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.926 22261 22358 I GoLog   : 2026/07/16 17:10:38.926520 [Info] [687569084] proxy/socks: client UDP connection from udp:127.0.0.1:38412
+07-17 00:10:38.926 22261 22358 I GoLog   : 2026/07/16 17:10:38.926551 [Debug] [687569084] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.926 22261 22358 I GoLog   : 2026/07/16 17:10:38.926557 [Debug] [687569084] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.926 22261 22358 I GoLog   : 2026/07/16 17:10:38.926562 [Info] [687569084] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.926 22261 22353 I GoLog   : 2026/07/16 17:10:38.926665 [Info] [687569084] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.926 22261 22353 I GoLog   : 2026/07/16 17:10:38.926681 [Info] [687569084] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.926 22261 22353 I GoLog   : 2026/07/16 17:10:38.926702 from udp:127.0.0.1:38412 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.926 22261 22353 I GoLog   : 2026/07/16 17:10:38.926752 [Info] [687569084] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.926 22261 22353 I GoLog   : 2026/07/16 17:10:38.926799 [Debug] [687569084] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.930979 [Info] [535981046] proxy/socks: client UDP connection from udp:127.0.0.1:41787
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931001 [Debug] [535981046] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931007 [Debug] [535981046] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931012 [Info] [535981046] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931110 [Info] [535981046] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931117 [Info] [535981046] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931123 from udp:127.0.0.1:41787 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.931 22261 22361 I GoLog   : 2026/07/16 17:10:38.931208 [Debug] app/dns: domain chrome.cloudflare-dns.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:38.933 22261 22361 I GoLog   : 2026/07/16 17:10:38.932772 [Info] [159475606] proxy/socks: client UDP connection from udp:127.0.0.1:48379
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.932825 [Debug] [159475606] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.932844 [Debug] [159475606] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.932859 [Info] [159475606] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.933513 [Info] [159475606] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.933539 [Info] [159475606] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.933 22261 22350 I GoLog   : 2026/07/16 17:10:38.933563 from udp:127.0.0.1:48379 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.934 22261 22350 I GoLog   : 2026/07/16 17:10:38.934003 [Debug] [159475606] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.934 22261 22350 I GoLog   : 2026/07/16 17:10:38.934077 [Info] [2859939005] proxy/socks: client UDP connection from udp:127.0.0.1:45224
+07-17 00:10:38.934 22261 22350 I GoLog   : 2026/07/16 17:10:38.934099 [Debug] [2859939005] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934134 [Debug] [2859939005] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934151 [Info] [2859939005] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934178 [Info] [2859939005] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934193 [Info] [2859939005] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934033 from udp:127.0.0.1:45224 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.934 22261 22355 I GoLog   : 2026/07/16 17:10:38.934206 [Debug] [2859939005] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938198 [Info] [2577492009] proxy/socks: client UDP connection from udp:127.0.0.1:42764
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938241 [Debug] [2577492009] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938252 [Debug] [2577492009] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938257 [Info] [2577492009] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938545 from udp:127.0.0.1:42764 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938562 [Info] [2577492009] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938569 [Info] [2577492009] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.938 22261 22358 I GoLog   : 2026/07/16 17:10:38.938608 [Info] [2577492009] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.938 22261 22360 I GoLog   : 2026/07/16 17:10:38.938800 [Debug] [2577492009] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.938 22261 22352 I GoLog   : 2026/07/16 17:10:38.938930 [Info] [1500667149] proxy/socks: client UDP connection from udp:127.0.0.1:50765
+07-17 00:10:38.938 22261 22352 I GoLog   : 2026/07/16 17:10:38.938956 [Debug] [1500667149] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.938 22261 22352 I GoLog   : 2026/07/16 17:10:38.938970 [Debug] [1500667149] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.939 22261 22352 I GoLog   : 2026/07/16 17:10:38.938982 [Info] [1500667149] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.939 22261 22352 I GoLog   : 2026/07/16 17:10:38.938994 [Info] [1500667149] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.939 22261 22352 I GoLog   : 2026/07/16 17:10:38.938996 from udp:127.0.0.1:50765 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.939 22261 22352 I GoLog   : 2026/07/16 17:10:38.939006 [Info] [1500667149] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.939 22261 22352 I GoLog   : 2026/07/16 17:10:38.939064 [Debug] app/dns: domain chrome.cloudflare-dns.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:38.940 22261 22361 I GoLog   : 2026/07/16 17:10:38.940845 [Info] [341580929] proxy/socks: client UDP connection from udp:127.0.0.1:40625
+07-17 00:10:38.940 22261 22361 I GoLog   : 2026/07/16 17:10:38.940887 [Debug] [341580929] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.940 22261 22361 I GoLog   : 2026/07/16 17:10:38.940906 [Debug] [341580929] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22360 I GoLog   : 2026/07/16 17:10:38.940919 [Info] [341580929] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22358 I GoLog   : 2026/07/16 17:10:38.941191 [Info] [341580929] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.941 22261 22358 I GoLog   : 2026/07/16 17:10:38.941200 [Info] [341580929] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22352 I GoLog   : 2026/07/16 17:10:38.941259 from udp:127.0.0.1:40625 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.941 22261 22361 I GoLog   : 2026/07/16 17:10:38.941332 [Info] [1415072126] proxy/socks: client UDP connection from udp:127.0.0.1:45463
+07-17 00:10:38.941 22261 22361 I GoLog   : 2026/07/16 17:10:38.941350 [Debug] [1415072126] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.941 22261 22361 I GoLog   : 2026/07/16 17:10:38.941363 [Debug] [1415072126] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22361 I GoLog   : 2026/07/16 17:10:38.941377 [Info] [1415072126] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22361 I GoLog   : 2026/07/16 17:10:38.941397 [Info] [341580929] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.941 22261 22358 I GoLog   : 2026/07/16 17:10:38.941433 [Debug] [341580929] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.941 22261 22352 I GoLog   : 2026/07/16 17:10:38.941617 [Info] [1415072126] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.941 22261 22352 I GoLog   : 2026/07/16 17:10:38.941629 [Info] [1415072126] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.941 22261 22352 I GoLog   : 2026/07/16 17:10:38.941658 from udp:127.0.0.1:45463 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.941 22261 22358 I GoLog   : 2026/07/16 17:10:38.941737 [Info] [1415072126] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.941 22261 22358 I GoLog   : 2026/07/16 17:10:38.941758 [Debug] [1415072126] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.946970 [Info] [3970824472] proxy/socks: client UDP connection from udp:127.0.0.1:37766
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947003 [Debug] [3970824472] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947010 [Debug] [3970824472] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947014 [Info] [3970824472] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947107 [Info] [3970824472] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947120 [Info] [3970824472] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947109 from udp:127.0.0.1:37766 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947154 [Info] [3970824472] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.947 22261 22352 I GoLog   : 2026/07/16 17:10:38.947160 [Debug] [3970824472] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.949 22261 22352 I GoLog   : 2026/07/16 17:10:38.949790 [Info] [539832233] proxy/socks: client UDP connection from udp:127.0.0.1:48018
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950063 [Debug] [539832233] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950069 [Debug] [539832233] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950074 [Info] [539832233] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950078 [Info] [539832233] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950080 [Info] [539832233] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950086 [Info] [539832233] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950089 [Debug] [539832233] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.949971 from udp:127.0.0.1:48018 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950251 [Info] [3893614944] proxy/socks: client UDP connection from udp:127.0.0.1:50916
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950278 [Debug] [3893614944] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950284 [Debug] [3893614944] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950288 [Info] [3893614944] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950293 [Info] [3893614944] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950296 [Info] [3893614944] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.950 22261 22360 I GoLog   : 2026/07/16 17:10:38.950305 from udp:127.0.0.1:50916 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950442 [Info] [3893614944] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.950 22261 22352 I GoLog   : 2026/07/16 17:10:38.950465 [Debug] [3893614944] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955649 [Info] [1791431035] proxy/socks: client UDP connection from udp:127.0.0.1:37680
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955672 [Debug] [1791431035] proxy/socks: send packet to udp:1.1.1.1:53 with 43 bytes
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955678 [Debug] [1791431035] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955683 [Info] [1791431035] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:38.955 22261 22355 I GoLog   : 2026/07/16 17:10:38.955743 [Info] [1881474923] proxy/socks: client UDP connection from udp:127.0.0.1:33365
+07-17 00:10:38.955 22261 22355 I GoLog   : 2026/07/16 17:10:38.955755 [Debug] [1881474923] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.955 22261 22355 I GoLog   : 2026/07/16 17:10:38.955761 [Debug] [1881474923] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.955 22261 22355 I GoLog   : 2026/07/16 17:10:38.955765 [Info] [1881474923] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955824 from udp:127.0.0.1:33365 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.955 22261 22361 I GoLog   : 2026/07/16 17:10:38.955832 from udp:127.0.0.1:37680 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:38.955 22261 22360 I GoLog   : 2026/07/16 17:10:38.955885 [Info] [1881474923] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.955 22261 22360 I GoLog   : 2026/07/16 17:10:38.955923 [Info] [1881474923] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.955 22261 22360 I GoLog   : 2026/07/16 17:10:38.955944 [Info] [1791431035] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.955959 [Info] [1791431035] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.955971 [Info] [3260602366] proxy/socks: client UDP connection from udp:127.0.0.1:44347
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.955984 [Debug] [3260602366] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.955996 [Debug] [3260602366] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956007 [Info] [3260602366] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956019 from udp:127.0.0.1:44347 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956026 [Info] [1881474923] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956037 [Debug] [1881474923] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956048 [Info] [1791431035] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956078 [Debug] [1791431035] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956110 [Info] [3260602366] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956123 [Info] [3260602366] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956136 [Info] [3260602366] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.956 22261 22353 I GoLog   : 2026/07/16 17:10:38.956147 [Debug] [3260602366] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957728 [Info] [221264650] proxy/socks: client UDP connection from udp:127.0.0.1:49562
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957741 [Debug] [221264650] proxy/socks: send packet to udp:1.0.0.1:53 with 43 bytes
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957745 [Debug] [221264650] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957748 [Info] [221264650] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957830 from udp:127.0.0.1:49562 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:38.957 22261 22360 I GoLog   : 2026/07/16 17:10:38.957844 [Info] [221264650] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:38.957 22261 22352 I GoLog   : 2026/07/16 17:10:38.957881 [Info] [221264650] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:38.957 22261 22352 I GoLog   : 2026/07/16 17:10:38.957890 [Info] [221264650] proxy/dns: rejected type TypeHTTPS query for domain chrome.cloudflare-dns.com.
+07-17 00:10:38.957 22261 22352 I GoLog   : 2026/07/16 17:10:38.957900 [Debug] [221264650] proxy/socks: writing back UDP response with 43 bytes
+07-17 00:10:38.973 22261 22358 I GoLog   : 2026/07/16 17:10:38.973602 [Info] app/dns: UDP:1.1.1.1:53 got answer: chrome.cloudflare-dns.com. TypeA -> [162.159.61.3 172.64.41.3], rtt: 50.49589ms, lock: 12.777µs
+07-17 00:10:38.973 22261 22361 I GoLog   : 2026/07/16 17:10:38.973881 [Debug] [535981046] proxy/socks: writing back UDP response with 75 bytes
+07-17 00:10:38.973 22261 22361 I GoLog   : 2026/07/16 17:10:38.973887 [Debug] [3983518002] proxy/socks: writing back UDP response with 75 bytes
+07-17 00:10:38.973 22261 22361 I GoLog   : 2026/07/16 17:10:38.973890 [Debug] [1500667149] proxy/socks: writing back UDP response with 75 bytes
+07-17 00:10:38.981 22261 22358 I GoLog   : 2026/07/16 17:10:38.981074 [Info] [322471436] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:39.006 22261 22353 I GoLog   : 2026/07/16 17:10:39.006914 [Info] [2500485260] proxy/socks: client UDP connection from udp:127.0.0.1:46489
+07-17 00:10:39.006 22261 22353 I GoLog   : 2026/07/16 17:10:39.006936 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:39.006 22261 22353 I GoLog   : 2026/07/16 17:10:39.006940 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:39.006 22261 22353 I GoLog   : 2026/07/16 17:10:39.006943 [Info] [2500485260] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:10:39.006 22261 22353 I GoLog   : 2026/07/16 17:10:39.006946 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:39.007 22261 22353 I GoLog   : 2026/07/16 17:10:39.006949 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:39.007 22261 22361 I GoLog   : 2026/07/16 17:10:39.007633 [Info] [2500485260] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:39.007 22261 22361 I GoLog   : 2026/07/16 17:10:39.007651 [Info] [2500485260] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:10:39.007 22261 22361 I GoLog   : 2026/07/16 17:10:39.007658 [Info] [2500485260] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.007 22261 22361 I GoLog   : 2026/07/16 17:10:39.007663 [Debug] [2500485260] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.007 22261 22361 I GoLog   : 2026/07/16 17:10:39.007717 from udp:127.0.0.1:46489 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:39.012 22261 22361 I GoLog   : 2026/07/16 17:10:39.012137 [Info] [322471436] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:39.012 22261 22361 I GoLog   : 2026/07/16 17:10:39.012177 from tcp:127.0.0.1:38942 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:39.012 22261 22361 I GoLog   : 2026/07/16 17:10:39.012186 [Info] [322471436] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:39.012 22261 22361 I GoLog   : 2026/07/16 17:10:39.012212 [Info] [322471436] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.012 22261 22361 I GoLog   : 2026/07/16 17:10:39.012255 [Debug] [322471436] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.016 22261 22352 I GoLog   : 2026/07/16 17:10:39.016398 [Info] [384764169] proxy/socks: client UDP connection from udp:127.0.0.1:48609
+07-17 00:10:39.016 22261 22352 I GoLog   : 2026/07/16 17:10:39.016436 [Debug] [384764169] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:39.016 22261 22352 I GoLog   : 2026/07/16 17:10:39.016443 [Debug] [384764169] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.016 22261 22352 I GoLog   : 2026/07/16 17:10:39.016449 [Info] [384764169] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.016 22261 22353 I GoLog   : 2026/07/16 17:10:39.016501 [Info] [384764169] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.016 22261 22353 I GoLog   : 2026/07/16 17:10:39.016517 [Info] [384764169] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.016 22261 22353 I GoLog   : 2026/07/16 17:10:39.016523 from udp:127.0.0.1:48609 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.016 22261 22361 I GoLog   : 2026/07/16 17:10:39.016569 [Info] [384764169] proxy/dns: rejected type TypeHTTPS query for domain example.com.
+07-17 00:10:39.016 22261 22361 I GoLog   : 2026/07/16 17:10:39.016594 [Debug] [384764169] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017591 [Info] [3921827738] proxy/socks: client UDP connection from udp:127.0.0.1:59123
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017601 [Debug] [3921827738] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017605 [Debug] [3921827738] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017608 [Info] [3921827738] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017611 [Info] [3921827738] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017614 [Info] [3921827738] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.017 22261 22360 I GoLog   : 2026/07/16 17:10:39.017624 from udp:127.0.0.1:59123 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.017 22261 22358 I GoLog   : 2026/07/16 17:10:39.017683 [Debug] [3921827738] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:39.017 22261 22358 I GoLog   : 2026/07/16 17:10:39.017688 [Info] [618548745] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.017949 [Info] [2949853154] proxy/socks: client UDP connection from udp:127.0.0.1:51702
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.017961 [Debug] [2949853154] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.017966 [Debug] [2949853154] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.017969 [Info] [2949853154] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018014 [Info] [2949853154] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018017 [Info] [2949853154] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018021 from udp:127.0.0.1:51702 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018122 [Debug] app/dns: domain example.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018134 [Debug] app/dns: UDP:1.1.1.1:53 cache HIT example.com. -> [8.47.69.0 8.6.112.0]
+07-17 00:10:39.018 22261 22352 I GoLog   : 2026/07/16 17:10:39.018138 [Debug] [2949853154] proxy/socks: writing back UDP response with 61 bytes
+07-17 00:10:39.018 22261 22360 I GoLog   : 2026/07/16 17:10:39.018434 [Info] [2828268545] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:39.019 22261 22361 I GoLog   : 2026/07/16 17:10:39.019216 [Info] [2828268545] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:39.019 22261 22361 I GoLog   : 2026/07/16 17:10:39.019223 [Info] [2828268545] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:39.019 22261 22361 I GoLog   : 2026/07/16 17:10:39.019226 [Info] [618548745] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:39.019 22261 22361 I GoLog   : 2026/07/16 17:10:39.019229 [Info] [2828268545] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.019 22261 22361 I GoLog   : 2026/07/16 17:10:39.019254 from tcp:127.0.0.1:39004 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:39.019 22261 22352 I GoLog   : 2026/07/16 17:10:39.019338 [Debug] [2828268545] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.019 22261 22352 I GoLog   : 2026/07/16 17:10:39.019348 [Info] [618548745] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:39.019 22261 22352 I GoLog   : 2026/07/16 17:10:39.019419 from tcp:127.0.0.1:38996 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:39.019 22261 22352 I GoLog   : 2026/07/16 17:10:39.019528 [Info] [618548745] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.019 22261 22352 I GoLog   : 2026/07/16 17:10:39.019540 [Debug] [618548745] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022489 [Info] [3697180540] proxy/socks: client UDP connection from udp:127.0.0.1:33853
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022514 [Debug] [3697180540] proxy/socks: send packet to udp:1.1.1.1:53 with 29 bytes
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022518 [Debug] [3697180540] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022522 [Info] [3697180540] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022589 [Info] [3697180540] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022613 [Info] [3697180540] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022639 from udp:127.0.0.1:33853 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022664 [Info] [3697180540] proxy/dns: rejected type TypeHTTPS query for domain example.com.
+07-17 00:10:39.022 22261 22358 I GoLog   : 2026/07/16 17:10:39.022677 [Debug] [3697180540] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024296 [Info] [2611393011] proxy/socks: client UDP connection from udp:127.0.0.1:39988
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024321 [Debug] [2611393011] proxy/socks: send packet to udp:1.0.0.1:53 with 29 bytes
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024327 [Debug] [2611393011] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024331 [Info] [2611393011] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024336 [Info] [2611393011] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024335 from udp:127.0.0.1:39988 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.024 22261 22361 I GoLog   : 2026/07/16 17:10:39.024340 [Info] [2611393011] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.024 22261 22358 I GoLog   : 2026/07/16 17:10:39.024403 [Info] [2611393011] proxy/dns: rejected type TypeHTTPS query for domain example.com.
+07-17 00:10:39.024 22261 22358 I GoLog   : 2026/07/16 17:10:39.024409 [Debug] [2611393011] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025664 [Info] [2223688910] proxy/socks: client UDP connection from udp:127.0.0.1:48354
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025678 [Debug] [2223688910] proxy/socks: send packet to udp:1.0.0.1:53 with 29 bytes
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025682 [Debug] [2223688910] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025685 [Info] [2223688910] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025736 from udp:127.0.0.1:48354 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025748 [Info] [2223688910] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025757 [Info] [2223688910] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025763 [Info] [2223688910] proxy/dns: rejected type TypeHTTPS query for domain example.com.
+07-17 00:10:39.025 22261 22358 I GoLog   : 2026/07/16 17:10:39.025767 [Debug] [2223688910] proxy/socks: writing back UDP response with 29 bytes
+07-17 00:10:39.028 22261 22360 I GoLog   : 2026/07/16 17:10:39.028180 [Info] [201036137] proxy/socks: TCP Connect request to tcp:8.47.69.0:443
+07-17 00:10:39.028 22261 22352 I GoLog   : 2026/07/16 17:10:39.028300 [Info] [201036137] app/dispatcher: sniffed domain: example.com
+07-17 00:10:39.028 22261 22352 I GoLog   : 2026/07/16 17:10:39.028344 [Info] [201036137] app/dispatcher: default route for tcp:example.com:443
+07-17 00:10:39.028 22261 22360 I GoLog   : 2026/07/16 17:10:39.028361 [Info] [201036137] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.028 22261 22360 I GoLog   : 2026/07/16 17:10:39.028372 [Debug] [201036137] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.028 22261 22360 I GoLog   : 2026/07/16 17:10:39.028401 from tcp:127.0.0.1:39036 accepted tcp:8.47.69.0:443 [socks-in >> proxy-out]
+07-17 00:10:39.127 22261 22361 I GoLog   : 2026/07/16 17:10:39.127642 [Info] [1383533177] proxy/socks: client UDP connection from udp:127.0.0.1:41710
+07-17 00:10:39.127 22261 22361 I GoLog   : 2026/07/16 17:10:39.127678 [Debug] [1383533177] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:10:39.127 22261 22361 I GoLog   : 2026/07/16 17:10:39.127683 [Debug] [1383533177] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.127 22261 22361 I GoLog   : 2026/07/16 17:10:39.127686 [Info] [1383533177] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.127 22261 22358 I GoLog   : 2026/07/16 17:10:39.127861 [Info] [1383533177] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.127 22261 22358 I GoLog   : 2026/07/16 17:10:39.127881 [Info] [1383533177] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.127 22261 22358 I GoLog   : 2026/07/16 17:10:39.127891 from udp:127.0.0.1:41710 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128075 [Debug] app/dns: domain www.google.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128083 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: www.google.com.
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128088 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128093 [Info] [420535659] proxy/socks: client UDP connection from udp:127.0.0.1:58423
+07-17 00:10:39.128 22261 22360 I GoLog   : 2026/07/16 17:10:39.128167 [Debug] [420535659] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:10:39.128 22261 22360 I GoLog   : 2026/07/16 17:10:39.128181 [Debug] [420535659] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.128 22261 22360 I GoLog   : 2026/07/16 17:10:39.128185 [Info] [420535659] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.128 22261 22353 I GoLog   : 2026/07/16 17:10:39.128409 from udp:127.0.0.1:58423 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.128 22261 22353 I GoLog   : 2026/07/16 17:10:39.128414 [Info] [420535659] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.128 22261 22353 I GoLog   : 2026/07/16 17:10:39.128441 [Info] [420535659] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128478 [Info] [420535659] proxy/dns: rejected type TypeHTTPS query for domain www.google.com.
+07-17 00:10:39.128 22261 22352 I GoLog   : 2026/07/16 17:10:39.128493 [Debug] [420535659] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130098 [Info] [4210591666] proxy/socks: client UDP connection from udp:127.0.0.1:58449
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130109 [Debug] [4210591666] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130113 [Debug] [4210591666] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130115 [Info] [4210591666] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130170 [Info] [4210591666] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130173 [Info] [4210591666] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130177 from udp:127.0.0.1:58449 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.130 22261 22353 I GoLog   : 2026/07/16 17:10:39.130229 [Debug] [4210591666] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134231 [Info] [615695527] proxy/socks: client UDP connection from udp:127.0.0.1:43530
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134784 [Debug] [615695527] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134796 [Debug] [615695527] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134799 [Info] [615695527] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134803 [Info] [615695527] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134805 [Info] [615695527] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134819 [Info] [615695527] proxy/dns: rejected type TypeHTTPS query for domain www.google.com.
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134822 [Debug] [615695527] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:10:39.134 22261 22361 I GoLog   : 2026/07/16 17:10:39.134587 from udp:127.0.0.1:43530 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.139 22261 22361 I GoLog   : 2026/07/16 17:10:39.139635 [Info] [2272674130] proxy/socks: client UDP connection from udp:127.0.0.1:38413
+07-17 00:10:39.139 22261 22361 I GoLog   : 2026/07/16 17:10:39.139704 [Debug] [2272674130] proxy/socks: send packet to udp:1.0.0.1:53 with 32 bytes
+07-17 00:10:39.139 22261 22361 I GoLog   : 2026/07/16 17:10:39.139722 [Debug] [2272674130] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.139 22261 22355 I GoLog   : 2026/07/16 17:10:39.139741 [Info] [2272674130] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.139 22261 22355 I GoLog   : 2026/07/16 17:10:39.139813 [Info] [2272674130] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.139 22261 22353 I GoLog   : 2026/07/16 17:10:39.139829 [Info] [2272674130] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.139 22261 22353 I GoLog   : 2026/07/16 17:10:39.139843 from udp:127.0.0.1:38413 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.139 22261 22353 I GoLog   : 2026/07/16 17:10:39.139963 [Info] [2272674130] proxy/dns: rejected type TypeHTTPS query for domain www.google.com.
+07-17 00:10:39.140 22261 22353 I GoLog   : 2026/07/16 17:10:39.139984 [Debug] [2272674130] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:10:39.142 22261 22361 I GoLog   : 2026/07/16 17:10:39.142029 [Info] [3395346741] proxy/socks: client UDP connection from udp:127.0.0.1:38929
+07-17 00:10:39.142 22261 22361 I GoLog   : 2026/07/16 17:10:39.142050 [Debug] [3395346741] proxy/socks: send packet to udp:1.0.0.1:53 with 32 bytes
+07-17 00:10:39.142 22261 22361 I GoLog   : 2026/07/16 17:10:39.142056 [Debug] [3395346741] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.142 22261 22361 I GoLog   : 2026/07/16 17:10:39.142061 [Info] [3395346741] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.142 22261 22352 I GoLog   : 2026/07/16 17:10:39.142358 [Info] [3395346741] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.142 22261 22352 I GoLog   : 2026/07/16 17:10:39.142371 [Info] [3395346741] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.142 22261 22353 I GoLog   : 2026/07/16 17:10:39.142484 from udp:127.0.0.1:38929 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.142 22261 22353 I GoLog   : 2026/07/16 17:10:39.142733 [Info] [3395346741] proxy/dns: rejected type TypeHTTPS query for domain www.google.com.
+07-17 00:10:39.142 22261 22353 I GoLog   : 2026/07/16 17:10:39.142775 [Debug] [3395346741] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147248 [Info] [589794166] proxy/socks: client UDP connection from udp:127.0.0.1:58052
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147271 [Debug] [589794166] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147275 [Debug] [589794166] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147279 [Info] [589794166] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147377 [Info] [589794166] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147390 [Info] [589794166] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.147 22261 22355 I GoLog   : 2026/07/16 17:10:39.147396 from udp:127.0.0.1:58052 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.147 22261 22353 I GoLog   : 2026/07/16 17:10:39.147483 [Info] [589794166] proxy/dns: rejected type TypeHTTPS query for domain api.ipify.org.
+07-17 00:10:39.147 22261 22353 I GoLog   : 2026/07/16 17:10:39.147531 [Debug] [589794166] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153799 [Info] [2830454354] proxy/socks: client UDP connection from udp:127.0.0.1:57415
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153864 from udp:127.0.0.1:57415 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153871 [Debug] [2830454354] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153888 [Debug] [2830454354] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153923 [Info] [2830454354] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153940 [Info] [2830454354] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153952 [Info] [2830454354] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.153964 [Debug] [2830454354] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.154705 [Info] [3444987982] proxy/socks: client UDP connection from udp:127.0.0.1:56884
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.154719 [Debug] [3444987982] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.154723 [Debug] [3444987982] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.154 22261 22353 I GoLog   : 2026/07/16 17:10:39.154726 [Info] [3444987982] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.155 22261 22352 I GoLog   : 2026/07/16 17:10:39.154783 from udp:127.0.0.1:56884 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.155 22261 22352 I GoLog   : 2026/07/16 17:10:39.154794 [Info] [3444987982] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.155 22261 22352 I GoLog   : 2026/07/16 17:10:39.154812 [Info] [3444987982] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.156 22261 22352 I GoLog   : 2026/07/16 17:10:39.155209 [Debug] app/dns: domain api.ipify.org will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:39.156 22261 22352 I GoLog   : 2026/07/16 17:10:39.155241 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: api.ipify.org.
+07-17 00:10:39.156 22261 22352 I GoLog   : 2026/07/16 17:10:39.155254 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159068 [Info] [1034566028] proxy/socks: client UDP connection from udp:127.0.0.1:45894
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159139 [Debug] [1034566028] proxy/socks: send packet to udp:1.0.0.1:53 with 31 bytes
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159156 [Debug] [1034566028] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159170 [Info] [1034566028] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159419 [Info] [1034566028] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159439 [Info] [1034566028] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159461 from udp:127.0.0.1:45894 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159669 [Info] [1034566028] proxy/dns: rejected type TypeHTTPS query for domain api.ipify.org.
+07-17 00:10:39.159 22261 22353 I GoLog   : 2026/07/16 17:10:39.159683 [Debug] [1034566028] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165436 [Info] [2632958885] proxy/socks: client UDP connection from udp:127.0.0.1:41553
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165472 [Debug] [2632958885] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165479 [Debug] [2632958885] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165484 [Info] [2632958885] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165627 [Info] [2632958885] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165636 [Info] [2632958885] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.165643 from udp:127.0.0.1:41553 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.167325 [Info] [2632958885] proxy/dns: rejected type TypeHTTPS query for domain api.ipify.org.
+07-17 00:10:39.167 22261 22353 I GoLog   : 2026/07/16 17:10:39.167374 [Debug] [2632958885] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:39.174 22261 22352 I GoLog   : 2026/07/16 17:10:39.173976 [Info] [479826273] proxy/socks: client UDP connection from udp:127.0.0.1:56671
+07-17 00:10:39.174 22261 22352 I GoLog   : 2026/07/16 17:10:39.174035 [Debug] [479826273] proxy/socks: send packet to udp:1.0.0.1:53 with 31 bytes
+07-17 00:10:39.174 22261 22352 I GoLog   : 2026/07/16 17:10:39.174045 [Debug] [479826273] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:10:39.174 22261 22352 I GoLog   : 2026/07/16 17:10:39.174049 [Info] [479826273] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:10:39.174 22261 22353 I GoLog   : 2026/07/16 17:10:39.174262 from udp:127.0.0.1:56671 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:10:39.174 22261 22353 I GoLog   : 2026/07/16 17:10:39.174325 [Info] [479826273] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:10:39.174 22261 22353 I GoLog   : 2026/07/16 17:10:39.174349 [Info] [479826273] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:10:39.174 22261 22353 I GoLog   : 2026/07/16 17:10:39.174368 [Info] [479826273] proxy/dns: rejected type TypeHTTPS query for domain api.ipify.org.
+07-17 00:10:39.174 22261 22353 I GoLog   : 2026/07/16 17:10:39.174620 [Debug] [479826273] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:39.181 22261 22353 I GoLog   : 2026/07/16 17:10:39.180726 [Info] app/dns: UDP:1.1.1.1:53 got answer: www.google.com. TypeA -> [142.251.157.119 142.251.152.119 142.251.151.119 142.251.154.119 142.251.153.119 142.251.150.119 142.251.155.119 142.251.156.119], rtt: 52.578776ms, lock: 39.022µs
+07-17 00:10:39.181 22261 22353 I GoLog   : 2026/07/16 17:10:39.180810 [Debug] [1383533177] proxy/socks: writing back UDP response with 160 bytes
+07-17 00:10:39.209 22261 22355 I GoLog   : 2026/07/16 17:10:39.209277 [Info] app/dns: UDP:1.1.1.1:53 got answer: api.ipify.org. TypeA -> [8.6.112.0 8.47.69.0], rtt: 54.159505ms, lock: 21.403µs
+07-17 00:10:39.209 22261 22355 I GoLog   : 2026/07/16 17:10:39.209487 [Debug] [3444987982] proxy/socks: writing back UDP response with 63 bytes
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217260 [Info] [2084516640] proxy/socks: client UDP connection from udp:127.0.0.1:45624
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217306 [Debug] [2084516640] proxy/socks: send packet to udp:1.1.1.1:53 with 73 bytes
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217317 [Debug] [2084516640] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217323 [Info] [2084516640] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217327 [Info] [2084516640] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217414 [Info] [2084516640] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217514 from udp:127.0.0.1:45624 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.217 22261 22355 I GoLog   : 2026/07/16 17:10:39.217586 [Debug] [2084516640] proxy/socks: writing back UDP response with 73 bytes
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.217992 [Info] [905098779] proxy/socks: client UDP connection from udp:127.0.0.1:56161
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218000 [Debug] [905098779] proxy/socks: send packet to udp:1.1.1.1:53 with 73 bytes
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218004 [Debug] [905098779] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218007 [Info] [905098779] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218068 [Info] [905098779] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218072 [Info] [905098779] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218076 from udp:127.0.0.1:56161 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218198 [Debug] app/dns: domain ohttp-relay-safebrowsing-android.google.fastly-edge.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218218 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: ohttp-relay-safebrowsing-android.google.fastly-edge.com.
+07-17 00:10:39.218 22261 22355 I GoLog   : 2026/07/16 17:10:39.218222 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229822 [Info] [1773852431] proxy/socks: client UDP connection from udp:127.0.0.1:53696
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229854 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229860 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229866 [Info] [1773852431] transport/internet/udp: establishing new connection for udp:142.251.157.119:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229870 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.229874 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230118 [Info] [3906024134] proxy/socks: TCP Connect request to tcp:8.6.112.0:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230157 [Info] [1773852431] app/dispatcher: sniffed domain: www.google.com
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230161 [Info] [1773852431] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230165 [Info] [1773852431] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230268 from udp:127.0.0.1:53696 accepted udp:142.251.157.119:443 [socks-in >> proxy-out]
+07-17 00:10:39.230 22261 22350 I GoLog   : 2026/07/16 17:10:39.230277 [Debug] [1773852431] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.231 22261 22353 I GoLog   : 2026/07/16 17:10:39.231796 [Info] [3906024134] app/dispatcher: sniffed domain: api.ipify.org
+07-17 00:10:39.231 22261 22353 I GoLog   : 2026/07/16 17:10:39.231848 [Info] [3906024134] app/dispatcher: default route for tcp:api.ipify.org:443
+07-17 00:10:39.231 22261 22353 I GoLog   : 2026/07/16 17:10:39.231869 [Info] [3906024134] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.231 22261 22353 I GoLog   : 2026/07/16 17:10:39.231883 [Debug] [3906024134] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.231 22261 22353 I GoLog   : 2026/07/16 17:10:39.231849 from tcp:127.0.0.1:39172 accepted tcp:8.6.112.0:443 [socks-in >> proxy-out]
+07-17 00:10:39.268 22261 22353 I GoLog   : 2026/07/16 17:10:39.267797 [Info] app/dns: UDP:1.1.1.1:53 got answer: ohttp-relay-safebrowsing-android.google.fastly-edge.com. TypeA -> [151.101.65.91 151.101.129.91 151.101.193.91 151.101.1.91], rtt: 49.591187ms, lock: 11.556µs
+07-17 00:10:39.268 22261 22353 I GoLog   : 2026/07/16 17:10:39.268016 [Debug] [905098779] proxy/socks: writing back UDP response with 137 bytes
+07-17 00:10:39.298 22261 22355 I GoLog   : 2026/07/16 17:10:39.298001 [Info] [2897860299] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:10:39.305 22261 22355 I GoLog   : 2026/07/16 17:10:39.304970 [Info] [2897860299] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:10:39.305 22261 22355 I GoLog   : 2026/07/16 17:10:39.305029 [Info] [2897860299] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:10:39.305 22261 22355 I GoLog   : 2026/07/16 17:10:39.305039 [Info] [2897860299] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.305 22261 22355 I GoLog   : 2026/07/16 17:10:39.305036 from tcp:127.0.0.1:39186 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:10:39.305 22261 22355 I GoLog   : 2026/07/16 17:10:39.305045 [Debug] [2897860299] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.305 22261 22353 I GoLog   : 2026/07/16 17:10:39.305395 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:39.305 22261 22353 I GoLog   : 2026/07/16 17:10:39.305413 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:39.517 22261 22358 I GoLog   : 2026/07/16 17:10:39.517105 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:39.517 22261 22358 I GoLog   : 2026/07/16 17:10:39.517162 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:39.586 22261 22358 I GoLog   : 2026/07/16 17:10:39.586814 [Info] [4228673066] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:10:39.587 22261 22361 I GoLog   : 2026/07/16 17:10:39.586972 [Info] [4228673066] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:10:39.587 22261 22361 I GoLog   : 2026/07/16 17:10:39.587005 [Info] [4228673066] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:10:39.587 22261 22361 I GoLog   : 2026/07/16 17:10:39.587022 [Info] [4228673066] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:39.587 22261 22361 I GoLog   : 2026/07/16 17:10:39.587033 [Debug] [4228673066] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:39.587 22261 22361 I GoLog   : 2026/07/16 17:10:39.587072 from tcp:127.0.0.1:39202 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:10:39.911 22261 22350 I GoLog   : 2026/07/16 17:10:39.910735 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:39.911 22261 22350 I GoLog   : 2026/07/16 17:10:39.910970 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:40.061 22261 22358 I GoLog   : 2026/07/16 17:10:40.061498 [Info] [3464357277] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:40.066 22261 22353 I GoLog   : 2026/07/16 17:10:40.065696 [Info] [3464357277] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:40.066 22261 22353 I GoLog   : 2026/07/16 17:10:40.065824 [Info] [3464357277] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:40.066 22261 22353 I GoLog   : 2026/07/16 17:10:40.065877 [Info] [3464357277] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:40.066 22261 22353 I GoLog   : 2026/07/16 17:10:40.065919 [Debug] [3464357277] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:40.066 22261 22353 I GoLog   : 2026/07/16 17:10:40.066325 from tcp:127.0.0.1:39206 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:40.101 22261 22358 I GoLog   : 2026/07/16 17:10:40.101609 [Info] [3253261039] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:40.104 22261 22350 I GoLog   : 2026/07/16 17:10:40.103973 [Info] [3253261039] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:40.104 22261 22350 I GoLog   : 2026/07/16 17:10:40.104088 [Info] [3253261039] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:40.104 22261 22350 I GoLog   : 2026/07/16 17:10:40.104122 [Info] [3253261039] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:40.104 22261 22350 I GoLog   : 2026/07/16 17:10:40.104145 [Debug] [3253261039] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:40.104 22261 22350 I GoLog   : 2026/07/16 17:10:40.104187 from tcp:127.0.0.1:39210 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:40.119 22261 22350 I GoLog   : 2026/07/16 17:10:40.119494 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:40.119 22261 22350 I GoLog   : 2026/07/16 17:10:40.119561 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:40.188 22261 22350 I GoLog   : 2026/07/16 17:10:40.188521 [Info] [1917709002] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:40.194 22261 22361 I GoLog   : 2026/07/16 17:10:40.193775 from tcp:127.0.0.1:39224 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:40.194 22261 22361 I GoLog   : 2026/07/16 17:10:40.193891 [Info] [1917709002] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:40.194 22261 22361 I GoLog   : 2026/07/16 17:10:40.193929 [Info] [1917709002] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:40.194 22261 22361 I GoLog   : 2026/07/16 17:10:40.193957 [Info] [1917709002] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:40.194 22261 22361 I GoLog   : 2026/07/16 17:10:40.193980 [Debug] [1917709002] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:41.116 22261 22358 I GoLog   : 2026/07/16 17:10:41.115500 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:41.116 22261 22358 I GoLog   : 2026/07/16 17:10:41.116505 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:41.325 22261 22361 I GoLog   : 2026/07/16 17:10:41.325004 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:41.325 22261 22361 I GoLog   : 2026/07/16 17:10:41.325266 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:41.401 22261 22361 I GoLog   : 2026/07/16 17:10:41.401234 [Info] [3385345931] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:41.406 22261 22358 I GoLog   : 2026/07/16 17:10:41.406034 [Info] [3385345931] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:41.406 22261 22358 I GoLog   : 2026/07/16 17:10:41.406096 [Info] [3385345931] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:41.406 22261 22358 I GoLog   : 2026/07/16 17:10:41.406123 [Info] [3385345931] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:41.406 22261 22358 I GoLog   : 2026/07/16 17:10:41.406122 from tcp:127.0.0.1:39230 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:41.406 22261 22358 I GoLog   : 2026/07/16 17:10:41.406145 [Debug] [3385345931] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:41.488 22261 22350 I GoLog   : 2026/07/16 17:10:41.488822 [Info] [2158653614] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:41.493 22261 22361 I GoLog   : 2026/07/16 17:10:41.493129 [Info] [2158653614] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:41.495 22261 22361 I GoLog   : 2026/07/16 17:10:41.495366 [Info] [2158653614] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:41.495 22261 22361 I GoLog   : 2026/07/16 17:10:41.495488 [Info] [2158653614] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:41.495 22261 22361 I GoLog   : 2026/07/16 17:10:41.495526 [Debug] [2158653614] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:41.496 22261 22361 I GoLog   : 2026/07/16 17:10:41.495903 from tcp:127.0.0.1:39240 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:41.679 22261 22350 I GoLog   : 2026/07/16 17:10:41.679602 [Info] [2516769336] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:41.683 22261 22355 I GoLog   : 2026/07/16 17:10:41.683028 [Info] [2516769336] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:41.684 22261 22353 I GoLog   : 2026/07/16 17:10:41.683375 from tcp:127.0.0.1:39256 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:41.685 22261 22355 I GoLog   : 2026/07/16 17:10:41.685015 [Info] [2516769336] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:41.692 22261 22355 I GoLog   : 2026/07/16 17:10:41.691564 [Info] [2516769336] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:41.692 22261 22355 I GoLog   : 2026/07/16 17:10:41.692807 [Debug] [2516769336] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:43.014 22261 22355 I GoLog   : 2026/07/16 17:10:43.013913 [Debug] [2500485260] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:43.015 22261 22355 I GoLog   : 2026/07/16 17:10:43.014259 [Debug] [2500485260] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:43.221 22261 22355 I GoLog   : 2026/07/16 17:10:43.220609 [Debug] [1773852431] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:43.221 22261 22355 I GoLog   : 2026/07/16 17:10:43.221577 [Debug] [1773852431] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:43.362 22261 22355 I GoLog   : 2026/07/16 17:10:43.361916 [Info] [3583144497] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:43.364 22261 22350 I GoLog   : 2026/07/16 17:10:43.363973 [Info] [3583144497] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:43.364 22261 22350 I GoLog   : 2026/07/16 17:10:43.364123 [Info] [3583144497] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:43.364 22261 22350 I GoLog   : 2026/07/16 17:10:43.364177 [Info] [3583144497] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:43.364 22261 22350 I GoLog   : 2026/07/16 17:10:43.364216 [Debug] [3583144497] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:43.364 22261 22350 I GoLog   : 2026/07/16 17:10:43.364722 from tcp:127.0.0.1:35494 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:43.546 22261 22353 I GoLog   : 2026/07/16 17:10:43.546049 [Info] [3585229318] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:43.550 22261 22355 I GoLog   : 2026/07/16 17:10:43.549964 from tcp:127.0.0.1:35506 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:43.552 22261 22355 I GoLog   : 2026/07/16 17:10:43.551468 [Info] [3585229318] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:43.552 22261 22355 I GoLog   : 2026/07/16 17:10:43.551606 [Info] [3585229318] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:43.552 22261 22355 I GoLog   : 2026/07/16 17:10:43.551656 [Info] [3585229318] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:43.552 22261 22355 I GoLog   : 2026/07/16 17:10:43.551693 [Debug] [3585229318] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:43.576 22261 22353 I GoLog   : 2026/07/16 17:10:43.576185 [Info] [3821942217] proxy/socks: client UDP connection from udp:127.0.0.1:42122
+07-17 00:10:43.576 22261 22353 I GoLog   : 2026/07/16 17:10:43.576391 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:43.576 22261 22353 I GoLog   : 2026/07/16 17:10:43.576447 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:43.576 22261 22353 I GoLog   : 2026/07/16 17:10:43.576496 [Info] [3821942217] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.583806 from udp:127.0.0.1:42122 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.583929 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.583976 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.584015 [Info] [3821942217] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.584053 [Info] [3821942217] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.584092 [Info] [3821942217] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:43.584 22261 22355 I GoLog   : 2026/07/16 17:10:43.584126 [Debug] [3821942217] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:43.869 22261 22358 I GoLog   : 2026/07/16 17:10:43.869328 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:43.869 22261 22358 I GoLog   : 2026/07/16 17:10:43.869459 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:43.882 22261 22358 I GoLog   : 2026/07/16 17:10:43.882747 [Info] [3108661199] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:43.887 22261 22355 I GoLog   : 2026/07/16 17:10:43.887213 from tcp:127.0.0.1:35522 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:43.888 22261 22355 I GoLog   : 2026/07/16 17:10:43.888042 [Info] [3108661199] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:43.889 22261 22355 I GoLog   : 2026/07/16 17:10:43.889033 [Info] [3108661199] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:43.889 22261 22355 I GoLog   : 2026/07/16 17:10:43.889196 [Info] [3108661199] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:43.889 22261 22355 I GoLog   : 2026/07/16 17:10:43.889240 [Debug] [3108661199] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:44.468 22261 22355 I GoLog   : 2026/07/16 17:10:44.468074 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:44.468 22261 22355 I GoLog   : 2026/07/16 17:10:44.468159 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:44.777 22261 22358 I GoLog   : 2026/07/16 17:10:44.777225 [Info] [2171397927] proxy/socks: client UDP connection from udp:127.0.0.1:59937
+07-17 00:10:44.777 22261 22358 I GoLog   : 2026/07/16 17:10:44.777268 [Debug] [2171397927] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:44.777 22261 22358 I GoLog   : 2026/07/16 17:10:44.777275 [Debug] [2171397927] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:44.777 22261 22358 I GoLog   : 2026/07/16 17:10:44.777279 [Info] [2171397927] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:44.777 22261 22355 I GoLog   : 2026/07/16 17:10:44.777382 from udp:127.0.0.1:59937 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:44.777 22261 22355 I GoLog   : 2026/07/16 17:10:44.777391 [Info] [2171397927] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:44.777 22261 22361 I GoLog   : 2026/07/16 17:10:44.777459 [Info] [2171397927] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:44.777 22261 22352 I GoLog   : 2026/07/16 17:10:44.777553 [Debug] [2171397927] proxy/socks: writing back UDP response with 31 bytes
+07-17 00:10:44.777 22261 22352 I GoLog   : 2026/07/16 17:10:44.777895 [Info] [208014553] proxy/socks: client UDP connection from udp:127.0.0.1:57160
+07-17 00:10:44.777 22261 22352 I GoLog   : 2026/07/16 17:10:44.777916 [Debug] [208014553] proxy/socks: send packet to udp:1.1.1.1:53 with 31 bytes
+07-17 00:10:44.777 22261 22352 I GoLog   : 2026/07/16 17:10:44.777921 [Debug] [208014553] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:44.777 22261 22352 I GoLog   : 2026/07/16 17:10:44.777925 [Info] [208014553] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:44.778 22261 22350 I GoLog   : 2026/07/16 17:10:44.778017 from udp:127.0.0.1:57160 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:44.778 22261 22350 I GoLog   : 2026/07/16 17:10:44.778018 [Info] [208014553] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:44.778 22261 22350 I GoLog   : 2026/07/16 17:10:44.778038 [Info] [208014553] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:44.778 22261 22361 I GoLog   : 2026/07/16 17:10:44.778258 [Debug] app/dns: domain api.ipify.org will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:44.778 22261 22361 I GoLog   : 2026/07/16 17:10:44.778310 [Debug] app/dns: UDP:1.1.1.1:53 cache HIT api.ipify.org. -> [8.6.112.0 8.47.69.0]
+07-17 00:10:44.778 22261 22361 I GoLog   : 2026/07/16 17:10:44.778327 [Debug] [208014553] proxy/socks: writing back UDP response with 63 bytes
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818613 [Info] [3594347904] proxy/socks: client UDP connection from udp:127.0.0.1:41276
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818654 [Debug] [3594347904] proxy/socks: send packet to udp:1.1.1.1:53 with 45 bytes
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818662 [Debug] [3594347904] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818666 [Info] [3594347904] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818671 [Info] [3594347904] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818675 [Info] [3594347904] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818691 from udp:127.0.0.1:41276 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818872 [Debug] app/dns: domain safebrowsing.googleapis.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818881 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: safebrowsing.googleapis.com.
+07-17 00:10:44.818 22261 22350 I GoLog   : 2026/07/16 17:10:44.818885 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:44.822 22261 22350 I GoLog   : 2026/07/16 17:10:44.822441 [Info] [2313956711] proxy/socks: client UDP connection from udp:127.0.0.1:53329
+07-17 00:10:44.822 22261 22350 I GoLog   : 2026/07/16 17:10:44.822471 [Debug] [2313956711] proxy/socks: send packet to udp:1.1.1.1:53 with 45 bytes
+07-17 00:10:44.822 22261 22350 I GoLog   : 2026/07/16 17:10:44.822477 [Debug] [2313956711] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:44.822 22261 22350 I GoLog   : 2026/07/16 17:10:44.822481 [Info] [2313956711] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:44.822 22261 22350 I GoLog   : 2026/07/16 17:10:44.822623 from udp:127.0.0.1:53329 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:44.823 22261 22350 I GoLog   : 2026/07/16 17:10:44.822662 [Info] [2313956711] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:44.823 22261 22350 I GoLog   : 2026/07/16 17:10:44.822720 [Info] [2313956711] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:44.823 22261 22350 I GoLog   : 2026/07/16 17:10:44.822736 [Debug] [2313956711] proxy/socks: writing back UDP response with 45 bytes
+07-17 00:10:44.825 22261 22358 I GoLog   : 2026/07/16 17:10:44.825942 [Info] [3844327755] proxy/socks: client UDP connection from udp:127.0.0.1:52759
+07-17 00:10:44.826 22261 22358 I GoLog   : 2026/07/16 17:10:44.825970 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:44.826 22261 22358 I GoLog   : 2026/07/16 17:10:44.825976 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:44.826 22261 22358 I GoLog   : 2026/07/16 17:10:44.825980 [Info] [3844327755] transport/internet/udp: establishing new connection for udp:142.251.157.119:443
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826356 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826463 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826479 [Info] [3844327755] app/dispatcher: sniffed domain: www.google.com
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826491 [Info] [3844327755] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826504 [Info] [3844327755] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826509 from udp:127.0.0.1:52759 accepted udp:142.251.157.119:443 [socks-in >> proxy-out]
+07-17 00:10:44.826 22261 22350 I GoLog   : 2026/07/16 17:10:44.826514 [Debug] [3844327755] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:44.870 22261 22361 I GoLog   : 2026/07/16 17:10:44.869920 [Info] app/dns: UDP:1.1.1.1:53 got answer: safebrowsing.googleapis.com. TypeA -> [74.125.131.95], rtt: 51.011231ms, lock: 33.081µs
+07-17 00:10:44.870 22261 22361 I GoLog   : 2026/07/16 17:10:44.870235 [Debug] [3594347904] proxy/socks: writing back UDP response with 61 bytes
+07-17 00:10:44.894 22261 22358 I GoLog   : 2026/07/16 17:10:44.894519 [Info] [2977052367] proxy/socks: client UDP connection from udp:127.0.0.1:48857
+07-17 00:10:44.894 22261 22358 I GoLog   : 2026/07/16 17:10:44.894594 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:44.894 22261 22358 I GoLog   : 2026/07/16 17:10:44.894611 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:44.894 22261 22358 I GoLog   : 2026/07/16 17:10:44.894626 [Info] [2977052367] transport/internet/udp: establishing new connection for udp:74.125.131.95:443
+07-17 00:10:44.895 22261 22352 I GoLog   : 2026/07/16 17:10:44.895028 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:44.895 22261 22352 I GoLog   : 2026/07/16 17:10:44.895055 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:44.895 22261 22352 I GoLog   : 2026/07/16 17:10:44.895070 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:44.895 22261 22352 I GoLog   : 2026/07/16 17:10:44.895083 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:44.895 22261 22361 I GoLog   : 2026/07/16 17:10:44.895762 [Info] [2977052367] app/dispatcher: sniffed domain: safebrowsing.googleapis.com
+07-17 00:10:44.895 22261 22361 I GoLog   : 2026/07/16 17:10:44.895798 [Info] [2977052367] app/dispatcher: default route for udp:safebrowsing.googleapis.com:443
+07-17 00:10:44.895 22261 22361 I GoLog   : 2026/07/16 17:10:44.895815 [Info] [2977052367] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:44.895 22261 22361 I GoLog   : 2026/07/16 17:10:44.895828 [Debug] [2977052367] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:44.895 22261 22361 I GoLog   : 2026/07/16 17:10:44.895856 from udp:127.0.0.1:48857 accepted udp:74.125.131.95:443 [socks-in >> proxy-out]
+07-17 00:10:44.902 22261 22352 I GoLog   : 2026/07/16 17:10:44.902067 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 82 bytes
+07-17 00:10:44.902 22261 22352 I GoLog   : 2026/07/16 17:10:44.902113 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:44.902 22261 22352 I GoLog   : 2026/07/16 17:10:44.902883 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 638 bytes
+07-17 00:10:44.903 22261 22358 I GoLog   : 2026/07/16 17:10:44.903002 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:45.105 22261 22361 I GoLog   : 2026/07/16 17:10:45.105214 [Info] [3778114361] proxy/socks: TCP Connect request to tcp:8.6.112.0:443
+07-17 00:10:45.106 22261 22352 I GoLog   : 2026/07/16 17:10:45.106646 [Info] [3778114361] app/dispatcher: sniffed domain: api.ipify.org
+07-17 00:10:45.106 22261 22352 I GoLog   : 2026/07/16 17:10:45.106697 [Info] [3778114361] app/dispatcher: default route for tcp:api.ipify.org:443
+07-17 00:10:45.106 22261 22352 I GoLog   : 2026/07/16 17:10:45.106727 [Info] [3778114361] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:45.106 22261 22352 I GoLog   : 2026/07/16 17:10:45.106751 [Debug] [3778114361] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:45.106 22261 22352 I GoLog   : 2026/07/16 17:10:45.106848 from tcp:127.0.0.1:35588 accepted tcp:8.6.112.0:443 [socks-in >> proxy-out]
+07-17 00:10:45.114 22261 22361 I GoLog   : 2026/07/16 17:10:45.114791 [Info] [778122635] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:10:45.117 22261 22361 I GoLog   : 2026/07/16 17:10:45.116934 [Info] [778122635] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:10:45.117 22261 22361 I GoLog   : 2026/07/16 17:10:45.117367 [Info] [778122635] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:10:45.117 22261 22361 I GoLog   : 2026/07/16 17:10:45.117641 from tcp:127.0.0.1:35594 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:10:45.119 22261 22361 I GoLog   : 2026/07/16 17:10:45.118877 [Info] [778122635] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:45.120 22261 22361 I GoLog   : 2026/07/16 17:10:45.120397 [Debug] [778122635] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:45.123 22261 22361 I GoLog   : 2026/07/16 17:10:45.123394 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:45.123 22261 22361 I GoLog   : 2026/07/16 17:10:45.123422 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:45.478 22261 22352 I GoLog   : 2026/07/16 17:10:45.478138 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:45.480 22261 22352 I GoLog   : 2026/07/16 17:10:45.478279 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:45.480 22261 22352 I GoLog   : 2026/07/16 17:10:45.480677 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:45.480 22261 22352 I GoLog   : 2026/07/16 17:10:45.480734 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:45.671 22261 22358 I GoLog   : 2026/07/16 17:10:45.670699 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:45.671 22261 22358 I GoLog   : 2026/07/16 17:10:45.671263 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:45.723 22261 22352 I GoLog   : 2026/07/16 17:10:45.723048 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:45.723 22261 22352 I GoLog   : 2026/07/16 17:10:45.723229 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:46.344 22261 22361 I GoLog   : 2026/07/16 17:10:46.344747 [Info] [3163257221] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:46.350 22261 22350 I GoLog   : 2026/07/16 17:10:46.350073 from tcp:127.0.0.1:35596 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:46.351 22261 22358 I GoLog   : 2026/07/16 17:10:46.350350 [Info] [3163257221] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:46.351 22261 22358 I GoLog   : 2026/07/16 17:10:46.351547 [Info] [3163257221] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:46.352 22261 22358 I GoLog   : 2026/07/16 17:10:46.351873 [Info] [3163257221] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:46.352 22261 22358 I GoLog   : 2026/07/16 17:10:46.352171 [Debug] [3163257221] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:46.460 22261 22352 I GoLog   : 2026/07/16 17:10:46.460521 [Info] [802782211] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:46.463 22261 22361 I GoLog   : 2026/07/16 17:10:46.463177 [Info] [802782211] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:46.463 22261 22361 I GoLog   : 2026/07/16 17:10:46.463270 [Info] [802782211] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:46.463 22261 22361 I GoLog   : 2026/07/16 17:10:46.463317 [Info] [802782211] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:46.463 22261 22361 I GoLog   : 2026/07/16 17:10:46.463354 [Debug] [802782211] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:46.463 22261 22361 I GoLog   : 2026/07/16 17:10:46.463700 from tcp:127.0.0.1:35608 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:46.639 22261 22358 I GoLog   : 2026/07/16 17:10:46.639565 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:46.639 22261 22358 I GoLog   : 2026/07/16 17:10:46.639647 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:46.925 22261 22352 I GoLog   : 2026/07/16 17:10:46.925539 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:46.925 22261 22352 I GoLog   : 2026/07/16 17:10:46.925684 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:47.147 22261 22353 I GoLog   : 2026/07/16 17:10:47.146813 [Info] [660523088] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:47.152 22261 22358 I GoLog   : 2026/07/16 17:10:47.151873 [Info] [660523088] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:47.153 22261 22358 I GoLog   : 2026/07/16 17:10:47.152926 [Info] [660523088] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:47.153 22261 22358 I GoLog   : 2026/07/16 17:10:47.153169 from tcp:127.0.0.1:35610 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:47.156 22261 22358 I GoLog   : 2026/07/16 17:10:47.155279 [Info] [660523088] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:47.156 22261 22358 I GoLog   : 2026/07/16 17:10:47.155434 [Debug] [660523088] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:47.572 22261 22352 I GoLog   : 2026/07/16 17:10:47.572492 [Debug] [3821942217] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:47.573 22261 22352 I GoLog   : 2026/07/16 17:10:47.572714 [Debug] [3821942217] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:47.588 22261 22352 I GoLog   : 2026/07/16 17:10:47.588631 [Debug] [2319018383] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:47.588 22261 22352 I GoLog   : 2026/07/16 17:10:47.588706 [Debug] [2319018383] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:48.825 22261 22352 I GoLog   : 2026/07/16 17:10:48.825337 [Debug] [3844327755] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:10:48.825 22261 22352 I GoLog   : 2026/07/16 17:10:48.825472 [Debug] [3844327755] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:10:48.903 22261 22361 I GoLog   : 2026/07/16 17:10:48.903132 [Debug] [2977052367] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:48.903 22261 22361 I GoLog   : 2026/07/16 17:10:48.903470 [Debug] [2977052367] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:48.956 22261 22361 I GoLog   : 2026/07/16 17:10:48.955593 [Info] [3149032038] proxy/socks: client UDP connection from udp:127.0.0.1:49171
+07-17 00:10:48.956 22261 22361 I GoLog   : 2026/07/16 17:10:48.955965 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:48.957 22261 22361 I GoLog   : 2026/07/16 17:10:48.956060 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:48.957 22261 22358 I GoLog   : 2026/07/16 17:10:48.957119 [Info] [3149032038] transport/internet/udp: establishing new connection for udp:74.125.131.95:443
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.958851 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.958980 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.959014 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 78 bytes
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.959036 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.959959 [Info] [3149032038] app/dispatcher: sniffed domain: safebrowsing.googleapis.com
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.960088 [Info] [3149032038] app/dispatcher: default route for udp:safebrowsing.googleapis.com:443
+07-17 00:10:48.961 22261 22352 I GoLog   : 2026/07/16 17:10:48.960161 [Info] [3149032038] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:48.963 22261 22352 I GoLog   : 2026/07/16 17:10:48.962781 [Debug] [3149032038] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:48.967 22261 22358 I GoLog   : 2026/07/16 17:10:48.966126 from udp:127.0.0.1:49171 accepted udp:74.125.131.95:443 [socks-in >> proxy-out]
+07-17 00:10:48.974 22261 22350 I GoLog   : 2026/07/16 17:10:48.973984 [Info] [1092378631] proxy/socks: TCP Connect request to tcp:74.125.131.95:443
+07-17 00:10:48.981 22261 22350 I GoLog   : 2026/07/16 17:10:48.980646 from tcp:127.0.0.1:35620 accepted tcp:74.125.131.95:443 [socks-in >> proxy-out]
+07-17 00:10:48.983 22261 22350 I GoLog   : 2026/07/16 17:10:48.981534 [Info] [1092378631] app/dispatcher: sniffed domain: safebrowsing.googleapis.com
+07-17 00:10:48.983 22261 22350 I GoLog   : 2026/07/16 17:10:48.982879 [Info] [1092378631] app/dispatcher: default route for tcp:safebrowsing.googleapis.com:443
+07-17 00:10:48.983 22261 22350 I GoLog   : 2026/07/16 17:10:48.982978 [Info] [1092378631] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:48.983 22261 22350 I GoLog   : 2026/07/16 17:10:48.983032 [Debug] [1092378631] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:49.241 22261 22358 I GoLog   : 2026/07/16 17:10:49.240628 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:49.241 22261 22358 I GoLog   : 2026/07/16 17:10:49.240988 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:49.241 22261 22358 I GoLog   : 2026/07/16 17:10:49.241092 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:49.241 22261 22358 I GoLog   : 2026/07/16 17:10:49.241167 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:49.847 22261 22353 I GoLog   : 2026/07/16 17:10:49.846354 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:49.847 22261 22353 I GoLog   : 2026/07/16 17:10:49.847112 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:50.678 22261 22358 I GoLog   : 2026/07/16 17:10:50.677628 [Info] [1124786092] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:50.680 22261 22358 I GoLog   : 2026/07/16 17:10:50.680723 [Info] [1124786092] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:50.680 22261 22358 I GoLog   : 2026/07/16 17:10:50.680801 [Info] [1124786092] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:50.681 22261 22358 I GoLog   : 2026/07/16 17:10:50.680835 [Info] [1124786092] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:50.681 22261 22358 I GoLog   : 2026/07/16 17:10:50.680864 [Debug] [1124786092] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:50.681 22261 22358 I GoLog   : 2026/07/16 17:10:50.681158 from tcp:127.0.0.1:35622 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:51.049 22261 22353 I GoLog   : 2026/07/16 17:10:51.048607 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:51.049 22261 22353 I GoLog   : 2026/07/16 17:10:51.048961 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:51.232 22261 22361 I GoLog   : 2026/07/16 17:10:51.232194 [Info] [2148544622] proxy/socks: client UDP connection from udp:127.0.0.1:50274
+07-17 00:10:51.233 22261 22361 I GoLog   : 2026/07/16 17:10:51.233174 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:51.233 22261 22361 I GoLog   : 2026/07/16 17:10:51.233487 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:51.233 22261 22361 I GoLog   : 2026/07/16 17:10:51.233630 [Info] [2148544622] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:10:51.234 22261 22358 I GoLog   : 2026/07/16 17:10:51.234647 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:51.235 22261 22358 I GoLog   : 2026/07/16 17:10:51.234771 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:51.238 22261 22361 I GoLog   : 2026/07/16 17:10:51.237433 [Info] [2148544622] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:51.238 22261 22361 I GoLog   : 2026/07/16 17:10:51.237630 [Info] [2148544622] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:10:51.238 22261 22361 I GoLog   : 2026/07/16 17:10:51.237719 [Info] [2148544622] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:51.238 22261 22361 I GoLog   : 2026/07/16 17:10:51.237787 [Debug] [2148544622] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:51.238 22261 22361 I GoLog   : 2026/07/16 17:10:51.237910 from udp:127.0.0.1:50274 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:51.294 22261 22358 I GoLog   : 2026/07/16 17:10:51.294010 [Info] [3717556333] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:51.300 22261 22361 I GoLog   : 2026/07/16 17:10:51.298882 [Info] [3717556333] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:51.300 22261 22361 I GoLog   : 2026/07/16 17:10:51.298983 [Info] [3717556333] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:51.300 22261 22361 I GoLog   : 2026/07/16 17:10:51.299043 [Info] [3717556333] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:51.300 22261 22361 I GoLog   : 2026/07/16 17:10:51.299076 from tcp:127.0.0.1:35636 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:51.300 22261 22361 I GoLog   : 2026/07/16 17:10:51.299097 [Debug] [3717556333] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:51.521 22261 22355 I GoLog   : 2026/07/16 17:10:51.520942 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:51.523 22261 22355 I GoLog   : 2026/07/16 17:10:51.523743 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:51.533 22261 22353 I GoLog   : 2026/07/16 17:10:51.531634 [Info] [491222379] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:10:51.533 22261 22352 I GoLog   : 2026/07/16 17:10:51.533434 [Info] [491222379] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:51.533 22261 22352 I GoLog   : 2026/07/16 17:10:51.533498 [Info] [491222379] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:10:51.533 22261 22352 I GoLog   : 2026/07/16 17:10:51.533533 [Info] [491222379] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:51.533 22261 22352 I GoLog   : 2026/07/16 17:10:51.533561 [Debug] [491222379] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:51.533 22261 22352 I GoLog   : 2026/07/16 17:10:51.533637 from tcp:127.0.0.1:35652 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:52.126 22261 22353 I GoLog   : 2026/07/16 17:10:52.126164 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:52.127 22261 22353 I GoLog   : 2026/07/16 17:10:52.127287 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:52.940 22261 22353 I GoLog   : 2026/07/16 17:10:52.940418 [Debug] [3149032038] proxy/socks: send packet to udp:74.125.131.95:443 with 1250 bytes
+07-17 00:10:52.940 22261 22353 I GoLog   : 2026/07/16 17:10:52.940641 [Debug] [3149032038] transport/internet/udp: dispatch request to: udp:74.125.131.95:443
+07-17 00:10:53.331 22261 22353 I GoLog   : 2026/07/16 17:10:53.330759 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:53.331 22261 22353 I GoLog   : 2026/07/16 17:10:53.331841 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.147548 [Info] [70999784] proxy/socks: client UDP connection from udp:127.0.0.1:41987
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.147656 [Debug] [70999784] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.147672 [Debug] [70999784] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.147686 [Info] [70999784] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.148056 [Info] [70999784] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.148073 [Info] [70999784] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.148096 from udp:127.0.0.1:41987 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:54.148 22261 22353 I GoLog   : 2026/07/16 17:10:54.148374 [Debug] [70999784] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:10:54.152 22261 22358 I GoLog   : 2026/07/16 17:10:54.152655 [Info] [196390183] proxy/socks: client UDP connection from udp:127.0.0.1:36160
+07-17 00:10:54.152 22261 22358 I GoLog   : 2026/07/16 17:10:54.152699 [Debug] [196390183] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:10:54.152 22261 22358 I GoLog   : 2026/07/16 17:10:54.152711 [Debug] [196390183] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:54.152 22261 22358 I GoLog   : 2026/07/16 17:10:54.152718 [Info] [196390183] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153240 from udp:127.0.0.1:36160 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153369 [Info] [196390183] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153399 [Info] [196390183] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153635 [Debug] app/dns: domain api.whatsapp.net will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153659 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: api.whatsapp.net.
+07-17 00:10:54.154 22261 22352 I GoLog   : 2026/07/16 17:10:54.153682 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158001 [Info] [472601131] proxy/socks: client UDP connection from udp:127.0.0.1:58093
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158019 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158026 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158033 [Info] [472601131] transport/internet/udp: establishing new connection for udp:57.144.249.32:443
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158529 [Info] [472601131] app/dispatcher: sniffed domain: api.whatsapp.net
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158563 [Info] [472601131] app/dispatcher: default route for udp:api.whatsapp.net:443
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158587 [Info] [472601131] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158605 [Debug] [472601131] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:54.158 22261 22353 I GoLog   : 2026/07/16 17:10:54.158717 from udp:127.0.0.1:58093 accepted udp:57.144.249.32:443 [socks-in >> proxy-out]
+07-17 00:10:54.207 22261 22353 I GoLog   : 2026/07/16 17:10:54.207170 [Info] app/dns: UDP:1.1.1.1:53 got answer: api.whatsapp.net. TypeA -> [31.13.72.52], rtt: 53.48824ms, lock: 8.342µs
+07-17 00:10:54.207 22261 22353 I GoLog   : 2026/07/16 17:10:54.207532 [Debug] [196390183] proxy/socks: writing back UDP response with 50 bytes
+07-17 00:10:54.234 22261 22353 I GoLog   : 2026/07/16 17:10:54.234025 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:54.234 22261 22353 I GoLog   : 2026/07/16 17:10:54.234093 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:54.342 22261 22358 I GoLog   : 2026/07/16 17:10:54.342677 [Info] [112910291] proxy/socks: TCP Connect request to tcp:31.13.72.52:443
+07-17 00:10:54.347 22261 22353 I GoLog   : 2026/07/16 17:10:54.347059 [Info] [1496519785] proxy/socks: client UDP connection from udp:127.0.0.1:56970
+07-17 00:10:54.347 22261 22353 I GoLog   : 2026/07/16 17:10:54.347145 [Debug] [1496519785] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:10:54.347 22261 22355 I GoLog   : 2026/07/16 17:10:54.347553 [Debug] [1496519785] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:10:54.348 22261 22353 I GoLog   : 2026/07/16 17:10:54.348270 [Info] [1496519785] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:10:54.348 22261 22353 I GoLog   : 2026/07/16 17:10:54.348289 [Info] [1496519785] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:10:54.348 22261 22353 I GoLog   : 2026/07/16 17:10:54.348298 [Info] [1496519785] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:10:54.348 22261 22353 I GoLog   : 2026/07/16 17:10:54.348307 [Debug] [1496519785] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:10:54.348 22261 22353 I GoLog   : 2026/07/16 17:10:54.347925 from udp:127.0.0.1:56970 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:10:54.350 22261 22350 I GoLog   : 2026/07/16 17:10:54.350694 from tcp:127.0.0.1:44756 accepted tcp:31.13.72.52:443 [socks-in >> proxy-out]
+07-17 00:10:54.350 22261 22350 I GoLog   : 2026/07/16 17:10:54.350565 [Info] [112910291] app/dispatcher: sniffed domain: api.whatsapp.net
+07-17 00:10:54.350 22261 22350 I GoLog   : 2026/07/16 17:10:54.350839 [Info] [112910291] app/dispatcher: default route for tcp:api.whatsapp.net:443
+07-17 00:10:54.351 22261 22361 I GoLog   : 2026/07/16 17:10:54.350925 [Info] [112910291] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:54.351 22261 22361 I GoLog   : 2026/07/16 17:10:54.351183 [Debug] [112910291] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:54.437 22261 22352 I GoLog   : 2026/07/16 17:10:54.437559 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:54.438 22261 22352 I GoLog   : 2026/07/16 17:10:54.437643 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:54.838 22261 22358 I GoLog   : 2026/07/16 17:10:54.838079 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:54.839 22261 22358 I GoLog   : 2026/07/16 17:10:54.839522 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:55.228 22261 22361 I GoLog   : 2026/07/16 17:10:55.227676 [Debug] [2148544622] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:55.228 22261 22361 I GoLog   : 2026/07/16 17:10:55.227949 [Debug] [2148544622] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:55.639 22261 22358 I GoLog   : 2026/07/16 17:10:55.639042 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:55.639 22261 22358 I GoLog   : 2026/07/16 17:10:55.639683 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:57.236 22261 22358 I GoLog   : 2026/07/16 17:10:57.235447 [Debug] [472601131] proxy/socks: send packet to udp:57.144.249.32:443 with 1252 bytes
+07-17 00:10:57.236 22261 22358 I GoLog   : 2026/07/16 17:10:57.235788 [Debug] [472601131] transport/internet/udp: dispatch request to: udp:57.144.249.32:443
+07-17 00:10:58.746 22261 22361 I GoLog   : 2026/07/16 17:10:58.745867 [Info] [1478386127] proxy/socks: client UDP connection from udp:127.0.0.1:48031
+07-17 00:10:58.747 22261 22361 I GoLog   : 2026/07/16 17:10:58.746006 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:58.747 22261 22361 I GoLog   : 2026/07/16 17:10:58.746041 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:58.747 22261 22361 I GoLog   : 2026/07/16 17:10:58.746069 [Info] [1478386127] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:10:58.756 22261 22361 I GoLog   : 2026/07/16 17:10:58.753487 from udp:127.0.0.1:48031 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:10:58.756 22261 22361 I GoLog   : 2026/07/16 17:10:58.753917 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:58.760 22261 22361 I GoLog   : 2026/07/16 17:10:58.754221 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:58.760 22261 22361 I GoLog   : 2026/07/16 17:10:58.755287 [Info] [1478386127] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:10:58.760 22261 22361 I GoLog   : 2026/07/16 17:10:58.757502 [Info] [1478386127] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:10:58.760 22261 22361 I GoLog   : 2026/07/16 17:10:58.758001 [Info] [1478386127] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:10:58.760 22261 22361 I GoLog   : 2026/07/16 17:10:58.758756 [Debug] [1478386127] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:10:59.037 22261 22361 I GoLog   : 2026/07/16 17:10:59.037010 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:59.037 22261 22361 I GoLog   : 2026/07/16 17:10:59.037113 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:10:59.646 22261 22358 I GoLog   : 2026/07/16 17:10:59.644641 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:10:59.648 22261 22358 I GoLog   : 2026/07/16 17:10:59.648428 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:00.842 22261 22361 I GoLog   : 2026/07/16 17:11:00.842335 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:00.843 22261 22361 I GoLog   : 2026/07/16 17:11:00.843116 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.610709 [Info] [972870191] proxy/socks: client UDP connection from udp:127.0.0.1:42783
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.610778 [Debug] [972870191] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.610802 [Debug] [972870191] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.610819 [Info] [972870191] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.611082 [Info] [972870191] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.611108 [Info] [972870191] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.611133 from udp:127.0.0.1:42783 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:11:02.611 22261 22358 I GoLog   : 2026/07/16 17:11:02.611425 [Debug] [972870191] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:11:02.617 22261 22352 I GoLog   : 2026/07/16 17:11:02.616973 [Info] [3994353179] proxy/socks: TCP Connect request to tcp:57.144.249.33:443
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.619665 [Info] [1687411667] proxy/socks: client UDP connection from udp:127.0.0.1:49357
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.619710 [Debug] [1687411667] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.619730 [Debug] [1687411667] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.619747 [Info] [1687411667] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.619974 [Info] [1687411667] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.620000 [Info] [1687411667] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.620022 from udp:127.0.0.1:49357 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.620500 [Debug] app/dns: domain g.whatsapp.net will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.620529 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: g.whatsapp.net.
+07-17 00:11:02.620 22261 22352 I GoLog   : 2026/07/16 17:11:02.620545 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:11:02.672 22261 22361 I GoLog   : 2026/07/16 17:11:02.671783 [Info] app/dns: UDP:1.1.1.1:53 got answer: g.whatsapp.net. TypeA -> [31.13.72.48], rtt: 51.332723ms, lock: 21.159µs
+07-17 00:11:02.672 22261 22358 I GoLog   : 2026/07/16 17:11:02.672843 [Debug] [1687411667] proxy/socks: writing back UDP response with 48 bytes
+07-17 00:11:02.739 22261 22358 I GoLog   : 2026/07/16 17:11:02.739073 [Debug] [1478386127] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:02.739 22261 22358 I GoLog   : 2026/07/16 17:11:02.739211 [Debug] [1478386127] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:02.819 22261 22352 I GoLog   : 2026/07/16 17:11:02.819284 [Info] [3994353179] app/dispatcher: default route for tcp:57.144.249.33:443
+07-17 00:11:02.819 22261 22352 I GoLog   : 2026/07/16 17:11:02.819389 [Info] [3994353179] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:02.819 22261 22352 I GoLog   : 2026/07/16 17:11:02.819421 [Debug] [3994353179] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:02.819 22261 22352 I GoLog   : 2026/07/16 17:11:02.819771 from tcp:127.0.0.1:55420 accepted tcp:57.144.249.33:443 [socks-in >> proxy-out]
+07-17 00:11:08.094 22261 22352 I GoLog   : 2026/07/16 17:11:08.094211 [Info] [3744138395] proxy/socks: client UDP connection from udp:127.0.0.1:54673
+07-17 00:11:08.095 22261 22352 I GoLog   : 2026/07/16 17:11:08.094755 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:08.095 22261 22352 I GoLog   : 2026/07/16 17:11:08.094856 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:08.095 22261 22352 I GoLog   : 2026/07/16 17:11:08.094938 [Info] [3744138395] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:11:08.101 22261 22358 I GoLog   : 2026/07/16 17:11:08.101550 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:08.101 22261 22358 I GoLog   : 2026/07/16 17:11:08.101639 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:08.104 22261 22352 I GoLog   : 2026/07/16 17:11:08.104218 [Info] [3744138395] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:08.104 22261 22352 I GoLog   : 2026/07/16 17:11:08.104432 [Info] [3744138395] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:11:08.104 22261 22352 I GoLog   : 2026/07/16 17:11:08.104502 [Info] [3744138395] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:08.104 22261 22352 I GoLog   : 2026/07/16 17:11:08.104548 [Debug] [3744138395] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:08.104 22261 22352 I GoLog   : 2026/07/16 17:11:08.104840 from udp:127.0.0.1:54673 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:08.381 22261 22352 I GoLog   : 2026/07/16 17:11:08.380749 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:08.382 22261 22352 I GoLog   : 2026/07/16 17:11:08.381872 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:08.985 22261 22361 I GoLog   : 2026/07/16 17:11:08.984579 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:08.986 22261 22361 I GoLog   : 2026/07/16 17:11:08.985538 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:09.043 22261 22352 I GoLog   : 2026/07/16 17:11:09.043283 [Info] [4232456744] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:09.049 22261 22358 I GoLog   : 2026/07/16 17:11:09.048794 [Info] [4232456744] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:09.049 22261 22358 I GoLog   : 2026/07/16 17:11:09.048929 [Info] [4232456744] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:09.049 22261 22358 I GoLog   : 2026/07/16 17:11:09.048992 [Info] [4232456744] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:09.049 22261 22358 I GoLog   : 2026/07/16 17:11:09.049030 [Debug] [4232456744] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:09.049 22261 22352 I GoLog   : 2026/07/16 17:11:09.049369 from tcp:127.0.0.1:55438 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:09.051 22261 22350 I GoLog   : 2026/07/16 17:11:09.051472 [Info] [3757270485] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:09.053 22261 22361 I GoLog   : 2026/07/16 17:11:09.053615 [Info] [3757270485] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:09.055 22261 22361 I GoLog   : 2026/07/16 17:11:09.053794 [Info] [3757270485] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:09.056 22261 22361 I GoLog   : 2026/07/16 17:11:09.053850 [Info] [3757270485] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:09.056 22261 22361 I GoLog   : 2026/07/16 17:11:09.053889 [Debug] [3757270485] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:09.056 22261 22361 I GoLog   : 2026/07/16 17:11:09.053961 from tcp:127.0.0.1:55442 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:09.062 22261 22353 I GoLog   : 2026/07/16 17:11:09.062349 [Info] [1750241523] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:09.067 22261 22352 I GoLog   : 2026/07/16 17:11:09.067020 [Info] [1750241523] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:09.067 22261 22352 I GoLog   : 2026/07/16 17:11:09.067342 from tcp:127.0.0.1:55448 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:09.068 22261 22355 I GoLog   : 2026/07/16 17:11:09.068403 [Info] [1750241523] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:09.068 22261 22355 I GoLog   : 2026/07/16 17:11:09.068581 [Info] [1750241523] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:09.068 22261 22355 I GoLog   : 2026/07/16 17:11:09.068618 [Debug] [1750241523] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.169961 [Info] [2193403770] proxy/socks: client UDP connection from udp:127.0.0.1:38236
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.170039 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.170070 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.170084 [Info] [2193403770] transport/internet/udp: establishing new connection for udp:142.251.157.119:443
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.170516 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:09.170 22261 22355 I GoLog   : 2026/07/16 17:11:09.170539 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:09.172 22261 22353 I GoLog   : 2026/07/16 17:11:09.172486 [Info] [2193403770] app/dispatcher: sniffed domain: www.google.com
+07-17 00:11:09.172 22261 22350 I GoLog   : 2026/07/16 17:11:09.172841 [Info] [2193403770] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:11:09.172 22261 22350 I GoLog   : 2026/07/16 17:11:09.172858 from udp:127.0.0.1:38236 accepted udp:142.251.157.119:443 [socks-in >> proxy-out]
+07-17 00:11:09.172 22261 22350 I GoLog   : 2026/07/16 17:11:09.172887 [Info] [2193403770] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:09.172 22261 22350 I GoLog   : 2026/07/16 17:11:09.172917 [Debug] [2193403770] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:09.466 22261 22352 I GoLog   : 2026/07/16 17:11:09.466749 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:09.466 22261 22352 I GoLog   : 2026/07/16 17:11:09.466792 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:10.082 22261 22353 I GoLog   : 2026/07/16 17:11:10.081818 [Info] [2230357231] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:10.086 22261 22352 I GoLog   : 2026/07/16 17:11:10.085593 from tcp:127.0.0.1:55472 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:10.087 22261 22352 I GoLog   : 2026/07/16 17:11:10.086024 [Info] [2230357231] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:10.087 22261 22352 I GoLog   : 2026/07/16 17:11:10.086094 [Info] [2230357231] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:10.087 22261 22352 I GoLog   : 2026/07/16 17:11:10.086139 [Info] [2230357231] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:10.087 22261 22352 I GoLog   : 2026/07/16 17:11:10.086176 [Debug] [2230357231] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:10.087 22261 22350 I GoLog   : 2026/07/16 17:11:10.087427 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:10.087 22261 22350 I GoLog   : 2026/07/16 17:11:10.087583 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:10.112 22261 22353 I GoLog   : 2026/07/16 17:11:10.112634 [Info] [3670088615] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:10.115 22261 22353 I GoLog   : 2026/07/16 17:11:10.115500 [Info] [3670088615] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:10.116 22261 22353 I GoLog   : 2026/07/16 17:11:10.115578 [Info] [3670088615] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:10.116 22261 22353 I GoLog   : 2026/07/16 17:11:10.115612 [Info] [3670088615] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:10.116 22261 22353 I GoLog   : 2026/07/16 17:11:10.115633 [Debug] [3670088615] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:10.116 22261 22353 I GoLog   : 2026/07/16 17:11:10.115972 from tcp:127.0.0.1:55474 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:10.197 22261 22360 I GoLog   : 2026/07/16 17:11:10.196905 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:10.197 22261 22360 I GoLog   : 2026/07/16 17:11:10.197015 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:10.200 22261 22360 I GoLog   : 2026/07/16 17:11:10.200233 [Info] [4208907973] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:11:10.204 22261 22352 I GoLog   : 2026/07/16 17:11:10.203938 from tcp:127.0.0.1:55486 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:11:10.205 22261 22352 I GoLog   : 2026/07/16 17:11:10.204848 [Info] [4208907973] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:11:10.205 22261 22352 I GoLog   : 2026/07/16 17:11:10.204958 [Info] [4208907973] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:11:10.205 22261 22352 I GoLog   : 2026/07/16 17:11:10.204998 [Info] [4208907973] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:10.205 22261 22352 I GoLog   : 2026/07/16 17:11:10.205027 [Debug] [4208907973] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:10.315 22261 22350 I GoLog   : 2026/07/16 17:11:10.314913 [Info] [815701883] proxy/socks: TCP Connect request to tcp:8.6.112.0:443
+07-17 00:11:10.316 22261 22350 I GoLog   : 2026/07/16 17:11:10.316374 [Info] [815701883] app/dispatcher: sniffed domain: api.ipify.org
+07-17 00:11:10.316 22261 22350 I GoLog   : 2026/07/16 17:11:10.316456 [Info] [815701883] app/dispatcher: default route for tcp:api.ipify.org:443
+07-17 00:11:10.316 22261 22350 I GoLog   : 2026/07/16 17:11:10.316486 [Info] [815701883] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:10.316 22261 22350 I GoLog   : 2026/07/16 17:11:10.316505 [Debug] [815701883] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:10.316 22261 22350 I GoLog   : 2026/07/16 17:11:10.316553 from tcp:127.0.0.1:55490 accepted tcp:8.6.112.0:443 [socks-in >> proxy-out]
+07-17 00:11:10.358 22261 22360 I GoLog   : 2026/07/16 17:11:10.358158 [Info] [1518047620] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:11:10.360 22261 22350 I GoLog   : 2026/07/16 17:11:10.360334 [Info] [1518047620] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:11:10.360 22261 22350 I GoLog   : 2026/07/16 17:11:10.360392 [Info] [1518047620] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:11:10.360 22261 22350 I GoLog   : 2026/07/16 17:11:10.360406 [Info] [1518047620] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:10.360 22261 22350 I GoLog   : 2026/07/16 17:11:10.360414 [Debug] [1518047620] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:10.360 22261 22350 I GoLog   : 2026/07/16 17:11:10.360510 from tcp:127.0.0.1:55500 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:11:11.285 22261 22350 I GoLog   : 2026/07/16 17:11:11.284551 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:11.285 22261 22350 I GoLog   : 2026/07/16 17:11:11.284939 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:12.077 22261 22353 I GoLog   : 2026/07/16 17:11:12.077077 [Debug] [3744138395] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:11:12.077 22261 22353 I GoLog   : 2026/07/16 17:11:12.077209 [Debug] [3744138395] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:11:13.176 22261 22355 I GoLog   : 2026/07/16 17:11:13.176571 [Debug] [2193403770] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:13.177 22261 22355 I GoLog   : 2026/07/16 17:11:13.177190 [Debug] [2193403770] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:15.187 22261 22353 I GoLog   : 2026/07/16 17:11:15.187477 [Info] [71614671] proxy/socks: client UDP connection from udp:127.0.0.1:38855
+07-17 00:11:15.187 22261 22353 I GoLog   : 2026/07/16 17:11:15.187573 [Debug] [71614671] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:15.187 22261 22353 I GoLog   : 2026/07/16 17:11:15.187600 [Debug] [71614671] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:15.187 22261 22353 I GoLog   : 2026/07/16 17:11:15.187621 [Info] [71614671] transport/internet/udp: establishing new connection for udp:142.251.157.119:443
+07-17 00:11:15.188 22261 22353 I GoLog   : 2026/07/16 17:11:15.187969 [Debug] [71614671] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:15.188 22261 22353 I GoLog   : 2026/07/16 17:11:15.187985 [Debug] [71614671] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:15.190 22261 22353 I GoLog   : 2026/07/16 17:11:15.189376 [Info] [71614671] app/dispatcher: sniffed domain: www.google.com
+07-17 00:11:15.190 22261 22353 I GoLog   : 2026/07/16 17:11:15.189412 [Info] [71614671] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:11:15.190 22261 22353 I GoLog   : 2026/07/16 17:11:15.189422 [Info] [71614671] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:15.190 22261 22353 I GoLog   : 2026/07/16 17:11:15.189427 [Debug] [71614671] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:15.190 22261 22353 I GoLog   : 2026/07/16 17:11:15.189441 from udp:127.0.0.1:38855 accepted udp:142.251.157.119:443 [socks-in >> proxy-out]
+07-17 00:11:15.486 22261 22350 I GoLog   : 2026/07/16 17:11:15.486232 [Debug] [71614671] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:15.486 22261 22350 I GoLog   : 2026/07/16 17:11:15.486306 [Debug] [71614671] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:16.093 22261 22355 I GoLog   : 2026/07/16 17:11:16.092365 [Debug] [71614671] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:16.095 22261 22355 I GoLog   : 2026/07/16 17:11:16.094912 [Debug] [71614671] transport/internet/udp: dispatch request to: udp:142.251.157.119:443
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.240150 [Info] [1243522424] proxy/socks: TCP Connect request to tcp:8.6.112.0:443
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.240966 [Info] [1243522424] app/dispatcher: sniffed domain: api.ipify.org
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.241022 [Info] [1243522424] app/dispatcher: default route for tcp:api.ipify.org:443
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.241053 [Info] [1243522424] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.241076 [Debug] [1243522424] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:16.241 22261 22355 I GoLog   : 2026/07/16 17:11:16.241308 from tcp:127.0.0.1:52256 accepted tcp:8.6.112.0:443 [socks-in >> proxy-out]
+07-17 00:11:16.605 22261 22353 I GoLog   : 2026/07/16 17:11:16.605586 [Info] [4252197641] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:11:16.608 22261 22352 I GoLog   : 2026/07/16 17:11:16.608254 [Info] [4252197641] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:11:16.608 22261 22352 I GoLog   : 2026/07/16 17:11:16.608366 [Info] [4252197641] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:11:16.609 22261 22352 I GoLog   : 2026/07/16 17:11:16.608825 from tcp:127.0.0.1:52260 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:11:16.612 22261 22352 I GoLog   : 2026/07/16 17:11:16.611947 [Info] [4252197641] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:11:16.612 22261 22352 I GoLog   : 2026/07/16 17:11:16.612805 [Debug] [4252197641] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:11:17.297 22261 22352 I GoLog   : 2026/07/16 17:11:17.296520 [Debug] [71614671] proxy/socks: send packet to udp:142.251.157.119:443 with 1250 bytes
+07-17 00:11:17.298 22261 22352 I GoLog   : 2026/07/16 17:11:17.296972 [Debug] [71614671] transport/internet/udp: dispatch request to: udp:142.251.157.119:443

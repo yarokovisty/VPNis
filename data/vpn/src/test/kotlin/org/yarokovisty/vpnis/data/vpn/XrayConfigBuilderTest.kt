@@ -270,6 +270,29 @@ class XrayConfigBuilderTest {
     }
 
     @Test
+    fun `valid VLESS URI EXPECT socks inbound is tagged userLevel 8`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — userLevel 8 makes the level-8 policy apply to this inbound's traffic.
+        val settings = root["inbounds"]!!.jsonArray[0].jsonObject["settings"]!!.jsonObject
+        assertEquals(8, settings["userLevel"]!!.jsonPrimitive.int)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT level 8 policy reaps half-closed connections aggressively`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — uplinkOnly/downlinkOnly = 1 keep the concurrent connection count low (issue #111).
+        val level8 = root["policy"]!!.jsonObject["levels"]!!.jsonObject["8"]!!.jsonObject
+        assertEquals(1, level8["uplinkOnly"]!!.jsonPrimitive.int)
+        assertEquals(1, level8["downlinkOnly"]!!.jsonPrimitive.int)
+    }
+
+    @Test
     fun `valid VLESS URI EXPECT proxy-out is the first outbound (default route)`() {
         // Given / When — order matters: Xray routes unmatched traffic to the FIRST outbound,
         // so proxy-out must stay first or all traffic would fall through to dns-out/direct.

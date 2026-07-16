@@ -1,0 +1,1440 @@
+07-17 00:17:30.029 23204 23292 I GoLog   : 2026/07/16 17:17:30.029324 [Info] [3921035679] proxy/socks: client UDP connection from udp:127.0.0.1:57225
+07-17 00:17:30.029 23204 23292 I GoLog   : 2026/07/16 17:17:30.029352 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:30.029 23204 23292 I GoLog   : 2026/07/16 17:17:30.029357 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:30.029 23204 23292 I GoLog   : 2026/07/16 17:17:30.029361 [Info] [3921035679] transport/internet/udp: establishing new connection for udp:142.251.154.119:443
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031922 from udp:127.0.0.1:57225 accepted udp:142.251.154.119:443 [socks-in >> proxy-out]
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031962 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031979 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031986 [Info] [3921035679] app/dispatcher: sniffed domain: www.google.com
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031990 [Info] [3921035679] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.031995 [Info] [3921035679] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:30.032 23204 23286 I GoLog   : 2026/07/16 17:17:30.032000 [Debug] [3921035679] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:30.251 23204 23292 I GoLog   : 2026/07/16 17:17:30.251489 [Info] [3921035679] proxy/vless/outbound: tunneling request to udp:www.google.com:443 via 144.31.104.124:443
+07-17 00:17:30.251 23204 23292 I GoLog   : 2026/07/16 17:17:30.251613 [Info] [3921035679] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: XTLS rejected UDP/443 traffic
+07-17 00:17:30.313 23204 23292 I GoLog   : 2026/07/16 17:17:30.313610 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:30.313 23204 23292 I GoLog   : 2026/07/16 17:17:30.313631 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:30.920 23204 23292 I GoLog   : 2026/07/16 17:17:30.920434 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:30.921 23204 23292 I GoLog   : 2026/07/16 17:17:30.920682 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:32.123 23204 23292 I GoLog   : 2026/07/16 17:17:32.122705 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:32.123 23204 23292 I GoLog   : 2026/07/16 17:17:32.123853 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:33.596 23204 23294 I GoLog   : 2026/07/16 17:17:33.595919 [Info] [1753550111] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:33.597 23204 23286 I GoLog   : 2026/07/16 17:17:33.597201 [Info] [1753550111] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:33.597 23204 23286 I GoLog   : 2026/07/16 17:17:33.597464 [Debug] [1753550111] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:33.798 23204 23286 I GoLog   : 2026/07/16 17:17:33.798130 [Info] [1753550111] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:33.798 23204 23286 I GoLog   : 2026/07/16 17:17:33.798297 [Debug] [1753550111] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:34.022 23204 23294 I GoLog   : 2026/07/16 17:17:34.021622 [Debug] [3921035679] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:17:34.022 23204 23294 I GoLog   : 2026/07/16 17:17:34.021924 [Debug] [3921035679] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:17:34.207 23204 23286 I GoLog   : 2026/07/16 17:17:34.201625 [Info] [1753550111] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:34.208 23204 23286 I GoLog   : 2026/07/16 17:17:34.201956 [Debug] [1753550111] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:34.558 23204 23286 I GoLog   : 2026/07/16 17:17:34.557967 [Info] [427704180] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:17:34.564 23204 23294 I GoLog   : 2026/07/16 17:17:34.564073 [Info] [1289617386] proxy/socks: client UDP connection from udp:127.0.0.1:60716
+07-17 00:17:34.564 23204 23294 I GoLog   : 2026/07/16 17:17:34.564246 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:34.564 23204 23294 I GoLog   : 2026/07/16 17:17:34.564326 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:34.564 23204 23294 I GoLog   : 2026/07/16 17:17:34.564400 [Info] [1289617386] transport/internet/udp: establishing new connection for udp:162.159.61.3:443
+07-17 00:17:34.570 23204 23295 I GoLog   : 2026/07/16 17:17:34.568958 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:34.570 23204 23295 I GoLog   : 2026/07/16 17:17:34.569799 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:34.572 23204 23291 I GoLog   : 2026/07/16 17:17:34.572102 from udp:127.0.0.1:60716 accepted udp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:17:34.572 23204 23292 I GoLog   : 2026/07/16 17:17:34.572315 [Info] [1289617386] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:17:34.573 23204 23292 I GoLog   : 2026/07/16 17:17:34.573058 from tcp:127.0.0.1:50094 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.573826 [Info] [1289617386] app/dispatcher: default route for udp:chrome.cloudflare-dns.com:443
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574057 [Info] [1289617386] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574102 [Debug] [1289617386] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574131 [Info] [427704180] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574162 [Info] [427704180] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574192 [Info] [427704180] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:34.574 23204 23292 I GoLog   : 2026/07/16 17:17:34.574217 [Debug] [427704180] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:34.803 23204 23286 I GoLog   : 2026/07/16 17:17:34.802349 [Info] [1753550111] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:34.803 23204 23286 I GoLog   : 2026/07/16 17:17:34.802783 [Debug] [1753550111] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:34.835 23204 23359 I GoLog   : 2026/07/16 17:17:34.834813 [Info] [427704180] proxy/vless/outbound: tunneling request to tcp:chrome.cloudflare-dns.com:443 via 144.31.104.124:443
+07-17 00:17:34.835 23204 23359 I GoLog   : 2026/07/16 17:17:34.835797 [Info] [1289617386] proxy/vless/outbound: tunneling request to udp:chrome.cloudflare-dns.com:443 via 144.31.104.124:443
+07-17 00:17:34.836 23204 23359 I GoLog   : 2026/07/16 17:17:34.836122 [Info] [1289617386] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: XTLS rejected UDP/443 traffic
+07-17 00:17:34.840 23204 23359 I GoLog   : 2026/07/16 17:17:34.839835 [Debug] [427704180] proxy: XtlsFilterTls found tls client hello! 1741
+07-17 00:17:34.842 23204 23294 I GoLog   : 2026/07/16 17:17:34.841630 [Debug] [427704180] proxy: XtlsPadding 1741 162 0
+07-17 00:17:34.842 23204 23294 I GoLog   : 2026/07/16 17:17:34.841826 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:34.842 23204 23294 I GoLog   : 2026/07/16 17:17:34.841879 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:34.951 23204 23294 I GoLog   : 2026/07/16 17:17:34.951355 [Debug] [427704180] proxy: Xtls Unpadding new block, content 4041 padding 120 command 0
+07-17 00:17:34.951 23204 23294 I GoLog   : 2026/07/16 17:17:34.951419 [Debug] [427704180] proxy: XtlsFilterTls inconclusive server hello 1163 52
+07-17 00:17:34.951 23204 23294 I GoLog   : 2026/07/16 17:17:34.951446 [Debug] [427704180] proxy: XtlsFilterTls found tls 1.3! 2372 TLS_AES_128_GCM_SHA256
+07-17 00:17:34.957 23204 23295 I GoLog   : 2026/07/16 17:17:34.956834 [Debug] [427704180] proxy: XtlsPadding 64 951 0
+07-17 00:17:35.001 23204 23295 I GoLog   : 2026/07/16 17:17:35.000891 [Debug] [427704180] proxy: XtlsPadding 387 625 2
+07-17 00:17:35.010 23204 23294 I GoLog   : 2026/07/16 17:17:35.009366 [Info] [3699996361] proxy/socks: TCP Connect request to tcp:94.100.180.215:443
+07-17 00:17:35.011 23204 23294 I GoLog   : 2026/07/16 17:17:35.011070 [Info] [400953052] proxy/socks: TCP Connect request to tcp:94.100.180.215:443
+07-17 00:17:35.017 23204 23359 I GoLog   : 2026/07/16 17:17:35.017307 from tcp:127.0.0.1:50104 accepted tcp:94.100.180.215:443 [socks-in >> proxy-out]
+07-17 00:17:35.017 23204 23359 I GoLog   : 2026/07/16 17:17:35.017367 from tcp:127.0.0.1:50118 accepted tcp:94.100.180.215:443 [socks-in >> proxy-out]
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.017781 [Info] [3699996361] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.017967 [Info] [3699996361] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018011 [Info] [3699996361] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018040 [Debug] [3699996361] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018121 [Info] [400953052] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018157 [Info] [400953052] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018189 [Info] [400953052] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:35.018 23204 23295 I GoLog   : 2026/07/16 17:17:35.018213 [Debug] [400953052] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:35.051 23204 23295 I GoLog   : 2026/07/16 17:17:35.050985 [Debug] [427704180] proxy: Xtls Unpadding new block, content 528 padding 555 command 2
+07-17 00:17:35.051 23204 23295 I GoLog   : 2026/07/16 17:17:35.051871 [Debug] [427704180] proxy: CopyRawConn splice
+07-17 00:17:35.448 23204 23292 I GoLog   : 2026/07/16 17:17:35.448196 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:35.450 23204 23292 I GoLog   : 2026/07/16 17:17:35.449807 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:35.605 23204 23286 I GoLog   : 2026/07/16 17:17:35.604760 [Info] [1753550111] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:36.154 23204 23295 I GoLog   : 2026/07/16 17:17:36.154250 [Info] [3799976871] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:17:36.160 23204 23292 I GoLog   : 2026/07/16 17:17:36.160609 [Info] [3799976871] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:17:36.161 23204 23292 I GoLog   : 2026/07/16 17:17:36.160768 [Info] [3799976871] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:17:36.161 23204 23292 I GoLog   : 2026/07/16 17:17:36.161105 from tcp:127.0.0.1:50132 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:17:36.162 23204 23295 I GoLog   : 2026/07/16 17:17:36.162134 [Info] [3799976871] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:36.163 23204 23295 I GoLog   : 2026/07/16 17:17:36.162636 [Debug] [3799976871] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:36.650 23204 23286 I GoLog   : 2026/07/16 17:17:36.649815 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:36.650 23204 23286 I GoLog   : 2026/07/16 17:17:36.650176 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:38.544 23204 23294 I GoLog   : 2026/07/16 17:17:38.543176 [Debug] [1289617386] proxy/socks: send packet to udp:162.159.61.3:443 with 1250 bytes
+07-17 00:17:38.545 23204 23294 I GoLog   : 2026/07/16 17:17:38.545639 [Debug] [1289617386] transport/internet/udp: dispatch request to: udp:162.159.61.3:443
+07-17 00:17:43.312 23204 23295 I GoLog   : 2026/07/16 17:17:43.312374 [Info] [1339127326] proxy/socks: client UDP connection from udp:127.0.0.1:46790
+07-17 00:17:43.313 23204 23295 I GoLog   : 2026/07/16 17:17:43.312576 [Debug] [1339127326] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:17:43.313 23204 23295 I GoLog   : 2026/07/16 17:17:43.312607 [Debug] [1339127326] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:17:43.313 23204 23295 I GoLog   : 2026/07/16 17:17:43.312625 [Info] [1339127326] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:17:43.315 23204 23295 I GoLog   : 2026/07/16 17:17:43.314726 [Info] [1339127326] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:17:43.316 23204 23295 I GoLog   : 2026/07/16 17:17:43.316280 from udp:127.0.0.1:46790 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:17:43.317 23204 23295 I GoLog   : 2026/07/16 17:17:43.317311 [Info] [1339127326] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:17:43.319 23204 23295 I GoLog   : 2026/07/16 17:17:43.319168 [Debug] [1339127326] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:17:43.338 23204 23294 I GoLog   : 2026/07/16 17:17:43.338131 [Info] [3732588713] proxy/socks: TCP Connect request to tcp:172.253.130.188:5228
+07-17 00:17:43.341 23204 23295 I GoLog   : 2026/07/16 17:17:43.341725 [Info] [3732588713] app/dispatcher: sniffed domain: mtalk.google.com
+07-17 00:17:43.342 23204 23295 I GoLog   : 2026/07/16 17:17:43.342014 [Info] [3732588713] app/dispatcher: default route for tcp:mtalk.google.com:5228
+07-17 00:17:43.342 23204 23295 I GoLog   : 2026/07/16 17:17:43.342056 [Info] [3732588713] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:43.342 23204 23295 I GoLog   : 2026/07/16 17:17:43.342076 [Debug] [3732588713] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:43.342 23204 23295 I GoLog   : 2026/07/16 17:17:43.342010 from tcp:127.0.0.1:38176 accepted tcp:172.253.130.188:5228 [socks-in >> proxy-out]
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.909750 [Info] [579326106] proxy/socks: client UDP connection from udp:127.0.0.1:45648
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.909837 [Debug] [579326106] proxy/socks: send packet to udp:1.1.1.1:53 with 27 bytes
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.909854 [Debug] [579326106] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.909883 [Info] [579326106] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.910219 [Info] [579326106] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.910233 [Info] [579326106] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:17:45.910 23204 23294 I GoLog   : 2026/07/16 17:17:45.910828 [Debug] [579326106] proxy/socks: writing back UDP response with 27 bytes
+07-17 00:17:45.911 23204 23294 I GoLog   : 2026/07/16 17:17:45.911007 from udp:127.0.0.1:45648 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:17:45.925 23204 23294 I GoLog   : 2026/07/16 17:17:45.925073 [Info] [2111205448] proxy/socks: TCP Connect request to tcp:217.69.139.215:443
+07-17 00:17:45.927 23204 23294 I GoLog   : 2026/07/16 17:17:45.927170 [Info] [2111205448] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:45.927 23204 23294 I GoLog   : 2026/07/16 17:17:45.927211 from tcp:127.0.0.1:38196 accepted tcp:217.69.139.215:443 [socks-in >> proxy-out]
+07-17 00:17:45.927 23204 23294 I GoLog   : 2026/07/16 17:17:45.927218 [Info] [2111205448] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:45.927 23204 23294 I GoLog   : 2026/07/16 17:17:45.927272 [Info] [2111205448] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:45.927 23204 23294 I GoLog   : 2026/07/16 17:17:45.927337 [Debug] [2111205448] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:45.950 23204 23286 I GoLog   : 2026/07/16 17:17:45.950572 [Info] [1414053169] proxy/socks: TCP Connect request to tcp:217.69.139.215:443
+07-17 00:17:45.953 23204 23292 I GoLog   : 2026/07/16 17:17:45.953762 [Info] [1414053169] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:45.954 23204 23292 I GoLog   : 2026/07/16 17:17:45.953832 [Info] [1414053169] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:45.954 23204 23292 I GoLog   : 2026/07/16 17:17:45.953878 [Info] [1414053169] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:45.954 23204 23292 I GoLog   : 2026/07/16 17:17:45.953914 [Debug] [1414053169] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:45.954 23204 23292 I GoLog   : 2026/07/16 17:17:45.954217 from tcp:127.0.0.1:38200 accepted tcp:217.69.139.215:443 [socks-in >> proxy-out]
+07-17 00:17:49.679 23204 23286 I GoLog   : 2026/07/16 17:17:49.677800 [Info] [1864113648] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.680 23204 23286 I GoLog   : 2026/07/16 17:17:49.678827 [Info] [1525210205] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.708 23204 23292 I GoLog   : 2026/07/16 17:17:49.706251 [Info] [3821956681] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.716 23204 23294 I GoLog   : 2026/07/16 17:17:49.716571 [Info] [3234261190] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.716 23204 23294 I GoLog   : 2026/07/16 17:17:49.716708 [Info] [909063572] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.718 23204 23292 I GoLog   : 2026/07/16 17:17:49.717608 [Info] [1655825938] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.721 23204 23291 I GoLog   : 2026/07/16 17:17:49.720560 [Info] [3233486011] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.722 23204 23294 I GoLog   : 2026/07/16 17:17:49.722503 [Info] [22376963] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.726 23204 23294 I GoLog   : 2026/07/16 17:17:49.725836 [Info] [2460807494] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.727 23204 23294 I GoLog   : 2026/07/16 17:17:49.726719 [Info] [887058365] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.733 23204 23291 I GoLog   : 2026/07/16 17:17:49.732795 [Info] [1415342488] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.734 23204 23291 I GoLog   : 2026/07/16 17:17:49.734624 [Info] [527189569] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.746 23204 23292 I GoLog   : 2026/07/16 17:17:49.746330 [Info] [3358365575] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.747 23204 23294 I GoLog   : 2026/07/16 17:17:49.747486 [Info] [119214856] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.750 23204 23294 I GoLog   : 2026/07/16 17:17:49.750145 [Info] [2429832700] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.751 23204 23294 I GoLog   : 2026/07/16 17:17:49.751230 [Info] [3471528493] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.751 23204 23294 I GoLog   : 2026/07/16 17:17:49.751346 [Info] [2868168200] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.751 23204 23294 I GoLog   : 2026/07/16 17:17:49.751671 [Info] [2570228857] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.755 23204 23294 I GoLog   : 2026/07/16 17:17:49.755523 [Info] [3218862180] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.759 23204 23286 I GoLog   : 2026/07/16 17:17:49.758899 [Info] [1353499382] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.771 23204 23294 I GoLog   : 2026/07/16 17:17:49.771648 [Info] [2929161515] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.772 23204 23291 I GoLog   : 2026/07/16 17:17:49.772367 [Info] [2160657513] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.772 23204 23291 I GoLog   : 2026/07/16 17:17:49.772480 [Info] [3610916502] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.772 23204 23291 I GoLog   : 2026/07/16 17:17:49.772568 [Info] [1165571982] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.782 23204 23292 I GoLog   : 2026/07/16 17:17:49.782106 [Info] [4021350725] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.784 23204 23294 I GoLog   : 2026/07/16 17:17:49.783030 [Info] [868105404] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.784 23204 23294 I GoLog   : 2026/07/16 17:17:49.783231 [Info] [719643716] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.793 23204 23286 I GoLog   : 2026/07/16 17:17:49.792697 [Info] [463273973] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.804 23204 23286 I GoLog   : 2026/07/16 17:17:49.804014 [Info] [2859520643] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.805 23204 23286 I GoLog   : 2026/07/16 17:17:49.805223 [Info] [326148651] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.807 23204 23286 I GoLog   : 2026/07/16 17:17:49.807552 [Info] [1709080862] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.811 23204 23292 I GoLog   : 2026/07/16 17:17:49.811404 [Info] [2847321849] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.814 23204 23286 I GoLog   : 2026/07/16 17:17:49.813836 [Info] [2965941866] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.816 23204 23286 I GoLog   : 2026/07/16 17:17:49.816439 [Info] [4128796137] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.831 23204 23294 I GoLog   : 2026/07/16 17:17:49.828296 [Info] [2734745340] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:49.832 23204 23292 I GoLog   : 2026/07/16 17:17:49.831902 [Info] [2734745340] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:49.832 23204 23292 I GoLog   : 2026/07/16 17:17:49.832197 [Debug] [2734745340] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:50.031 23204 23292 I GoLog   : 2026/07/16 17:17:50.031302 [Info] [2734745340] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:50.031 23204 23292 I GoLog   : 2026/07/16 17:17:50.031433 [Debug] [2734745340] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:50.433 23204 23292 I GoLog   : 2026/07/16 17:17:50.432866 [Info] [2734745340] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:50.433 23204 23292 I GoLog   : 2026/07/16 17:17:50.433029 [Debug] [2734745340] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:50.893 23204 23286 I GoLog   : 2026/07/16 17:17:50.892800 [Info] [3992730416] transport/internet/udp: failed to write first UDP payload > io: read/write on closed pipe
+07-17 00:17:50.893 23204 23286 I GoLog   : 2026/07/16 17:17:50.893346 [Info] [3992730416] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:50.895 23204 23294 I GoLog   : 2026/07/16 17:17:50.894976 [Info] [3992730416] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:50.895 23204 23294 I GoLog   : 2026/07/16 17:17:50.895133 [Debug] [3992730416] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:51.035 23204 23291 I GoLog   : 2026/07/16 17:17:51.034688 [Info] [2734745340] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:51.035 23204 23291 I GoLog   : 2026/07/16 17:17:51.034976 [Debug] [2734745340] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:51.096 23204 23291 I GoLog   : 2026/07/16 17:17:51.096731 [Info] [3992730416] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:51.097 23204 23291 I GoLog   : 2026/07/16 17:17:51.096849 [Debug] [3992730416] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:51.499 23204 23291 I GoLog   : 2026/07/16 17:17:51.499234 [Info] [3992730416] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:51.500 23204 23291 I GoLog   : 2026/07/16 17:17:51.499490 [Debug] [3992730416] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:51.812 23204 23286 I GoLog   : 2026/07/16 17:17:51.812084 [Info] [2263538985] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:51.814 23204 23286 I GoLog   : 2026/07/16 17:17:51.813646 [Info] [2263538985] transport/internet/udp: failed to write first UDP payload > io: read/write on closed pipe
+07-17 00:17:51.814 23204 23286 I GoLog   : 2026/07/16 17:17:51.813785 [Debug] [2263538985] proxy/socks: send packet to udp:108.177.14.139:443 with 1250 bytes
+07-17 00:17:51.814 23204 23286 I GoLog   : 2026/07/16 17:17:51.813820 [Debug] [2263538985] transport/internet/udp: dispatch request to: udp:108.177.14.139:443
+07-17 00:17:51.814 23204 23286 I GoLog   : 2026/07/16 17:17:51.813900 [Info] [2263538985] transport/internet/udp: establishing new connection for udp:108.177.14.139:443
+07-17 00:17:51.816 23204 23286 I GoLog   : 2026/07/16 17:17:51.816111 [Info] [2263538985] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:51.816 23204 23286 I GoLog   : 2026/07/16 17:17:51.816492 [Debug] [2263538985] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:51.837 23204 23294 I GoLog   : 2026/07/16 17:17:51.836893 [Info] [2734745340] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:52.017 23204 23286 I GoLog   : 2026/07/16 17:17:52.016815 [Info] [2263538985] app/dispatcher: default route for udp:108.177.14.139:443
+07-17 00:17:52.017 23204 23286 I GoLog   : 2026/07/16 17:17:52.016960 [Info] [2263538985] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:52.017 23204 23286 I GoLog   : 2026/07/16 17:17:52.017042 [Debug] [2263538985] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:52.018 23204 23286 I GoLog   : 2026/07/16 17:17:52.017952 [Info] [2263538985] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:52.018 23204 23286 I GoLog   : 2026/07/16 17:17:52.018043 [Debug] [2263538985] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:52.018 23204 23286 I GoLog   : 2026/07/16 17:17:52.018784 from udp:127.0.0.1:39999 accepted udp:108.177.14.139:443 [socks-in >> proxy-out]
+07-17 00:17:52.100 23204 23294 I GoLog   : 2026/07/16 17:17:52.099964 [Info] [3992730416] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:52.100 23204 23294 I GoLog   : 2026/07/16 17:17:52.100211 [Debug] [3992730416] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:52.422 23204 23293 I GoLog   : 2026/07/16 17:17:52.420383 [Info] [2263538985] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:52.422 23204 23293 I GoLog   : 2026/07/16 17:17:52.421053 [Debug] [2263538985] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:52.903 23204 23293 I GoLog   : 2026/07/16 17:17:52.902209 [Info] [3992730416] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:53.023 23204 23359 I GoLog   : 2026/07/16 17:17:53.022974 [Info] [2263538985] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:53.023 23204 23359 I GoLog   : 2026/07/16 17:17:53.023079 [Debug] [2263538985] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:53.828 23204 23359 I GoLog   : 2026/07/16 17:17:53.827709 [Info] [2263538985] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:54.079 23204 23359 I GoLog   : 2026/07/16 17:17:54.075627 [Info] [485169829] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:54.079 23204 23359 I GoLog   : 2026/07/16 17:17:54.079196 [Info] [485169829] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:54.079 23204 23359 I GoLog   : 2026/07/16 17:17:54.079405 [Debug] [485169829] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:54.282 23204 23359 I GoLog   : 2026/07/16 17:17:54.281727 [Info] [485169829] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:54.282 23204 23359 I GoLog   : 2026/07/16 17:17:54.281897 [Debug] [485169829] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:54.372 23204 23359 I GoLog   : 2026/07/16 17:17:54.370280 [Info] [851823187] proxy/socks: TCP Connect request to tcp:87.240.137.207:443
+07-17 00:17:54.372 23204 23359 I GoLog   : 2026/07/16 17:17:54.372336 [Info] [851823187] app/dispatcher: sniffed domain: api.vk.com
+07-17 00:17:54.373 23204 23359 I GoLog   : 2026/07/16 17:17:54.372401 [Info] [851823187] app/dispatcher: default route for tcp:api.vk.com:443
+07-17 00:17:54.373 23204 23359 I GoLog   : 2026/07/16 17:17:54.372442 [Info] [851823187] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:54.373 23204 23359 I GoLog   : 2026/07/16 17:17:54.372469 [Debug] [851823187] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:54.373 23204 23359 I GoLog   : 2026/07/16 17:17:54.372547 from tcp:127.0.0.1:45098 accepted tcp:87.240.137.207:443 [socks-in >> proxy-out]
+07-17 00:17:54.683 23204 23291 I GoLog   : 2026/07/16 17:17:54.683578 [Info] [485169829] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:54.684 23204 23291 I GoLog   : 2026/07/16 17:17:54.683727 [Debug] [485169829] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:55.293 23204 23291 I GoLog   : 2026/07/16 17:17:55.292356 [Info] [485169829] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:55.293 23204 23291 I GoLog   : 2026/07/16 17:17:55.292689 [Debug] [485169829] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:55.858 23204 23293 I GoLog   : 2026/07/16 17:17:55.858257 [Info] [705501435] transport/internet/udp: failed to write first UDP payload > io: read/write on closed pipe
+07-17 00:17:55.858 23204 23293 I GoLog   : 2026/07/16 17:17:55.858738 [Info] [705501435] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:55.861 23204 23293 I GoLog   : 2026/07/16 17:17:55.860621 [Info] [705501435] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:55.861 23204 23293 I GoLog   : 2026/07/16 17:17:55.860892 [Debug] [705501435] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:55.964 23204 23359 I GoLog   : 2026/07/16 17:17:55.964785 [Info] [732451060] proxy/socks: TCP Connect request to tcp:94.100.180.216:443
+07-17 00:17:55.979 23204 23359 I GoLog   : 2026/07/16 17:17:55.978851 [Info] [3965734249] proxy/socks: TCP Connect request to tcp:94.100.180.216:443
+07-17 00:17:55.981 23204 23293 I GoLog   : 2026/07/16 17:17:55.981547 [Info] [732451060] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:55.983 23204 23293 I GoLog   : 2026/07/16 17:17:55.982521 [Info] [732451060] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:55.983 23204 23293 I GoLog   : 2026/07/16 17:17:55.983223 from tcp:127.0.0.1:45108 accepted tcp:94.100.180.216:443 [socks-in >> proxy-out]
+07-17 00:17:55.983 23204 23293 I GoLog   : 2026/07/16 17:17:55.983657 [Info] [732451060] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:55.983 23204 23293 I GoLog   : 2026/07/16 17:17:55.983699 [Debug] [732451060] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:55.988 23204 23291 I GoLog   : 2026/07/16 17:17:55.988538 [Info] [3965734249] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:17:55.988 23204 23291 I GoLog   : 2026/07/16 17:17:55.988614 from tcp:127.0.0.1:45124 accepted tcp:94.100.180.216:443 [socks-in >> proxy-out]
+07-17 00:17:55.989 23204 23286 I GoLog   : 2026/07/16 17:17:55.988961 [Info] [3965734249] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:17:55.989 23204 23286 I GoLog   : 2026/07/16 17:17:55.989050 [Info] [3965734249] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:55.989 23204 23286 I GoLog   : 2026/07/16 17:17:55.989084 [Debug] [3965734249] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:56.064 23204 23293 I GoLog   : 2026/07/16 17:17:56.063592 [Info] [705501435] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:56.064 23204 23293 I GoLog   : 2026/07/16 17:17:56.063889 [Debug] [705501435] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:56.098 23204 23295 I GoLog   : 2026/07/16 17:17:56.097762 [Info] [485169829] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:56.464 23204 23295 I GoLog   : 2026/07/16 17:17:56.464572 [Info] [705501435] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:56.464 23204 23295 I GoLog   : 2026/07/16 17:17:56.464706 [Debug] [705501435] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480292 [Info] [1974409881] proxy/socks: client UDP connection from udp:127.0.0.1:38523
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480315 [Debug] [1974409881] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480322 [Debug] [1974409881] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480326 [Info] [1974409881] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480415 [Info] [1974409881] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480422 [Info] [1974409881] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480431 from udp:127.0.0.1:38523 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:17:56.480 23204 23295 I GoLog   : 2026/07/16 17:17:56.480503 [Debug] [1974409881] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481814 [Info] [3849330186] proxy/socks: client UDP connection from udp:127.0.0.1:34354
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481837 [Debug] [3849330186] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481843 [Debug] [3849330186] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481846 [Info] [3849330186] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481904 [Info] [3849330186] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481911 [Info] [3849330186] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.481917 from udp:127.0.0.1:34354 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.482103 [Debug] app/dns: domain g.whatsapp.net will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.482112 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: g.whatsapp.net.
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.482178 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:17:56.482 23204 23359 I GoLog   : 2026/07/16 17:17:56.482807 [Info] [2152043570] proxy/socks: TCP Connect request to tcp:57.144.249.33:443
+07-17 00:17:56.532 23204 23291 I GoLog   : 2026/07/16 17:17:56.532079 [Info] app/dns: UDP:1.1.1.1:53 got answer: g.whatsapp.net. TypeA -> [57.144.113.33], rtt: 50.005696ms, lock: 16.073µs
+07-17 00:17:56.532 23204 23291 I GoLog   : 2026/07/16 17:17:56.532255 [Debug] [3849330186] proxy/socks: writing back UDP response with 48 bytes
+07-17 00:17:56.684 23204 23295 I GoLog   : 2026/07/16 17:17:56.684856 [Info] [2152043570] app/dispatcher: default route for tcp:57.144.249.33:443
+07-17 00:17:56.684 23204 23295 I GoLog   : 2026/07/16 17:17:56.684913 [Info] [2152043570] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:56.685 23204 23295 I GoLog   : 2026/07/16 17:17:56.684931 [Debug] [2152043570] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:56.685 23204 23295 I GoLog   : 2026/07/16 17:17:56.684969 from tcp:127.0.0.1:45156 accepted tcp:57.144.249.33:443 [socks-in >> proxy-out]
+07-17 00:17:57.068 23204 23286 I GoLog   : 2026/07/16 17:17:57.067083 [Info] [705501435] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:57.069 23204 23286 I GoLog   : 2026/07/16 17:17:57.067369 [Debug] [705501435] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:57.870 23204 23286 I GoLog   : 2026/07/16 17:17:57.869915 [Info] [705501435] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:17:58.938 23204 23359 I GoLog   : 2026/07/16 17:17:58.937907 [Info] [1857478299] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:17:58.940 23204 23286 I GoLog   : 2026/07/16 17:17:58.940669 [Info] [1857478299] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:58.940 23204 23286 I GoLog   : 2026/07/16 17:17:58.940784 [Debug] [1857478299] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:59.142 23204 23359 I GoLog   : 2026/07/16 17:17:59.142005 [Info] [1857478299] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:59.142 23204 23359 I GoLog   : 2026/07/16 17:17:59.142214 [Debug] [1857478299] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:17:59.548 23204 23291 I GoLog   : 2026/07/16 17:17:59.545432 [Info] [1857478299] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:17:59.549 23204 23291 I GoLog   : 2026/07/16 17:17:59.545913 [Debug] [1857478299] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:00.022 23204 23291 I GoLog   : 2026/07/16 17:18:00.022056 [Info] [2354748017] proxy/socks: TCP Connect request to tcp:8.47.69.0:443
+07-17 00:18:00.022 23204 23286 I GoLog   : 2026/07/16 17:18:00.022804 [Info] [2354748017] app/dispatcher: sniffed domain: example.com
+07-17 00:18:00.022 23204 23286 I GoLog   : 2026/07/16 17:18:00.022820 [Info] [2354748017] app/dispatcher: default route for tcp:example.com:443
+07-17 00:18:00.022 23204 23286 I GoLog   : 2026/07/16 17:18:00.022829 [Info] [2354748017] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:00.022 23204 23286 I GoLog   : 2026/07/16 17:18:00.022836 [Debug] [2354748017] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:00.022 23204 23286 I GoLog   : 2026/07/16 17:18:00.022850 from tcp:127.0.0.1:45170 accepted tcp:8.47.69.0:443 [socks-in >> proxy-out]
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074494 [Info] [3806384880] proxy/socks: client UDP connection from udp:127.0.0.1:33145
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074557 [Debug] [3806384880] proxy/socks: send packet to udp:1.1.1.1:53 with 73 bytes
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074566 [Debug] [3806384880] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074571 [Info] [3806384880] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074663 [Info] [3806384880] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074677 [Info] [3806384880] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074686 from udp:127.0.0.1:33145 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:18:00.074 23204 23291 I GoLog   : 2026/07/16 17:18:00.074774 [Debug] [3806384880] proxy/socks: writing back UDP response with 73 bytes
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075513 [Info] [478301720] proxy/socks: client UDP connection from udp:127.0.0.1:44563
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075533 [Debug] [478301720] proxy/socks: send packet to udp:1.1.1.1:53 with 73 bytes
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075556 [Debug] [478301720] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075569 [Info] [478301720] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075685 [Info] [478301720] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075700 [Info] [478301720] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.075718 from udp:127.0.0.1:44563 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.076062 [Debug] app/dns: domain ohttp-relay-safebrowsing-android.google.fastly-edge.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.076082 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: ohttp-relay-safebrowsing-android.google.fastly-edge.com.
+07-17 00:18:00.076 23204 23291 I GoLog   : 2026/07/16 17:18:00.076094 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:00.127 23204 23291 I GoLog   : 2026/07/16 17:18:00.127043 [Info] app/dns: UDP:1.1.1.1:53 got answer: ohttp-relay-safebrowsing-android.google.fastly-edge.com. TypeA -> [151.101.65.91 151.101.129.91 151.101.193.91 151.101.1.91], rtt: 51.087769ms, lock: 14.526µs
+07-17 00:18:00.127 23204 23286 I GoLog   : 2026/07/16 17:18:00.127314 [Debug] [478301720] proxy/socks: writing back UDP response with 137 bytes
+07-17 00:18:00.133 23204 23286 I GoLog   : 2026/07/16 17:18:00.133732 [Info] [358632052] proxy/socks: TCP Connect request to tcp:151.101.65.91:443
+07-17 00:18:00.134 23204 23286 I GoLog   : 2026/07/16 17:18:00.134454 [Info] [358632052] app/dispatcher: sniffed domain: ohttp-relay-safebrowsing-android.google.fastly-edge.com
+07-17 00:18:00.134 23204 23286 I GoLog   : 2026/07/16 17:18:00.134728 [Info] [358632052] app/dispatcher: default route for tcp:ohttp-relay-safebrowsing-android.google.fastly-edge.com:443
+07-17 00:18:00.134 23204 23295 I GoLog   : 2026/07/16 17:18:00.134898 [Info] [358632052] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:00.134 23204 23295 I GoLog   : 2026/07/16 17:18:00.134925 [Debug] [358632052] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:00.134 23204 23295 I GoLog   : 2026/07/16 17:18:00.134582 from tcp:127.0.0.1:45186 accepted tcp:151.101.65.91:443 [socks-in >> proxy-out]
+07-17 00:18:00.145 23204 23286 I GoLog   : 2026/07/16 17:18:00.145216 [Info] [1857478299] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:00.145 23204 23286 I GoLog   : 2026/07/16 17:18:00.145349 [Debug] [1857478299] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:00.948 23204 23295 I GoLog   : 2026/07/16 17:18:00.948027 [Info] [1857478299] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:18:04.078 23204 23291 I GoLog   : 2026/07/16 17:18:04.077194 [Info] [3228428444] proxy/socks: client UDP connection from udp:127.0.0.1:51684
+07-17 00:18:04.078 23204 23291 I GoLog   : 2026/07/16 17:18:04.077546 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:04.078 23204 23291 I GoLog   : 2026/07/16 17:18:04.077601 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:04.078 23204 23291 I GoLog   : 2026/07/16 17:18:04.077650 [Info] [3228428444] transport/internet/udp: establishing new connection for udp:142.251.154.119:443
+07-17 00:18:04.081 23204 23291 I GoLog   : 2026/07/16 17:18:04.081180 [Info] [3228428444] app/dispatcher: sniffed domain: www.google.com
+07-17 00:18:04.081 23204 23291 I GoLog   : 2026/07/16 17:18:04.081327 [Info] [3228428444] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:18:04.081 23204 23291 I GoLog   : 2026/07/16 17:18:04.081383 [Info] [3228428444] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:04.081 23204 23291 I GoLog   : 2026/07/16 17:18:04.081425 [Debug] [3228428444] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:04.081 23204 23291 I GoLog   : 2026/07/16 17:18:04.081552 from udp:127.0.0.1:51684 accepted udp:142.251.154.119:443 [socks-in >> proxy-out]
+07-17 00:18:04.083 23204 23291 I GoLog   : 2026/07/16 17:18:04.083012 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:04.083 23204 23291 I GoLog   : 2026/07/16 17:18:04.083061 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:04.361 23204 23295 I GoLog   : 2026/07/16 17:18:04.361408 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:04.361 23204 23295 I GoLog   : 2026/07/16 17:18:04.361567 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:04.966 23204 23295 I GoLog   : 2026/07/16 17:18:04.965667 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:04.967 23204 23295 I GoLog   : 2026/07/16 17:18:04.967397 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:06.016 23204 23291 I GoLog   : 2026/07/16 17:18:06.016696 [Info] [857022596] proxy/socks: TCP Connect request to tcp:217.69.139.216:443
+07-17 00:18:06.020 23204 23293 I GoLog   : 2026/07/16 17:18:06.020628 [Info] [2990251414] proxy/socks: TCP Connect request to tcp:217.69.139.216:443
+07-17 00:18:06.024 23204 23295 I GoLog   : 2026/07/16 17:18:06.023838 [Info] [857022596] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:06.024 23204 23295 I GoLog   : 2026/07/16 17:18:06.023897 [Info] [857022596] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:06.024 23204 23295 I GoLog   : 2026/07/16 17:18:06.023933 [Info] [857022596] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:06.024 23204 23295 I GoLog   : 2026/07/16 17:18:06.023933 from tcp:127.0.0.1:50474 accepted tcp:217.69.139.216:443 [socks-in >> proxy-out]
+07-17 00:18:06.024 23204 23295 I GoLog   : 2026/07/16 17:18:06.023961 [Debug] [857022596] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:06.025 23204 23286 I GoLog   : 2026/07/16 17:18:06.024963 [Info] [2990251414] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:06.025 23204 23286 I GoLog   : 2026/07/16 17:18:06.025052 [Info] [2990251414] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:06.025 23204 23286 I GoLog   : 2026/07/16 17:18:06.025089 [Info] [2990251414] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:06.025 23204 23286 I GoLog   : 2026/07/16 17:18:06.025117 [Debug] [2990251414] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:06.025 23204 23286 I GoLog   : 2026/07/16 17:18:06.025305 from tcp:127.0.0.1:50490 accepted tcp:217.69.139.216:443 [socks-in >> proxy-out]
+07-17 00:18:06.167 23204 23295 I GoLog   : 2026/07/16 17:18:06.167028 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:06.167 23204 23295 I GoLog   : 2026/07/16 17:18:06.167226 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:08.067 23204 23293 I GoLog   : 2026/07/16 17:18:08.065765 [Debug] [3228428444] proxy/socks: send packet to udp:142.251.154.119:443 with 1250 bytes
+07-17 00:18:08.067 23204 23293 I GoLog   : 2026/07/16 17:18:08.066170 [Debug] [3228428444] transport/internet/udp: dispatch request to: udp:142.251.154.119:443
+07-17 00:18:16.058 23204 23295 I GoLog   : 2026/07/16 17:18:16.058638 [Info] [3130162301] proxy/socks: TCP Connect request to tcp:94.100.180.215:443
+07-17 00:18:16.068 23204 23291 I GoLog   : 2026/07/16 17:18:16.068196 [Info] [397438469] proxy/socks: TCP Connect request to tcp:94.100.180.215:443
+07-17 00:18:16.071 23204 23295 I GoLog   : 2026/07/16 17:18:16.071497 [Info] [397438469] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:16.071 23204 23295 I GoLog   : 2026/07/16 17:18:16.071563 [Info] [397438469] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:16.071 23204 23295 I GoLog   : 2026/07/16 17:18:16.071604 [Info] [397438469] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:16.071 23204 23295 I GoLog   : 2026/07/16 17:18:16.071633 [Debug] [397438469] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:16.071 23204 23295 I GoLog   : 2026/07/16 17:18:16.071906 from tcp:127.0.0.1:38742 accepted tcp:94.100.180.215:443 [socks-in >> proxy-out]
+07-17 00:18:16.076 23204 23291 I GoLog   : 2026/07/16 17:18:16.076068 [Info] [3130162301] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:16.076 23204 23291 I GoLog   : 2026/07/16 17:18:16.076212 [Info] [3130162301] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:16.076 23204 23291 I GoLog   : 2026/07/16 17:18:16.076260 [Info] [3130162301] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:16.076 23204 23291 I GoLog   : 2026/07/16 17:18:16.076296 [Debug] [3130162301] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:16.076 23204 23291 I GoLog   : 2026/07/16 17:18:16.076125 from tcp:127.0.0.1:38728 accepted tcp:94.100.180.215:443 [socks-in >> proxy-out]
+07-17 00:18:23.813 23204 23293 I GoLog   : 2026/07/16 17:18:23.813132 [Info] [2936233149] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.815 23204 23291 I GoLog   : 2026/07/16 17:18:23.815174 [Info] [195310258] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.817 23204 23293 I GoLog   : 2026/07/16 17:18:23.817576 [Info] [3764677744] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.818 23204 23291 I GoLog   : 2026/07/16 17:18:23.817929 [Info] [3130669770] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.853 23204 23293 I GoLog   : 2026/07/16 17:18:23.852882 [Info] [448419348] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.853 23204 23292 I GoLog   : 2026/07/16 17:18:23.853464 [Info] [4202839491] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.873 23204 23291 I GoLog   : 2026/07/16 17:18:23.873198 [Info] [4157429189] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.873 23204 23291 I GoLog   : 2026/07/16 17:18:23.873323 [Info] [596411551] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:23.929 23204 23295 I GoLog   : 2026/07/16 17:18:23.929063 [Info] [526434729] proxy/socks: TCP Connect request to tcp:162.159.61.3:443
+07-17 00:18:23.933 23204 23292 I GoLog   : 2026/07/16 17:18:23.933668 [Info] [526434729] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:18:23.936 23204 23292 I GoLog   : 2026/07/16 17:18:23.935846 [Info] [526434729] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:18:23.936 23204 23292 I GoLog   : 2026/07/16 17:18:23.935983 [Info] [526434729] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:23.936 23204 23292 I GoLog   : 2026/07/16 17:18:23.936328 from tcp:127.0.0.1:46326 accepted tcp:162.159.61.3:443 [socks-in >> proxy-out]
+07-17 00:18:23.937 23204 23291 I GoLog   : 2026/07/16 17:18:23.937126 [Debug] [526434729] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:24.091 23204 23291 I GoLog   : 2026/07/16 17:18:24.091024 [Info] [2922619153] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.091 23204 23291 I GoLog   : 2026/07/16 17:18:24.091320 [Info] [293893895] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.166 23204 23292 I GoLog   : 2026/07/16 17:18:24.164173 [Info] [3723672249] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.169 23204 23293 I GoLog   : 2026/07/16 17:18:24.168667 [Info] [75421422] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.185 23204 23292 I GoLog   : 2026/07/16 17:18:24.184853 [Info] [4213375546] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.185 23204 23292 I GoLog   : 2026/07/16 17:18:24.184985 [Info] [3200116346] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.216 23204 23292 I GoLog   : 2026/07/16 17:18:24.216378 [Info] [1628451852] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.220 23204 23292 I GoLog   : 2026/07/16 17:18:24.220416 [Info] [1354781120] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.225 23204 23292 I GoLog   : 2026/07/16 17:18:24.225745 [Info] [2774836135] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.262 23204 23295 I GoLog   : 2026/07/16 17:18:24.262757 [Info] [2555635524] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.263 23204 23286 I GoLog   : 2026/07/16 17:18:24.263284 [Info] [4057414258] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.421 23204 23286 I GoLog   : 2026/07/16 17:18:24.421049 [Info] [1751326837] proxy/socks: TCP Connect request to tcp:87.240.190.75:443
+07-17 00:18:24.430 23204 23291 I GoLog   : 2026/07/16 17:18:24.429989 [Info] [1751326837] app/dispatcher: sniffed domain: api.vk.com
+07-17 00:18:24.430 23204 23291 I GoLog   : 2026/07/16 17:18:24.430074 [Info] [1751326837] app/dispatcher: default route for tcp:api.vk.com:443
+07-17 00:18:24.430 23204 23291 I GoLog   : 2026/07/16 17:18:24.430114 [Info] [1751326837] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:24.430 23204 23291 I GoLog   : 2026/07/16 17:18:24.430149 [Debug] [1751326837] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:24.430 23204 23291 I GoLog   : 2026/07/16 17:18:24.430625 from tcp:127.0.0.1:46334 accepted tcp:87.240.190.75:443 [socks-in >> proxy-out]
+07-17 00:18:24.948 23204 23286 I GoLog   : 2026/07/16 17:18:24.946019 [Info] [441486998] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:24.949 23204 23286 I GoLog   : 2026/07/16 17:18:24.948387 [Info] [441486998] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:24.949 23204 23286 I GoLog   : 2026/07/16 17:18:24.948508 [Debug] [441486998] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:25.150 23204 23292 I GoLog   : 2026/07/16 17:18:25.149902 [Info] [441486998] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:25.150 23204 23292 I GoLog   : 2026/07/16 17:18:25.150031 [Debug] [441486998] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:25.551 23204 23286 I GoLog   : 2026/07/16 17:18:25.551428 [Info] [441486998] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:25.552 23204 23286 I GoLog   : 2026/07/16 17:18:25.551647 [Debug] [441486998] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:25.896 23204 23286 I GoLog   : 2026/07/16 17:18:25.896185 [Info] [3582057180] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:25.899 23204 23291 I GoLog   : 2026/07/16 17:18:25.899034 [Info] [118353099] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:26.152 23204 23292 I GoLog   : 2026/07/16 17:18:26.152470 [Info] [441486998] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:26.152 23204 23292 I GoLog   : 2026/07/16 17:18:26.152689 [Debug] [441486998] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605351 [Info] [2883888704] proxy/socks: client UDP connection from udp:127.0.0.1:34328
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605391 [Debug] [2883888704] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605402 [Debug] [2883888704] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605410 [Info] [2883888704] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605577 [Info] [2883888704] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605588 [Info] [2883888704] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605600 from udp:127.0.0.1:34328 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:18:26.605 23204 23292 I GoLog   : 2026/07/16 17:18:26.605719 [Debug] [2883888704] proxy/socks: writing back UDP response with 32 bytes
+07-17 00:18:26.607 23204 23291 I GoLog   : 2026/07/16 17:18:26.607177 [Info] [2825282510] proxy/socks: TCP Connect request to tcp:57.144.113.33:80
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612284 [Info] [1524948836] proxy/socks: client UDP connection from udp:127.0.0.1:47287
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612374 [Debug] [1524948836] proxy/socks: send packet to udp:1.1.1.1:53 with 32 bytes
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612399 [Debug] [1524948836] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612418 [Info] [1524948836] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612436 [Info] [1524948836] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612454 [Info] [1524948836] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612491 [Debug] app/dns: domain g.whatsapp.net will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612506 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: g.whatsapp.net.
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612522 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:26.612 23204 23286 I GoLog   : 2026/07/16 17:18:26.612313 from udp:127.0.0.1:47287 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:18:26.639 23204 23292 I GoLog   : 2026/07/16 17:18:26.639149 [Info] [2825282510] app/dispatcher: sniffed domain: c.whatsapp.net
+07-17 00:18:26.639 23204 23292 I GoLog   : 2026/07/16 17:18:26.639251 [Info] [2825282510] app/dispatcher: default route for tcp:c.whatsapp.net:80
+07-17 00:18:26.639 23204 23292 I GoLog   : 2026/07/16 17:18:26.639281 [Info] [2825282510] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:26.639 23204 23292 I GoLog   : 2026/07/16 17:18:26.639324 [Debug] [2825282510] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:26.640 23204 23292 I GoLog   : 2026/07/16 17:18:26.639483 from tcp:127.0.0.1:46356 accepted tcp:57.144.113.33:80 [socks-in >> proxy-out]
+07-17 00:18:26.663 23204 23292 I GoLog   : 2026/07/16 17:18:26.662769 [Info] app/dns: UDP:1.1.1.1:53 got answer: g.whatsapp.net. TypeA -> [57.144.113.33], rtt: 49.863281ms, lock: 15.788µs
+07-17 00:18:26.663 23204 23292 I GoLog   : 2026/07/16 17:18:26.663305 [Debug] [1524948836] proxy/socks: writing back UDP response with 48 bytes
+07-17 00:18:26.956 23204 23292 I GoLog   : 2026/07/16 17:18:26.955100 [Info] [441486998] app/proxyman/outbound: app/proxyman/outbound: failed to process outbound traffic > proxy/vless/outbound: failed to find an available destination > common/retry: [context canceled dial tcp 144.31.104.124:443: operation was canceled] > common/retry: all retry attempts failed
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729150 [Info] [2171852912] proxy/socks: client UDP connection from udp:127.0.0.1:51253
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729186 [Debug] [2171852912] proxy/socks: send packet to udp:1.1.1.1:53 with 27 bytes
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729195 [Debug] [2171852912] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729202 [Info] [2171852912] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729348 [Info] [2171852912] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729356 [Info] [2171852912] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729367 from udp:127.0.0.1:51253 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:18:27.729 23204 23292 I GoLog   : 2026/07/16 17:18:27.729481 [Debug] [2171852912] proxy/socks: writing back UDP response with 27 bytes
+07-17 00:18:27.740 23204 23292 I GoLog   : 2026/07/16 17:18:27.740822 [Info] [293897764] proxy/socks: TCP Connect request to tcp:217.69.139.215:443
+07-17 00:18:27.753 23204 23292 I GoLog   : 2026/07/16 17:18:27.753654 [Info] [293897764] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:27.754 23204 23292 I GoLog   : 2026/07/16 17:18:27.753740 [Info] [293897764] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:27.754 23204 23292 I GoLog   : 2026/07/16 17:18:27.753788 [Info] [293897764] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:27.754 23204 23292 I GoLog   : 2026/07/16 17:18:27.753823 [Debug] [293897764] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:27.754 23204 23292 I GoLog   : 2026/07/16 17:18:27.754154 from tcp:127.0.0.1:46376 accepted tcp:217.69.139.215:443 [socks-in >> proxy-out]
+07-17 00:18:27.824 23204 23295 I GoLog   : 2026/07/16 17:18:27.824494 [Info] [2747669028] proxy/socks: TCP Connect request to tcp:217.69.139.215:443
+07-17 00:18:27.836 23204 23295 I GoLog   : 2026/07/16 17:18:27.834630 from tcp:127.0.0.1:46382 accepted tcp:217.69.139.215:443 [socks-in >> proxy-out]
+07-17 00:18:27.836 23204 23295 I GoLog   : 2026/07/16 17:18:27.834828 [Info] [2747669028] app/dispatcher: sniffed domain: e.mail.ru
+07-17 00:18:27.836 23204 23295 I GoLog   : 2026/07/16 17:18:27.834911 [Info] [2747669028] app/dispatcher: default route for tcp:e.mail.ru:443
+07-17 00:18:27.836 23204 23295 I GoLog   : 2026/07/16 17:18:27.834986 [Info] [2747669028] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:18:27.836 23204 23295 I GoLog   : 2026/07/16 17:18:27.835051 [Debug] [2747669028] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:18:27.896 23204 23286 I GoLog   : 2026/07/16 17:18:27.895783 [Info] [4137940999] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896056 [Info] [527189569] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896132 [Info] [1415342488] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896318 [Info] [2901581164] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896428 [Info] [2859520643] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896498 [Info] [1403134042] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896565 [Info] [4202839491] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896633 [Info] [75421422] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896702 [Info] [2774836135] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896854 [Info] [3582057180] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.896935 [Info] [3130669770] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897077 [Info] [4021350725] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897153 [Info] [1353499382] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897215 [Info] [719643716] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897271 [Info] [1639542551] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897383 [Info] [2067278593] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897495 [Info] [2429832700] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897601 [Info] [2460807494] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897667 [Info] [2160657513] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.897 23204 23286 I GoLog   : 2026/07/16 17:18:27.897778 [Info] [909063572] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.898 23204 23286 I GoLog   : 2026/07/16 17:18:27.897852 [Info] [2847321849] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.898 23204 23286 I GoLog   : 2026/07/16 17:18:27.897960 [Info] [887058365] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.898 23204 23286 I GoLog   : 2026/07/16 17:18:27.898032 [Info] [3515520167] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898178 [Info] [448419348] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898254 [Info] [463273973] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898316 [Info] [2555635524] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898717 [Info] [3123995454] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898808 [Info] [2965941866] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898872 [Info] [2997299283] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.898985 [Info] [1165571982] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899052 [Info] [118353099] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899120 [Info] [1525210205] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899161 [Info] [3610916502] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899285 [Info] [3233486011] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899324 [Info] [3358365575] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.899 23204 23359 I GoLog   : 2026/07/16 17:18:27.899407 [Info] [596411551] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.899560 [Info] [1864113648] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.899711 [Info] [3764677744] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.899867 [Info] [326148651] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.899930 [Info] [868105404] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.899978 [Info] [2868168200] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900014 [Info] [2936233149] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900045 [Info] [195310258] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900078 [Info] [2570228857] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900157 [Info] [3234261190] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900217 [Info] [4128796137] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900289 [Info] [2922619153] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900417 [Info] [1354781120] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900530 [Info] [4057414258] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900571 [Info] [1709080862] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23359 I GoLog   : 2026/07/16 17:18:27.900662 [Info] [4213375546] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23359 I GoLog   : 2026/07/16 17:18:27.900719 [Info] [119214856] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23359 I GoLog   : 2026/07/16 17:18:27.900755 [Info] [2601245667] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23359 I GoLog   : 2026/07/16 17:18:27.900788 [Info] [1655825938] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.900 23204 23292 I GoLog   : 2026/07/16 17:18:27.900889 [Info] [4157429189] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23292 I GoLog   : 2026/07/16 17:18:27.900936 [Info] [1628451852] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23292 I GoLog   : 2026/07/16 17:18:27.900996 [Info] [3218862180] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23292 I GoLog   : 2026/07/16 17:18:27.901036 [Info] [3821956681] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23292 I GoLog   : 2026/07/16 17:18:27.901070 [Info] [3200116346] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23292 I GoLog   : 2026/07/16 17:18:27.901159 [Info] [360986459] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23295 I GoLog   : 2026/07/16 17:18:27.901304 [Info] [2929161515] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23295 I GoLog   : 2026/07/16 17:18:27.901359 [Info] [22376963] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.901 23204 23295 I GoLog   : 2026/07/16 17:18:27.901429 [Info] [3471528493] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.902 23204 23292 I GoLog   : 2026/07/16 17:18:27.901659 [Info] [3723672249] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.902 23204 23292 I GoLog   : 2026/07/16 17:18:27.902376 [Info] [293893895] app/proxyman/inbound: connection ends > EOF
+07-17 00:18:27.938 23204 23291 I GoLog   : 2026/07/16 17:18:27.938672 [Info] [266308256] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:27.942 23204 23291 I GoLog   : 2026/07/16 17:18:27.942143 [Info] [3735296301] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:28.125 23204 23291 I GoLog   : 2026/07/16 17:18:28.123996 [Info] [2934093686] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:28.128 23204 23291 I GoLog   : 2026/07/16 17:18:28.126953 [Info] [803147688] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:30.030 23204 23292 I GoLog   : 2026/07/16 17:18:30.030012 [Info] [3921035679] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:31.065 23204 23291 I GoLog   : 2026/07/16 17:18:31.065123 [Info] [551074319] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:31.072 23204 23291 I GoLog   : 2026/07/16 17:18:31.072793 [Info] [2854732451] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:31.684 23204 23291 I GoLog   : 2026/07/16 17:18:31.684270 [Info] [1830769789] transport/internet/udp: failed to handle UDP input > io: read/write on closed pipe
+07-17 00:18:31.802 23204 23291 I GoLog   : 2026/07/16 17:18:31.802614 [Debug] app/log: Logger closing
+07-17 00:18:40.111  5841  5841 I GoLog   : Loading core config
+07-17 00:18:40.111  5841 15300 I GoLog   : Preparing Domain: 144.31.104.124:443
+07-17 00:18:40.120  5841 15300 I GoLog   : Prepare Result:
+07-17 00:18:40.120  5841 15300 I GoLog   :  Domain: 144.31.104.124
+07-17 00:18:40.120  5841 15300 I GoLog   :  Port: 443
+07-17 00:18:40.120  5841 15300 I GoLog   :  IPs: [144.31.104.124]
+07-17 00:18:40.415  5841  5841 I GoLog   : Creating new core instance
+07-17 00:18:40.471  5841  5841 I GoLog   : Starting core
+07-17 00:18:40.477  5841 15300 I GoLog   : [Warning] core: Xray 25.3.31 started
+07-17 00:18:40.637  5841 15300 I GoLog   : from udp:127.0.0.1:59793 accepted udp:1.1.1.1:53 [socks -> proxy]
+07-17 00:18:40.657  5841 31935 I GoLog   : from tcp:127.0.0.1:56134 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.658  5841 31950 I GoLog   : from tcp:127.0.0.1:56150 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56170 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56152 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56158 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56216 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56118 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56204 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.660  5841 31958 I GoLog   : from tcp:127.0.0.1:56194 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56186 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56268 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56230 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56324 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56326 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56330 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56298 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56310 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56260 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56484 accepted tcp:1.1.1.1:853 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56464 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56360 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56250 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56442 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56102 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56242 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.667  5841 31934 I GoLog   : from tcp:127.0.0.1:56344 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.670  5841 30112 I GoLog   : from tcp:127.0.0.1:56462 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.670  5841 30112 I GoLog   : from tcp:127.0.0.1:56470 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.670  5841 30112 I GoLog   : from tcp:127.0.0.1:56448 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.670  5841 30112 I GoLog   : from tcp:127.0.0.1:56422 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.670  5841 30112 I GoLog   : from tcp:127.0.0.1:56480 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.672  5841 31910 I GoLog   : from tcp:127.0.0.1:56408 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.672  5841 31910 I GoLog   : from tcp:127.0.0.1:56438 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.672  5841 31910 I GoLog   : from tcp:127.0.0.1:56424 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.672  5841 31910 I GoLog   : from tcp:127.0.0.1:56412 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56228 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56392 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56382 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56086 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56576 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56372 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.674  5841 31942 I GoLog   : from tcp:127.0.0.1:56580 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.677  5841 31966 I GoLog   : from tcp:127.0.0.1:56082 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.677  5841 31966 I GoLog   : from tcp:127.0.0.1:56562 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.679  5841 31966 I GoLog   : from tcp:127.0.0.1:56558 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.680  5841 31905 I GoLog   : from tcp:127.0.0.1:56494 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.681  5841 31933 I GoLog   : from tcp:127.0.0.1:56600 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.682  5841 31944 I GoLog   : from tcp:127.0.0.1:56518 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.686  5841 31944 I GoLog   : from tcp:127.0.0.1:56588 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.688  5841 23905 I GoLog   : from tcp:127.0.0.1:56506 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.688  5841 23905 I GoLog   : from tcp:127.0.0.1:56284 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.688  5841 23905 I GoLog   : from tcp:127.0.0.1:56592 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.690  5841 23904 I GoLog   : from tcp:127.0.0.1:56488 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.691  5841 23905 I GoLog   : from tcp:127.0.0.1:56602 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.692  5841 23909 I GoLog   : from tcp:127.0.0.1:56552 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.694  5841 23908 I GoLog   : from tcp:127.0.0.1:56500 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.695  5841 23909 I GoLog   : from tcp:127.0.0.1:56524 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.695  5841 23911 I GoLog   : from tcp:127.0.0.1:56538 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.728  5841 15442 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.742  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.746  5841 31936 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.746  5841 31935 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.747  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.747  5841 15286 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.748  5841 30083 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.748  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.748  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.751  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.751  5841 15211 I GoLog   : fdConn FileConn Close Fd: 187 Err: file file+net Socket: setnonblock: bad file descriptor
+07-17 00:18:40.751  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.751  5841 31943 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.751  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.751  5841 15211 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:18:40.752  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.752  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.752  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.752  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.753  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.753  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.753  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.753  5841 15264 I GoLog   : fdConn FileConn Close Fd: 186 Err: file file+net Socket: bad file descriptor
+07-17 00:18:40.754  5841 15264 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:18:40.754  5841 31943 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.757  5841 31960 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.757  5841 30077 I GoLog   : fdConn FileConn Close Fd: 196 Err: file file+net Socket: getsockopt: bad file descriptor
+07-17 00:18:40.757  5841 30105 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.757  5841 30077 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:18:40.758  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.758  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.758  5841 31943 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.758  5841 31910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.758  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.759  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.760  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.762  5841 31912 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.763  5841 31910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.763  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.763  5841 31960 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.763  5841 31912 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.764  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.765  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.765  5841 31960 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.767  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.770  5841 31910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.771  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.772  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.772  5841 31964 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.773  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.773  5841 31964 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.774  5841 31964 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.774  5841 31964 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.775  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.778  5841 31910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.780  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.782  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.783  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.784  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.785  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.786  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.793  5841 23907 I GoLog   : from tcp:127.0.0.1:56622 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.793  5841 23907 I GoLog   : from tcp:127.0.0.1:56612 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.793  5841 23907 I GoLog   : from tcp:127.0.0.1:56710 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.793  5841 23907 I GoLog   : from tcp:127.0.0.1:56696 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.793  5841 23907 I GoLog   : from tcp:127.0.0.1:56680 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.794  5841 31952 I GoLog   : from tcp:127.0.0.1:56768 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.794  5841 31952 I GoLog   : from tcp:127.0.0.1:56668 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.795  5841 31952 I GoLog   : from tcp:127.0.0.1:56672 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.801  5841 31960 I GoLog   : from tcp:127.0.0.1:56656 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.801  5841 31960 I GoLog   : from tcp:127.0.0.1:56760 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.801  5841 31960 I GoLog   : from tcp:127.0.0.1:56698 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.801  5841 31960 I GoLog   : from tcp:127.0.0.1:56744 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.801  5841 31960 I GoLog   : from tcp:127.0.0.1:56812 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.802  5841 31933 I GoLog   : from tcp:127.0.0.1:56648 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.806  5841 31933 I GoLog   : from tcp:127.0.0.1:56632 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.806  5841 31933 I GoLog   : from tcp:127.0.0.1:56738 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.808  5841 31905 I GoLog   : from tcp:127.0.0.1:56796 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.811  5841 31947 I GoLog   : from tcp:127.0.0.1:56770 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.813  5841 31951 I GoLog   : from tcp:127.0.0.1:56704 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.813  5841 31951 I GoLog   : from tcp:127.0.0.1:56724 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.813  5841 31951 I GoLog   : from tcp:127.0.0.1:56788 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.816  5841 31942 I GoLog   : from tcp:127.0.0.1:56712 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.818  5841 31961 I GoLog   : from tcp:127.0.0.1:56894 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.819  5841 31951 I GoLog   : from tcp:127.0.0.1:56886 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.820  5841 15280 I GoLog   : from tcp:127.0.0.1:56786 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.820  5841 15280 I GoLog   : from tcp:127.0.0.1:56836 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.822  5841 31942 I GoLog   : from tcp:127.0.0.1:57018 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.825  5841 31942 I GoLog   : from tcp:127.0.0.1:56872 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.826  5841 30106 I GoLog   : from tcp:127.0.0.1:57010 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.826  5841 30111 I GoLog   : from tcp:127.0.0.1:56822 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.827  5841 30106 I GoLog   : from tcp:127.0.0.1:56972 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.831  5841 30106 I GoLog   : from tcp:127.0.0.1:56994 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.832  5841 30109 I GoLog   : from tcp:127.0.0.1:56864 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.838  5841 30082 I GoLog   : from tcp:127.0.0.1:56936 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.838  5841 30082 I GoLog   : from tcp:127.0.0.1:56982 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.838  5841 30082 I GoLog   : from tcp:127.0.0.1:56970 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.838  5841 30082 I GoLog   : from tcp:127.0.0.1:56852 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.843  5841 15210 I GoLog   : from tcp:127.0.0.1:56930 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.843  5841 15210 I GoLog   : from tcp:127.0.0.1:56910 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.845  5841 15210 I GoLog   : from tcp:127.0.0.1:56850 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.847  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.847  5841 15210 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.848  5841 15211 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.848  5841 30112 I GoLog   : from tcp:127.0.0.1:57068 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.848  5841 30112 I GoLog   : from tcp:127.0.0.1:56916 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.849  5841 15211 I GoLog   : from tcp:127.0.0.1:56838 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.849  5841 15211 I GoLog   : from tcp:127.0.0.1:57052 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.856  5841 31935 I GoLog   : from tcp:127.0.0.1:57042 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.856  5841 31935 I GoLog   : from tcp:127.0.0.1:56956 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.856  5841 31935 I GoLog   : from tcp:127.0.0.1:57036 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.857  5841 30083 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.857  5841 31912 I GoLog   : from tcp:127.0.0.1:57028 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.857  5841 31912 I GoLog   : from tcp:127.0.0.1:56950 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.860  5841 31950 I GoLog   : from tcp:127.0.0.1:57020 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.865  5841 31936 I GoLog   : from tcp:127.0.0.1:56942 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.872  5841 31936 I GoLog   : from tcp:127.0.0.1:57040 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:40.880  5841 31904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.880  5841 31943 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.880  5841 31946 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.883  5841 23907 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.886  5841 23909 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.886  5841 31949 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.888  5841 31910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.889  5841 23904 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.889  5841 23908 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.891  5841 23906 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.891  5841 31960 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.891  5841 31960 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.894  5841 31914 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.894  5841 31957 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.897  5841 31944 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.898  5841 31905 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.902  5841 31947 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.904  5841 31933 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.905  5841 31951 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.905  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.906  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.906  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.907  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.908  5841 31947 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.909  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.910  5841 31942 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.910  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.910  5841 30105 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.911  5841 15280 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.911  5841 30111 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.923  5841 31958 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.923  5841 30106 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.925  5841 30077 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.925  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.926  5841 31934 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.929  5841 30104 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.930  5841 30109 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.934  5841 31941 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.934  5841 30106 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.934  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.936  5841 30077 I GoLog   : from tcp:127.0.0.1:57080 accepted tcp:64.233.166.188:5228 [socks -> proxy]
+07-17 00:18:40.940  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.940  5841 31913 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.942  5841 15282 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.943  5841 15211 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.945  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.947  5841 15210 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.950  5841 30083 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.950  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.957  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.957  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:40.960  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.022  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.168  5841 31937 I GoLog   : from udp:127.0.0.1:35404 accepted udp:1.1.1.1:53 [socks -> proxy]
+07-17 00:18:41.261  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.729  5841 31950 I GoLog   : from tcp:127.0.0.1:57108 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.729  5841 31950 I GoLog   : from tcp:127.0.0.1:57104 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.752  5841 15211 I GoLog   : from tcp:127.0.0.1:57120 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.755  5841 15211 I GoLog   : from tcp:127.0.0.1:57084 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.755  5841 15211 I GoLog   : from tcp:127.0.0.1:57090 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.786  5841 15211 I GoLog   : from tcp:127.0.0.1:57134 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.793  5841 31950 I GoLog   : from tcp:127.0.0.1:57128 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.804  5841 15282 I GoLog   : from tcp:127.0.0.1:57186 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.804  5841 30107 I GoLog   : from tcp:127.0.0.1:57154 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.809  5841 30077 I GoLog   : from tcp:127.0.0.1:57170 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.812  5841 31913 I GoLog   : from tcp:127.0.0.1:57146 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.816  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.819  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.823  5841 31913 I GoLog   : from tcp:127.0.0.1:57284 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.823  5841 31913 I GoLog   : from tcp:127.0.0.1:57214 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.828  5841 15300 I GoLog   : from tcp:127.0.0.1:57202 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.832  5841 31913 I GoLog   : from tcp:127.0.0.1:57282 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.836  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.840  5841 30104 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.848  5841 15210 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.869  5841 30109 I GoLog   : from tcp:127.0.0.1:57244 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.874  5841 30106 I GoLog   : from tcp:127.0.0.1:57318 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.875  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.877  5841 30104 I GoLog   : from tcp:127.0.0.1:57228 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.877  5841 30104 I GoLog   : from tcp:127.0.0.1:57302 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.877  5841 30104 I GoLog   : from tcp:127.0.0.1:57300 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.885  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.889  5841 15211 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.890  5841 31934 I GoLog   : from tcp:127.0.0.1:57332 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.895  5841 30083 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.896  5841 31937 I GoLog   : from tcp:127.0.0.1:57278 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.898  5841 30104 I GoLog   : from tcp:127.0.0.1:57262 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.899  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.903  5841 30077 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.904  5841 15211 I GoLog   : from tcp:127.0.0.1:57256 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.909  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.911  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.912  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.917  5841 31962 I GoLog   : from tcp:127.0.0.1:57254 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.920  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.920  5841 15282 I GoLog   : from tcp:127.0.0.1:57346 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.922  5841 15211 I GoLog   : from tcp:127.0.0.1:57456 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.931  5841 23910 I GoLog   : from tcp:127.0.0.1:57336 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.932  5841 31950 I GoLog   : from tcp:127.0.0.1:57396 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.945  5841 31934 I GoLog   : from tcp:127.0.0.1:57276 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.958  5841 30109 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.959  5841 15282 I GoLog   : from tcp:127.0.0.1:57376 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.963  5841 31963 I GoLog   : from tcp:127.0.0.1:57452 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.963  5841 31941 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.965  5841 30106 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.965  5841 15210 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.966  5841 31963 I GoLog   : from tcp:127.0.0.1:57536 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.966  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.973  5841 30106 I GoLog   : from tcp:127.0.0.1:57506 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.976  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.981  5841 31951 I GoLog   : from tcp:127.0.0.1:57528 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.983  5841 31913 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.984  5841 31951 I GoLog   : from tcp:127.0.0.1:57484 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.986  5841 15282 I GoLog   : from tcp:127.0.0.1:57552 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.987  5841 30077 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.991  5841 31913 I GoLog   : from tcp:127.0.0.1:57546 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.991  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:41.993  5841 30077 I GoLog   : from tcp:127.0.0.1:57436 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.993  5841 30077 I GoLog   : from tcp:127.0.0.1:57540 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.993  5841 30077 I GoLog   : from tcp:127.0.0.1:57524 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.994  5841 30109 I GoLog   : from tcp:127.0.0.1:57382 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.999  5841 31942 I GoLog   : from tcp:127.0.0.1:57426 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.999  5841 31942 I GoLog   : from tcp:127.0.0.1:57476 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.999  5841 31942 I GoLog   : from tcp:127.0.0.1:57564 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:41.999  5841 31942 I GoLog   : from tcp:127.0.0.1:57554 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.001  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.004  5841 30107 I GoLog   : from tcp:127.0.0.1:57574 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.004  5841 30105 I GoLog   : from tcp:127.0.0.1:57358 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.008  5841 15280 I GoLog   : from tcp:127.0.0.1:57372 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.011  5841 30083 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.012  5841 30104 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.014  5841 31961 I GoLog   : from tcp:127.0.0.1:57472 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.014  5841 31961 I GoLog   : from tcp:127.0.0.1:57490 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.014  5841 31961 I GoLog   : from tcp:127.0.0.1:57568 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.015  5841 30104 I GoLog   : from tcp:127.0.0.1:57410 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.015  5841 30104 I GoLog   : from tcp:127.0.0.1:57478 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.016  5841 30083 I GoLog   : from tcp:127.0.0.1:57520 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.017  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.019  5841 15211 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.022  5841 31959 I GoLog   : from tcp:127.0.0.1:57586 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.028  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.028  5841 30105 I GoLog   : from tcp:127.0.0.1:57480 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.038  5841 30083 I GoLog   : from tcp:127.0.0.1:57602 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.040  5841 30083 I GoLog   : from tcp:127.0.0.1:57612 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.049  5841 30083 I GoLog   : from tcp:127.0.0.1:57628 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.054  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.055  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.056  5841 31941 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.060  5841 31966 I GoLog   : from tcp:127.0.0.1:57648 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.062  5841 31966 I GoLog   : from tcp:127.0.0.1:57632 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.063  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.068  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.071  5841 31963 I GoLog   : from tcp:127.0.0.1:57672 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.071  5841 31963 I GoLog   : from tcp:127.0.0.1:57658 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.071  5841 30106 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.072  5841 15300 I GoLog   : from tcp:127.0.0.1:57684 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.075  5841 31934 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.080  5841 31966 I GoLog   : from tcp:127.0.0.1:57690 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.081  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.084  5841 30082 I GoLog   : from tcp:127.0.0.1:57700 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.085  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.085  5841 31934 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.086  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.087  5841 30109 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.087  5841 30111 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.088  5841 15300 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.089  5841 30082 I GoLog   : from tcp:127.0.0.1:57720 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.091  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.091  5841 31942 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.092  5841 30077 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.092  5841 31951 I GoLog   : from tcp:127.0.0.1:57704 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.093  5841 15282 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.098  5841 31958 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.102  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.102  5841 15280 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.102  5841 31947 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.103  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.104  5841 31945 I GoLog   : from tcp:127.0.0.1:57734 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.104  5841 31945 I GoLog   : from tcp:127.0.0.1:57738 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.106  5841 15280 I GoLog   : from tcp:127.0.0.1:57732 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.107  5841 31947 I GoLog   : from tcp:127.0.0.1:57746 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.110  5841 30104 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.110  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.110  5841 31947 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.115  5841 31958 I GoLog   : from tcp:127.0.0.1:57760 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.116  5841 31958 I GoLog   : from tcp:127.0.0.1:57750 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.121  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.128  5841 30107 I GoLog   : from tcp:127.0.0.1:57766 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.131  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.131  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.140  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.149  5841 31937 I GoLog   : from tcp:127.0.0.1:57782 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.151  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.151  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.153  5841 15211 I GoLog   : from tcp:127.0.0.1:57826 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.157  5841 15282 I GoLog   : fdConn fail to protect, Close Fd: 634
+07-17 00:18:42.157  5841 15282 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:18:42.157  5841 30105 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.159  5841 15282 I GoLog   : from tcp:127.0.0.1:57796 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.159  5841 31937 I GoLog   : from tcp:127.0.0.1:57822 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.162  5841 15282 I GoLog   : from tcp:127.0.0.1:57810 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.162  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.163  5841 31963 I GoLog   : from tcp:127.0.0.1:57830 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.166  5841 23910 I GoLog   : from tcp:127.0.0.1:57832 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.167  5841 31941 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.169  5841 30107 I GoLog   : from tcp:127.0.0.1:57834 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.170  5841 30105 I GoLog   : from tcp:127.0.0.1:57846 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.172  5841 23910 I GoLog   : from tcp:127.0.0.1:57848 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.173  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.179  5841 31953 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.181  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.187  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.187  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.197  5841 15208 I GoLog   : from tcp:127.0.0.1:50282 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.197  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.197  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.201  5841 31953 I GoLog   : from tcp:127.0.0.1:50308 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.202  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.204  5841 31966 I GoLog   : from tcp:127.0.0.1:50312 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.207  5841 30104 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.210  5841 15280 I GoLog   : from tcp:127.0.0.1:50310 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.212  5841 31947 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.214  5841 15208 I GoLog   : from tcp:127.0.0.1:50320 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.215  5841 31966 I GoLog   : from tcp:127.0.0.1:50326 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.217  5841 31958 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.231  5841 15280 I GoLog   : from tcp:127.0.0.1:50302 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.231  5841 31966 I GoLog   : from tcp:127.0.0.1:50296 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.231  5841 31966 I GoLog   : from tcp:127.0.0.1:50300 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.239  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.240  5841 30077 I GoLog   : from tcp:127.0.0.1:50332 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.242  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.243  5841 15211 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.250  5841 30077 I GoLog   : from tcp:127.0.0.1:50336 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.250  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.252  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.252  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.254  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.256  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.259  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.259  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.263  5841 31937 I GoLog   : from tcp:127.0.0.1:50338 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.269  5841 31959 I GoLog   : from tcp:127.0.0.1:50340 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.287  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.288  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.288  5841 30107 I GoLog   : from tcp:127.0.0.1:50348 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.294  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.297  5841 23910 I GoLog   : from tcp:127.0.0.1:50354 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.300  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.303  5841 31961 I GoLog   : from tcp:127.0.0.1:50356 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.308  5841 15208 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.321  5841 30107 I GoLog   : from tcp:127.0.0.1:50364 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.324  5841 15280 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.332  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.335  5841 31958 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.351  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.363  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.376  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.378  5841 30110 I GoLog   : from tcp:127.0.0.1:50366 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.385  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.387  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.415  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.447  5841 15280 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.448  5841 15280 I GoLog   : from tcp:127.0.0.1:50372 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.464  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.490  5841 30110 I GoLog   : from tcp:127.0.0.1:50378 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.506  5841 31937 I GoLog   : from tcp:127.0.0.1:50382 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.537  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.584  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.595  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.630  5841 31945 I GoLog   : from tcp:127.0.0.1:50402 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.704  5841 31959 I GoLog   : from tcp:127.0.0.1:50384 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.713  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.752  5841 30110 I GoLog   : from tcp:127.0.0.1:50390 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.752  5841 30110 I GoLog   : from tcp:127.0.0.1:50418 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.752  5841 23910 I GoLog   : from tcp:127.0.0.1:50416 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.763  5841 23910 I GoLog   : from tcp:127.0.0.1:50468 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.775  5841 31961 I GoLog   : from tcp:127.0.0.1:50448 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.778  5841 31937 I GoLog   : from tcp:127.0.0.1:50462 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.781  5841 31958 I GoLog   : from tcp:127.0.0.1:50434 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.787  5841 31958 I GoLog   : from tcp:127.0.0.1:50492 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.792  5841 31958 I GoLog   : from tcp:127.0.0.1:50494 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.797  5841 31945 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.807  5841 31966 I GoLog   : from tcp:127.0.0.1:50518 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.829  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.833  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.840  5841 15264 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.848  5841 15280 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.865  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.868  5841 23910 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.870  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.872  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.884  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.897  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:42.929  5841 30082 I GoLog   : from tcp:127.0.0.1:50558 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.932  5841 30110 I GoLog   : from tcp:127.0.0.1:50498 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.937  5841 31959 I GoLog   : from tcp:127.0.0.1:50480 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.937  5841 31959 I GoLog   : from tcp:127.0.0.1:50532 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.941  5841 31959 I GoLog   : from tcp:127.0.0.1:50522 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.941  5841 23910 I GoLog   : from tcp:127.0.0.1:50482 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.960  5841 31945 I GoLog   : from tcp:127.0.0.1:50510 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.983  5841 15264 I GoLog   : from tcp:127.0.0.1:50564 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.983  5841 15264 I GoLog   : from tcp:127.0.0.1:50534 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.986  5841 15208 I GoLog   : from tcp:127.0.0.1:50580 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:42.991  5841 15264 I GoLog   : from tcp:127.0.0.1:50548 accepted tcp:144.31.104.124:443 [socks -> proxy]
+07-17 00:18:43.016  5841 31937 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.017  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.027  5841 30110 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.028  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.029  5841 31959 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.033  5841 31950 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.048  5841 31958 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.088  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.090  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.091  5841 31963 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:43.092  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:44.090  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:44.385  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:44.883  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:18:45.597  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:07.911  5841 31962 I GoLog   : from tcp:127.0.0.1:59004 accepted tcp:1.1.1.1:853 [socks -> proxy]
+07-17 00:19:07.936  5841 30110 I GoLog   : from udp:127.0.0.1:50101 accepted udp:1.1.1.1:53 [socks -> proxy]
+07-17 00:19:07.936  5841 30110 I GoLog   : from udp:127.0.0.1:43534 accepted udp:1.1.1.1:53 [socks -> proxy]
+07-17 00:19:07.999  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.023  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.028  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.507  5841 30082 I GoLog   : from udp:127.0.0.1:33062 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:08.509  5841 30082 I GoLog   : from udp:127.0.0.1:57371 accepted udp:172.64.41.3:443 [socks -> block]
+07-17 00:19:08.511  5841 30107 I GoLog   : from tcp:127.0.0.1:59030 accepted tcp:172.64.41.3:443 [socks -> proxy]
+07-17 00:19:08.512  5841 30107 I GoLog   : from tcp:127.0.0.1:59018 accepted tcp:151.101.129.91:443 [socks -> proxy]
+07-17 00:19:08.515  5841 31962 I GoLog   : from tcp:127.0.0.1:59038 accepted tcp:172.64.41.3:443 [socks -> proxy]
+07-17 00:19:08.519  5841 31962 I GoLog   : from tcp:127.0.0.1:59054 accepted tcp:104.20.23.154:443 [socks -> proxy]
+07-17 00:19:08.521  5841 30110 I GoLog   : from tcp:127.0.0.1:59058 accepted tcp:172.64.41.3:443 [socks -> proxy]
+07-17 00:19:08.603  5841 30082 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.605  5841 31961 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.606  5841 31962 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.607  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:08.608  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:10.439  5841 30107 I GoLog   : from udp:127.0.0.1:33062 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:10.440  5841 31966 I GoLog   : from udp:127.0.0.1:57371 accepted udp:172.64.41.3:443 [socks -> block]
+07-17 00:19:12.517  5841 30107 I GoLog   : from udp:127.0.0.1:57371 accepted udp:172.64.41.3:443 [socks -> block]
+07-17 00:19:12.521  5841 30107 I GoLog   : from udp:127.0.0.1:33062 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:14.171  5841 31966 I GoLog   : from udp:127.0.0.1:45235 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:14.230  5841 30107 I GoLog   : from tcp:127.0.0.1:47696 accepted tcp:104.26.12.205:443 [socks -> proxy]
+07-17 00:19:14.322  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:19:16.095  5841 30110 I GoLog   : from udp:127.0.0.1:45235 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:18.177  5841 30110 I GoLog   : from udp:127.0.0.1:45235 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:48.244  5841 30110 I GoLog   : from udp:127.0.0.1:37340 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:50.164  5841 31966 I GoLog   : from udp:127.0.0.1:37340 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:19:52.231  5841 30107 I GoLog   : from udp:127.0.0.1:37340 accepted udp:142.251.156.119:443 [socks -> block]
+07-17 00:20:05.958  5841 31966 I GoLog   : from tcp:127.0.0.1:44068 accepted tcp:1.1.1.1:853 [socks -> proxy]
+07-17 00:20:06.050  5841 30107 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:20:06.628  5841 30107 I GoLog   : from tcp:127.0.0.1:44072 accepted tcp:20.42.72.131:443 [socks -> proxy]
+07-17 00:20:06.726  5841 31966 I GoLog   : Using Prepared: 144.31.104.124
+07-17 00:20:20.083 24310 24366 I GoLog   : 2026/07/16 17:20:20.083290 [Debug] app/log: Logger started
+07-17 00:20:20.083 24310 24366 I GoLog   : 2026/07/16 17:20:20.083419 [Info] app/dns: DNS: created UDP client initialized for 1.1.1.1:53
+07-17 00:20:20.083 24310 24366 I GoLog   : 2026/07/16 17:20:20.083437 [Info] app/dns: DNS: created UDP client initialized for 1.0.0.1:53
+07-17 00:20:20.083 24310 24366 I GoLog   : 2026/07/16 17:20:20.083474 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:10808
+07-17 00:20:20.084 24310 24372 I GoLog   : 2026/07/16 17:20:20.083936 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:10808
+07-17 00:20:20.084 24310 24371 I GoLog   : 2026/07/16 17:20:20.084021 [Info] transport/internet/udp: listening UDP on 127.0.0.1:10808
+07-17 00:20:20.084 24310 24371 I GoLog   : 2026/07/16 17:20:20.084583 [Warning] core: Xray 26.5.9 started
+07-17 00:20:20.117  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.118  5841 31947 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.118  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.118  5841 31962 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.119  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.119  5841 31947 I GoLog   : fdConn fail to protect, Close Fd: 111
+07-17 00:20:20.119  5841 31947 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.119  5841 31966 I GoLog   : fdConn fail to protect, Close Fd: 113
+07-17 00:20:20.119  5841 31964 I GoLog   : fdConn fail to protect, Close Fd: 106
+07-17 00:20:20.119  5841 31966 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.120  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.120  5841 30082 I GoLog   : fdConn fail to protect, Close Fd: 116
+07-17 00:20:20.120  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.120  5841 31962 I GoLog   : fdConn fail to protect, Close Fd: 115
+07-17 00:20:20.120  5841 31962 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.128 24310 24369 I GoLog   : 2026/07/16 17:20:20.128606 [Info] [2572714130] proxy/socks: TCP Connect request to tcp:1.1.1.1:853
+07-17 00:20:20.128 24310 24365 I GoLog   : 2026/07/16 17:20:20.128809 [Info] [2572714130] app/dispatcher: default route for tcp:1.1.1.1:853
+07-17 00:20:20.128 24310 24365 I GoLog   : 2026/07/16 17:20:20.128827 [Info] [662346238] proxy/socks: TCP Connect request to tcp:1.0.0.1:853
+07-17 00:20:20.128 24310 24365 I GoLog   : 2026/07/16 17:20:20.128970 [Info] [2572714130] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.128981 [Debug] [2572714130] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.128985 [Info] [662346238] app/dispatcher: default route for tcp:1.0.0.1:853
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.128988 [Info] [662346238] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.128991 [Debug] [662346238] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.129014 from tcp:127.0.0.1:54042 accepted tcp:1.1.1.1:853 [socks-in >> proxy-out]
+07-17 00:20:20.129 24310 24365 I GoLog   : 2026/07/16 17:20:20.129076 from tcp:127.0.0.1:54046 accepted tcp:1.0.0.1:853 [socks-in >> proxy-out]
+07-17 00:20:20.164 24310 24373 I GoLog   : 2026/07/16 17:20:20.164660 from udp:127.0.0.1:50757 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:20:20.164 24310 24373 I GoLog   : 2026/07/16 17:20:20.164689 [Info] [1255902146] proxy/socks: client UDP connection from udp:127.0.0.1:50757
+07-17 00:20:20.164 24310 24373 I GoLog   : 2026/07/16 17:20:20.164724 [Debug] [1255902146] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164769 [Debug] [1255902146] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164787 [Info] [1255902146] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164813 [Info] [1255902146] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164826 [Info] [1255902146] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164838 [Debug] [1255902146] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164851 from udp:127.0.0.1:38004 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164850 [Info] [2297881911] proxy/socks: client UDP connection from udp:127.0.0.1:38004
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164873 [Debug] [2297881911] proxy/socks: send packet to udp:1.1.1.1:53 with 34 bytes
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164885 [Debug] [2297881911] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164897 [Info] [2297881911] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164908 [Info] [2297881911] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164920 [Info] [2297881911] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164992 from DNS accepted udp:1.1.1.1:53 [xray.system.efcbf1fe-80a1-4e2a-bf8c-ce2cac822291 -> dns-out]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.164995 [Debug] app/dns: domain mtalk.google.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165012 [Info] app/dns: UDP:1.1.1.1:53 querying DNS for: mtalk.google.com.
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165023 [Debug] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165033 [Info] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165043 [Info] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165053 [Info] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:20.165 24310 24365 I GoLog   : 2026/07/16 17:20:20.165061 [Debug] transport/internet: dialing to udp:1.1.1.1:53
+07-17 00:20:20.216 24310 24370 I GoLog   : 2026/07/16 17:20:20.216415 [Info] app/dns: UDP:1.1.1.1:53 got answer: mtalk.google.com. TypeA -> [173.194.221.188], rtt: 51.404134ms, lock: 6.998µs
+07-17 00:20:20.216 24310 24368 I GoLog   : 2026/07/16 17:20:20.216726 [Debug] [2297881911] proxy/socks: writing back UDP response with 50 bytes
+07-17 00:20:20.220 24310 24365 I GoLog   : 2026/07/16 17:20:20.220583 [Info] [4194755698] proxy/socks: TCP Connect request to tcp:173.194.221.188:5228
+07-17 00:20:20.224 24310 24365 I GoLog   : 2026/07/16 17:20:20.224775 [Info] [4194755698] app/dispatcher: sniffed domain: mtalk.google.com
+07-17 00:20:20.224 24310 24368 I GoLog   : 2026/07/16 17:20:20.224865 [Info] [4194755698] app/dispatcher: default route for tcp:mtalk.google.com:5228
+07-17 00:20:20.224 24310 24368 I GoLog   : 2026/07/16 17:20:20.224875 [Info] [4194755698] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:20.224 24310 24368 I GoLog   : 2026/07/16 17:20:20.224883 [Debug] [4194755698] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:20.224 24310 24368 I GoLog   : 2026/07/16 17:20:20.224909 from tcp:127.0.0.1:54070 accepted tcp:173.194.221.188:5228 [socks-in >> proxy-out]
+07-17 00:20:20.323  5841 31964 I GoLog   : fdConn fail to protect, Close Fd: 115
+07-17 00:20:20.323  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.323  5841 31964 I GoLog   : fdConn fail to protect, Close Fd: 117
+07-17 00:20:20.323  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.323  5841 31962 I GoLog   : fdConn fail to protect, Close Fd: 107
+07-17 00:20:20.324  5841 31962 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.325  5841 30107 I GoLog   : fdConn fail to protect, Close Fd: 106
+07-17 00:20:20.325 24310 24368 I GoLog   : 2026/07/16 17:20:20.325037 [Info] [662346238] proxy/vless/outbound: tunneling request to tcp:1.0.0.1:853 via 144.31.104.124:443
+07-17 00:20:20.325  5841 30107 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.325  5841 30082 I GoLog   : fdConn fail to protect, Close Fd: 113
+07-17 00:20:20.325  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.325 24310 24370 I GoLog   : 2026/07/16 17:20:20.325868 [Debug] [662346238] proxy: XtlsFilterTls found tls client hello! 228
+07-17 00:20:20.325 24310 24365 I GoLog   : 2026/07/16 17:20:20.325962 [Debug] [662346238] proxy: XtlsPadding 228 730 0
+07-17 00:20:20.333 24310 24368 I GoLog   : 2026/07/16 17:20:20.332791 [Info] [2572714130] proxy/vless/outbound: tunneling request to tcp:1.1.1.1:853 via 144.31.104.124:443
+07-17 00:20:20.333 24310 24368 I GoLog   : 2026/07/16 17:20:20.332914 [Debug] [2572714130] proxy: XtlsFilterTls found tls client hello! 228
+07-17 00:20:20.333 24310 24368 I GoLog   : 2026/07/16 17:20:20.332947 [Debug] [2572714130] proxy: XtlsPadding 228 1136 0
+07-17 00:20:20.418 24310 24369 I GoLog   : 2026/07/16 17:20:20.418061 [Debug] [662346238] proxy: Xtls Unpadding new block, content 3264 padding 253 command 0
+07-17 00:20:20.418 24310 24369 I GoLog   : 2026/07/16 17:20:20.418196 [Debug] [662346238] proxy: XtlsFilterTls found tls 1.3! 1163 TLS_AES_128_GCM_SHA256
+07-17 00:20:20.431 24310 24370 I GoLog   : 2026/07/16 17:20:20.431312 [Debug] [662346238] proxy: XtlsPadding 64 984 0
+07-17 00:20:20.431 24310 24370 I GoLog   : 2026/07/16 17:20:20.431409 [Debug] [2572714130] proxy: Xtls Unpadding new block, content 3263 padding 44 command 0
+07-17 00:20:20.431 24310 24370 I GoLog   : 2026/07/16 17:20:20.431431 [Debug] [2572714130] proxy: XtlsFilterTls found tls 1.3! 1163 TLS_AES_128_GCM_SHA256
+07-17 00:20:20.436 24310 24370 I GoLog   : 2026/07/16 17:20:20.436394 [Debug] [2572714130] proxy: XtlsPadding 64 1059 0
+07-17 00:20:20.437 24310 24370 I GoLog   : 2026/07/16 17:20:20.437309 [Info] [4194755698] proxy/vless/outbound: tunneling request to tcp:mtalk.google.com:5228 via 144.31.104.124:443
+07-17 00:20:20.437 24310 24370 I GoLog   : 2026/07/16 17:20:20.437681 [Debug] [4194755698] proxy: XtlsFilterTls found tls client hello! 532
+07-17 00:20:20.437 24310 24370 I GoLog   : 2026/07/16 17:20:20.437856 [Debug] [4194755698] proxy: XtlsPadding 532 496 0
+07-17 00:20:20.471 24310 24370 I GoLog   : 2026/07/16 17:20:20.471821 [Debug] [662346238] proxy: XtlsPadding 78 1196 2
+07-17 00:20:20.480 24310 24370 I GoLog   : 2026/07/16 17:20:20.480341 [Debug] [2572714130] proxy: XtlsPadding 78 824 2
+07-17 00:20:20.550 24310 24369 I GoLog   : 2026/07/16 17:20:20.549784 [Debug] [4194755698] proxy: Xtls Unpadding new block, content 5145 padding 71 command 0
+07-17 00:20:20.550 24310 24369 I GoLog   : 2026/07/16 17:20:20.550720 [Debug] [4194755698] proxy: XtlsFilterTls found tls 1.3! 1163 TLS_AES_128_GCM_SHA256
+07-17 00:20:20.564 24310 24370 I GoLog   : 2026/07/16 17:20:20.564227 [Debug] [662346238] proxy: Xtls Unpadding new block, content 524 padding 455 command 2
+07-17 00:20:20.564 24310 24370 I GoLog   : 2026/07/16 17:20:20.564358 [Debug] [662346238] proxy: CopyRawConn splice
+07-17 00:20:20.566 24310 24370 I GoLog   : 2026/07/16 17:20:20.566061 [Debug] [4194755698] proxy: XtlsPadding 64 1290 0
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571263 [Info] [2459345130] proxy/socks: client UDP connection from udp:127.0.0.1:55339
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571308 [Debug] [2459345130] proxy/socks: send packet to udp:1.0.0.1:53 with 54 bytes
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571322 [Debug] [2459345130] transport/internet/udp: dispatch request to: udp:1.0.0.1:53
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571332 [Info] [2459345130] transport/internet/udp: establishing new connection for udp:1.0.0.1:53
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571634 [Info] [2459345130] app/dispatcher: taking detour [dns-out] for [udp:1.0.0.1:53]
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571649 [Info] [2459345130] proxy/dns: handling DNS traffic to udp:1.0.0.1:53
+07-17 00:20:20.571 24310 24370 I GoLog   : 2026/07/16 17:20:20.571742 from udp:127.0.0.1:55339 accepted udp:1.0.0.1:53 [socks-in -> dns-out]
+07-17 00:20:20.572 24310 24370 I GoLog   : 2026/07/16 17:20:20.572080 [Debug] [2459345130] proxy/socks: writing back UDP response with 54 bytes
+07-17 00:20:20.579 24310 24371 I GoLog   : 2026/07/16 17:20:20.579210 [Debug] [2572714130] proxy: Xtls Unpadding new block, content 524 padding 408 command 2
+07-17 00:20:20.579 24310 24371 I GoLog   : 2026/07/16 17:20:20.579294 [Debug] [2572714130] proxy: CopyRawConn splice
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585732 from udp:127.0.0.1:54386 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585717 [Info] [769029977] proxy/socks: client UDP connection from udp:127.0.0.1:54386
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585782 [Debug] [769029977] proxy/socks: send packet to udp:1.1.1.1:53 with 54 bytes
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585792 [Debug] [769029977] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585799 [Info] [769029977] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585807 [Info] [769029977] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:20.585 24310 24370 I GoLog   : 2026/07/16 17:20:20.585814 [Info] [769029977] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:20.586 24310 24371 I GoLog   : 2026/07/16 17:20:20.586087 [Debug] [769029977] proxy/socks: writing back UDP response with 54 bytes
+07-17 00:20:20.607 24310 24365 I GoLog   : 2026/07/16 17:20:20.607432 [Debug] [4194755698] proxy: XtlsPadding 398 879 2
+07-17 00:20:20.705 24310 24373 I GoLog   : 2026/07/16 17:20:20.705608 [Debug] [4194755698] proxy: Xtls Unpadding new block, content 535 padding 705 command 2
+07-17 00:20:20.705 24310 24373 I GoLog   : 2026/07/16 17:20:20.705904 [Debug] [4194755698] proxy: CopyRawConn splice
+07-17 00:20:20.726  5841 31947 I GoLog   : fdConn fail to protect, Close Fd: 106
+07-17 00:20:20.727  5841 31962 I GoLog   : fdConn fail to protect, Close Fd: 113
+07-17 00:20:20.727  5841 30082 I GoLog   : fdConn fail to protect, Close Fd: 107
+07-17 00:20:20.727  5841 31947 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.727  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.727  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.731  5841 30107 I GoLog   : fdConn fail to protect, Close Fd: 115
+07-17 00:20:20.731  5841 30107 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:20.731  5841 30095 I GoLog   : fdConn fail to protect, Close Fd: 111
+07-17 00:20:20.731  5841 30095 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:21.330  5841 30107 I GoLog   : fdConn fail to protect, Close Fd: 106
+07-17 00:20:21.330  5841 30107 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:21.331  5841 31964 I GoLog   : fdConn fail to protect, Close Fd: 107
+07-17 00:20:21.331  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:21.334  5841 30107 I GoLog   : fdConn fail to protect, Close Fd: 106
+07-17 00:20:21.334  5841 30107 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:21.335  5841 30082 I GoLog   : fdConn fail to protect, Close Fd: 107
+07-17 00:20:21.335  5841 31964 I GoLog   : fdConn fail to protect, Close Fd: 111
+07-17 00:20:21.336  5841 31964 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:21.336  5841 30082 I GoLog   : switched to next IP: 144.31.104.124
+07-17 00:20:26.267 24310 24365 I GoLog   : 2026/07/16 17:20:26.267031 [Info] [3457777846] proxy/socks: TCP Connect request to tcp:1.0.0.1:853
+07-17 00:20:26.267 24310 24373 I GoLog   : 2026/07/16 17:20:26.267506 [Info] [3457777846] app/dispatcher: default route for tcp:1.0.0.1:853
+07-17 00:20:26.267 24310 24373 I GoLog   : 2026/07/16 17:20:26.267537 [Info] [3457777846] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.267 24310 24373 I GoLog   : 2026/07/16 17:20:26.267551 [Debug] [3457777846] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.267 24310 24370 I GoLog   : 2026/07/16 17:20:26.267632 from tcp:127.0.0.1:33502 accepted tcp:1.0.0.1:853 [socks-in >> proxy-out]
+07-17 00:20:26.456 24310 24365 I GoLog   : 2026/07/16 17:20:26.455453 [Info] [3457777846] proxy/vless/outbound: tunneling request to tcp:1.0.0.1:853 via 144.31.104.124:443
+07-17 00:20:26.457 24310 24365 I GoLog   : 2026/07/16 17:20:26.456940 [Debug] [3457777846] proxy: XtlsFilterTls found tls client hello! 228
+07-17 00:20:26.457 24310 24365 I GoLog   : 2026/07/16 17:20:26.457034 [Debug] [3457777846] proxy: XtlsPadding 228 708 0
+07-17 00:20:26.541 24310 24373 I GoLog   : 2026/07/16 17:20:26.541315 [Debug] [3457777846] proxy: Xtls Unpadding new block, content 3263 padding 253 command 0
+07-17 00:20:26.541 24310 24373 I GoLog   : 2026/07/16 17:20:26.541378 [Debug] [3457777846] proxy: XtlsFilterTls found tls 1.3! 1163 TLS_AES_128_GCM_SHA256
+07-17 00:20:26.553 24310 24373 I GoLog   : 2026/07/16 17:20:26.553715 [Debug] [3457777846] proxy: XtlsPadding 64 1113 0
+07-17 00:20:26.595 24310 24370 I GoLog   : 2026/07/16 17:20:26.595135 [Debug] [3457777846] proxy: XtlsPadding 1216 9 2
+07-17 00:20:26.680 24310 24365 I GoLog   : 2026/07/16 17:20:26.679861 [Debug] [3457777846] proxy: Xtls Unpadding new block, content 910 padding 31 command 2
+07-17 00:20:26.680 24310 24365 I GoLog   : 2026/07/16 17:20:26.680014 [Debug] [3457777846] proxy: CopyRawConn splice
+07-17 00:20:26.687 24310 24371 I GoLog   : 2026/07/16 17:20:26.687479 [Info] [592523902] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:26.691 24310 24373 I GoLog   : 2026/07/16 17:20:26.691462 [Info] [592523902] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:26.691 24310 24373 I GoLog   : 2026/07/16 17:20:26.691573 [Info] [592523902] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:26.691 24310 24373 I GoLog   : 2026/07/16 17:20:26.691591 [Info] [592523902] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.691 24310 24373 I GoLog   : 2026/07/16 17:20:26.691602 [Debug] [592523902] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.691 24310 24373 I GoLog   : 2026/07/16 17:20:26.691602 from tcp:127.0.0.1:33510 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:26.692 24310 24370 I GoLog   : 2026/07/16 17:20:26.692343 [Info] [326316917] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692448 [Info] [326316917] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692467 [Info] [326316917] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692481 [Info] [326316917] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692491 [Debug] [326316917] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692505 [Info] [2269649854] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692581 from tcp:127.0.0.1:33520 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692627 from tcp:127.0.0.1:33528 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692737 [Info] [2269649854] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692771 [Info] [2269649854] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692786 [Info] [2269649854] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.692 24310 24371 I GoLog   : 2026/07/16 17:20:26.692797 [Debug] [2269649854] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.735 24310 24371 I GoLog   : 2026/07/16 17:20:26.734948 [Info] [1419570536] proxy/socks: TCP Connect request to tcp:172.67.74.152:443
+07-17 00:20:26.739 24310 24369 I GoLog   : 2026/07/16 17:20:26.739005 [Info] [1288348464] proxy/socks: client UDP connection from udp:127.0.0.1:53499
+07-17 00:20:26.739 24310 24369 I GoLog   : 2026/07/16 17:20:26.739105 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:26.739 24310 24369 I GoLog   : 2026/07/16 17:20:26.739134 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:26.739 24310 24369 I GoLog   : 2026/07/16 17:20:26.739159 [Info] [1288348464] transport/internet/udp: establishing new connection for udp:142.251.150.119:443
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.740079 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741322 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741345 [Info] [1288348464] app/dispatcher: sniffed domain: www.google.com
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741360 [Info] [1288348464] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741375 [Info] [1288348464] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741388 [Debug] [1288348464] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.741 24310 24370 I GoLog   : 2026/07/16 17:20:26.741232 from udp:127.0.0.1:53499 accepted udp:142.251.150.119:443 [socks-in >> proxy-out]
+07-17 00:20:26.741 24310 24368 I GoLog   : 2026/07/16 17:20:26.741487 [Info] [1419570536] app/dispatcher: sniffed domain: api.ipify.org
+07-17 00:20:26.741 24310 24368 I GoLog   : 2026/07/16 17:20:26.741505 [Info] [1419570536] app/dispatcher: default route for tcp:api.ipify.org:443
+07-17 00:20:26.741 24310 24368 I GoLog   : 2026/07/16 17:20:26.741511 [Info] [1419570536] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:26.741 24310 24368 I GoLog   : 2026/07/16 17:20:26.741516 [Debug] [1419570536] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:26.741 24310 24368 I GoLog   : 2026/07/16 17:20:26.741609 from tcp:127.0.0.1:33540 accepted tcp:172.67.74.152:443 [socks-in >> proxy-out]
+07-17 00:20:27.036 24310 24365 I GoLog   : 2026/07/16 17:20:27.036064 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:27.036 24310 24365 I GoLog   : 2026/07/16 17:20:27.036231 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:27.238 24310 24452 I GoLog   : 2026/07/16 17:20:27.238535 [Info] [2808067929] proxy/socks: TCP Connect request to tcp:1.0.0.1:853
+07-17 00:20:27.244 24310 24371 I GoLog   : 2026/07/16 17:20:27.244292 from tcp:127.0.0.1:33546 accepted tcp:1.0.0.1:853 [socks-in >> proxy-out]
+07-17 00:20:27.244 24310 24371 I GoLog   : 2026/07/16 17:20:27.244428 [Info] [2808067929] app/dispatcher: default route for tcp:1.0.0.1:853
+07-17 00:20:27.244 24310 24371 I GoLog   : 2026/07/16 17:20:27.244460 [Info] [2808067929] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:27.244 24310 24371 I GoLog   : 2026/07/16 17:20:27.244495 [Debug] [2808067929] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:27.557 24310 24368 I GoLog   : 2026/07/16 17:20:27.556884 [Info] [2193437293] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:27.560 24310 24371 I GoLog   : 2026/07/16 17:20:27.560597 [Info] [2193437293] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:27.560 24310 24371 I GoLog   : 2026/07/16 17:20:27.560674 [Info] [2193437293] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:27.560 24310 24371 I GoLog   : 2026/07/16 17:20:27.560704 [Info] [2193437293] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:27.560 24310 24371 I GoLog   : 2026/07/16 17:20:27.560731 [Debug] [2193437293] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:27.561 24310 24368 I GoLog   : 2026/07/16 17:20:27.561067 from tcp:127.0.0.1:33548 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:27.573 24310 24371 I GoLog   : 2026/07/16 17:20:27.573540 [Info] [637503478] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:27.578 24310 24365 I GoLog   : 2026/07/16 17:20:27.578484 [Info] [637503478] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:27.578 24310 24365 I GoLog   : 2026/07/16 17:20:27.578538 [Info] [637503478] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:27.578 24310 24365 I GoLog   : 2026/07/16 17:20:27.578568 [Info] [637503478] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:27.578 24310 24365 I GoLog   : 2026/07/16 17:20:27.578585 [Debug] [637503478] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:27.578 24310 24365 I GoLog   : 2026/07/16 17:20:27.578578 from tcp:127.0.0.1:33554 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:27.583 24310 24368 I GoLog   : 2026/07/16 17:20:27.583482 [Info] [919826703] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:27.584 24310 24371 I GoLog   : 2026/07/16 17:20:27.584715 [Info] [919826703] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:27.584 24310 24371 I GoLog   : 2026/07/16 17:20:27.584729 [Info] [919826703] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:27.584 24310 24371 I GoLog   : 2026/07/16 17:20:27.584737 [Info] [919826703] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:27.584 24310 24371 I GoLog   : 2026/07/16 17:20:27.584742 [Debug] [919826703] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:27.584 24310 24371 I GoLog   : 2026/07/16 17:20:27.584807 from tcp:127.0.0.1:33568 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:27.640 24310 24371 I GoLog   : 2026/07/16 17:20:27.639891 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:27.640 24310 24371 I GoLog   : 2026/07/16 17:20:27.639964 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:28.843 24310 24368 I GoLog   : 2026/07/16 17:20:28.843347 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:28.843 24310 24368 I GoLog   : 2026/07/16 17:20:28.843505 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:28.921 24310 24371 I GoLog   : 2026/07/16 17:20:28.920358 [Info] [735068506] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:28.925 24310 24368 I GoLog   : 2026/07/16 17:20:28.923045 [Info] [735068506] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:28.925 24310 24368 I GoLog   : 2026/07/16 17:20:28.923324 [Info] [735068506] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:28.925 24310 24368 I GoLog   : 2026/07/16 17:20:28.923426 [Info] [735068506] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:28.925 24310 24368 I GoLog   : 2026/07/16 17:20:28.923493 [Debug] [735068506] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:28.925 24310 24368 I GoLog   : 2026/07/16 17:20:28.923724 from tcp:127.0.0.1:33580 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:29.012 24310 24369 I GoLog   : 2026/07/16 17:20:29.012081 [Info] [2555975354] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:29.015 24310 24368 I GoLog   : 2026/07/16 17:20:29.015349 [Info] [2555975354] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:29.015 24310 24368 I GoLog   : 2026/07/16 17:20:29.015411 [Info] [2555975354] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:29.015 24310 24368 I GoLog   : 2026/07/16 17:20:29.015459 [Info] [2555975354] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:29.015 24310 24368 I GoLog   : 2026/07/16 17:20:29.015490 [Debug] [2555975354] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:29.015 24310 24368 I GoLog   : 2026/07/16 17:20:29.015751 from tcp:127.0.0.1:33584 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:29.035 24310 24371 I GoLog   : 2026/07/16 17:20:29.035712 [Info] [204336629] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:29.037 24310 24365 I GoLog   : 2026/07/16 17:20:29.036995 [Info] [204336629] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:29.037 24310 24365 I GoLog   : 2026/07/16 17:20:29.037243 [Info] [204336629] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:29.037 24310 24365 I GoLog   : 2026/07/16 17:20:29.037425 from tcp:127.0.0.1:33590 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:29.038 24310 24369 I GoLog   : 2026/07/16 17:20:29.037917 [Info] [204336629] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:29.038 24310 24369 I GoLog   : 2026/07/16 17:20:29.038010 [Debug] [204336629] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:30.744 24310 24452 I GoLog   : 2026/07/16 17:20:30.743627 [Debug] [1288348464] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:20:30.744 24310 24452 I GoLog   : 2026/07/16 17:20:30.744000 [Debug] [1288348464] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:20:31.144 24310 24368 I GoLog   : 2026/07/16 17:20:31.144249 [Info] [3150290309] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:31.148 24310 24452 I GoLog   : 2026/07/16 17:20:31.146991 [Info] [3150290309] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:31.148 24310 24452 I GoLog   : 2026/07/16 17:20:31.147304 [Info] [3150290309] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:31.148 24310 24452 I GoLog   : 2026/07/16 17:20:31.147403 [Info] [3150290309] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:31.148 24310 24452 I GoLog   : 2026/07/16 17:20:31.147477 [Debug] [3150290309] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:31.148 24310 24452 I GoLog   : 2026/07/16 17:20:31.147618 from tcp:127.0.0.1:33602 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:31.195 24310 24365 I GoLog   : 2026/07/16 17:20:31.194856 [Info] [966641848] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:31.199 24310 24368 I GoLog   : 2026/07/16 17:20:31.199144 [Info] [966641848] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:31.201 24310 24368 I GoLog   : 2026/07/16 17:20:31.200998 [Info] [966641848] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:31.201 24310 24368 I GoLog   : 2026/07/16 17:20:31.201153 [Info] [966641848] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:31.201 24310 24368 I GoLog   : 2026/07/16 17:20:31.201204 [Debug] [966641848] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:31.201 24310 24368 I GoLog   : 2026/07/16 17:20:31.201523 from tcp:127.0.0.1:33606 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:31.244 24310 24368 I GoLog   : 2026/07/16 17:20:31.244166 [Info] [3518376035] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:31.249 24310 24369 I GoLog   : 2026/07/16 17:20:31.249203 [Info] [3518376035] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:31.249 24310 24369 I GoLog   : 2026/07/16 17:20:31.249506 [Info] [3518376035] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:31.249 24310 24369 I GoLog   : 2026/07/16 17:20:31.249609 [Info] [3518376035] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:31.249 24310 24369 I GoLog   : 2026/07/16 17:20:31.249677 [Debug] [3518376035] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:31.249 24310 24369 I GoLog   : 2026/07/16 17:20:31.249790 from tcp:127.0.0.1:33616 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:34.351 24310 24369 I GoLog   : 2026/07/16 17:20:34.351440 [Info] [3871330685] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:34.353 24310 24369 I GoLog   : 2026/07/16 17:20:34.353108 [Info] [3871330685] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:34.354 24310 24369 I GoLog   : 2026/07/16 17:20:34.353587 [Info] [3871330685] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:34.355 24310 24369 I GoLog   : 2026/07/16 17:20:34.354778 [Info] [3871330685] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:34.356 24310 24369 I GoLog   : 2026/07/16 17:20:34.355464 [Debug] [3871330685] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:34.356 24310 24369 I GoLog   : 2026/07/16 17:20:34.352892 from tcp:127.0.0.1:33668 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:34.386 24310 24365 I GoLog   : 2026/07/16 17:20:34.385846 [Info] [1080727514] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:34.387 24310 24371 I GoLog   : 2026/07/16 17:20:34.387362 [Info] [1080727514] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:34.388 24310 24371 I GoLog   : 2026/07/16 17:20:34.387439 [Info] [1080727514] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:34.388 24310 24371 I GoLog   : 2026/07/16 17:20:34.387488 [Info] [1080727514] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:34.388 24310 24371 I GoLog   : 2026/07/16 17:20:34.387552 [Debug] [1080727514] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:34.388 24310 24371 I GoLog   : 2026/07/16 17:20:34.387784 from tcp:127.0.0.1:33678 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:34.403 24310 24452 I GoLog   : 2026/07/16 17:20:34.403336 [Info] [1007354893] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:34.408 24310 24369 I GoLog   : 2026/07/16 17:20:34.407983 from tcp:127.0.0.1:33684 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:34.408 24310 24369 I GoLog   : 2026/07/16 17:20:34.408089 [Info] [1007354893] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:34.408 24310 24369 I GoLog   : 2026/07/16 17:20:34.408137 [Info] [1007354893] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:34.408 24310 24369 I GoLog   : 2026/07/16 17:20:34.408179 [Info] [1007354893] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:34.408 24310 24369 I GoLog   : 2026/07/16 17:20:34.408215 [Debug] [1007354893] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:38.812 24310 24365 I GoLog   : 2026/07/16 17:20:38.811901 [Info] [3116998260] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:38.814 24310 24368 I GoLog   : 2026/07/16 17:20:38.814487 from tcp:127.0.0.1:33686 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:38.815 24310 24369 I GoLog   : 2026/07/16 17:20:38.814988 [Info] [3116998260] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:38.816 24310 24369 I GoLog   : 2026/07/16 17:20:38.816079 [Info] [3116998260] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:38.817 24310 24369 I GoLog   : 2026/07/16 17:20:38.816422 [Info] [3116998260] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:38.818 24310 24369 I GoLog   : 2026/07/16 17:20:38.817691 [Debug] [3116998260] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:38.979 24310 24371 I GoLog   : 2026/07/16 17:20:38.979119 [Info] [1194642101] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:38.982 24310 24368 I GoLog   : 2026/07/16 17:20:38.982344 [Info] [1194642101] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:38.983 24310 24368 I GoLog   : 2026/07/16 17:20:38.983312 [Info] [1194642101] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:38.984 24310 24368 I GoLog   : 2026/07/16 17:20:38.984052 from tcp:127.0.0.1:33700 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:38.985 24310 24369 I GoLog   : 2026/07/16 17:20:38.985067 [Info] [1194642101] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:38.985 24310 24369 I GoLog   : 2026/07/16 17:20:38.985166 [Debug] [1194642101] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:39.443 24310 24365 I GoLog   : 2026/07/16 17:20:39.443156 [Info] [587041336] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:39.444 24310 24365 I GoLog   : 2026/07/16 17:20:39.444425 [Info] [587041336] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:39.445 24310 24369 I GoLog   : 2026/07/16 17:20:39.445203 [Info] [587041336] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:39.445 24310 24369 I GoLog   : 2026/07/16 17:20:39.445275 [Info] [587041336] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:39.445 24310 24369 I GoLog   : 2026/07/16 17:20:39.445265 from tcp:127.0.0.1:33704 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:39.445 24310 24369 I GoLog   : 2026/07/16 17:20:39.445334 [Debug] [587041336] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:56.710 24310 24368 I GoLog   : 2026/07/16 17:20:56.710273 [Info] [4153045534] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:56.722 24310 24371 I GoLog   : 2026/07/16 17:20:56.722641 [Info] [4153045534] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:56.723 24310 24371 I GoLog   : 2026/07/16 17:20:56.722739 [Info] [4153045534] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:56.723 24310 24371 I GoLog   : 2026/07/16 17:20:56.722771 [Info] [4153045534] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:56.723 24310 24371 I GoLog   : 2026/07/16 17:20:56.722800 [Debug] [4153045534] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:56.723 24310 24371 I GoLog   : 2026/07/16 17:20:56.723149 from tcp:127.0.0.1:43944 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:56.745 24310 24371 I GoLog   : 2026/07/16 17:20:56.745356 [Info] [3808109356] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:56.747 24310 24368 I GoLog   : 2026/07/16 17:20:56.747638 [Info] [3808109356] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:56.747 24310 24368 I GoLog   : 2026/07/16 17:20:56.747705 [Info] [3808109356] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:56.747 24310 24368 I GoLog   : 2026/07/16 17:20:56.747734 [Info] [3808109356] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:56.747 24310 24368 I GoLog   : 2026/07/16 17:20:56.747759 [Debug] [3808109356] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:56.748 24310 24368 I GoLog   : 2026/07/16 17:20:56.748186 from tcp:127.0.0.1:43950 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:56.755 24310 24368 I GoLog   : 2026/07/16 17:20:56.754918 [Info] [3066409330] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:56.759 24310 24371 I GoLog   : 2026/07/16 17:20:56.758722 [Info] [3066409330] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:56.759 24310 24371 I GoLog   : 2026/07/16 17:20:56.758848 [Info] [3066409330] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:56.760 24310 24371 I GoLog   : 2026/07/16 17:20:56.758892 [Info] [3066409330] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:56.760 24310 24371 I GoLog   : 2026/07/16 17:20:56.758929 [Debug] [3066409330] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:56.760 24310 24371 I GoLog   : 2026/07/16 17:20:56.759039 from tcp:127.0.0.1:43958 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.289695 [Info] [2983923924] proxy/socks: client UDP connection from udp:127.0.0.1:42328
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.289803 [Debug] [2983923924] proxy/socks: send packet to udp:1.1.1.1:53 with 128 bytes
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.289844 [Debug] [2983923924] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.289875 [Info] [2983923924] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.290297 [Info] [2983923924] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.290337 [Info] [2983923924] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.290877 from udp:127.0.0.1:42328 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.292088 [Debug] app/dns: domain mtalk.google.com will use DNS in order: [UDP:1.1.1.1:53 UDP:1.0.0.1:53]
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.292149 [Debug] app/dns: UDP:1.1.1.1:53 cache HIT mtalk.google.com. -> [173.194.221.188]
+07-17 00:20:57.292 24310 24369 I GoLog   : 2026/07/16 17:20:57.292311 [Debug] [2983923924] proxy/socks: writing back UDP response with 50 bytes
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.316732 [Info] [929325276] proxy/socks: client UDP connection from udp:127.0.0.1:55507
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.316859 [Debug] [929325276] proxy/socks: send packet to udp:1.1.1.1:53 with 128 bytes
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.316907 [Debug] [929325276] transport/internet/udp: dispatch request to: udp:1.1.1.1:53
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.316937 [Info] [929325276] transport/internet/udp: establishing new connection for udp:1.1.1.1:53
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.317448 [Info] [929325276] app/dispatcher: taking detour [dns-out] for [udp:1.1.1.1:53]
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.317492 [Info] [929325276] proxy/dns: handling DNS traffic to udp:1.1.1.1:53
+07-17 00:20:57.318 24310 24373 I GoLog   : 2026/07/16 17:20:57.317530 from udp:127.0.0.1:55507 accepted udp:1.1.1.1:53 [socks-in -> dns-out]
+07-17 00:20:57.321 24310 24373 I GoLog   : 2026/07/16 17:20:57.321117 [Debug] [929325276] proxy/socks: writing back UDP response with 34 bytes
+07-17 00:20:57.344 24310 24370 I GoLog   : 2026/07/16 17:20:57.343957 [Info] [3558785883] proxy/socks: TCP Connect request to tcp:173.194.221.188:5228
+07-17 00:20:57.351 24310 24373 I GoLog   : 2026/07/16 17:20:57.351084 [Info] [3558785883] app/dispatcher: sniffed domain: mtalk.google.com
+07-17 00:20:57.351 24310 24373 I GoLog   : 2026/07/16 17:20:57.351138 [Info] [3558785883] app/dispatcher: default route for tcp:mtalk.google.com:5228
+07-17 00:20:57.351 24310 24373 I GoLog   : 2026/07/16 17:20:57.351161 [Info] [3558785883] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:57.351 24310 24373 I GoLog   : 2026/07/16 17:20:57.351184 [Debug] [3558785883] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:57.351 24310 24373 I GoLog   : 2026/07/16 17:20:57.351394 from tcp:127.0.0.1:43992 accepted tcp:173.194.221.188:5228 [socks-in >> proxy-out]
+07-17 00:20:57.574 24310 24365 I GoLog   : 2026/07/16 17:20:57.574159 [Info] [3020426860] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:57.583 24310 24365 I GoLog   : 2026/07/16 17:20:57.582849 from tcp:127.0.0.1:44002 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:57.587 24310 24365 I GoLog   : 2026/07/16 17:20:57.584402 [Info] [3020426860] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:57.588 24310 24365 I GoLog   : 2026/07/16 17:20:57.585195 [Info] [3020426860] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:57.588 24310 24365 I GoLog   : 2026/07/16 17:20:57.586948 [Info] [3020426860] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:57.588 24310 24365 I GoLog   : 2026/07/16 17:20:57.587689 [Debug] [3020426860] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:57.614 24310 24368 I GoLog   : 2026/07/16 17:20:57.614116 [Info] [506767975] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:57.615 24310 24365 I GoLog   : 2026/07/16 17:20:57.615372 [Info] [524971947] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:20:57.621 24310 24373 I GoLog   : 2026/07/16 17:20:57.621564 [Info] [506767975] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:57.621 24310 24373 I GoLog   : 2026/07/16 17:20:57.621613 [Info] [506767975] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:57.621 24310 24373 I GoLog   : 2026/07/16 17:20:57.621639 [Info] [506767975] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:57.621 24310 24373 I GoLog   : 2026/07/16 17:20:57.621661 [Debug] [506767975] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:57.622 24310 24370 I GoLog   : 2026/07/16 17:20:57.621905 from tcp:127.0.0.1:44014 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:20:57.623 24310 24373 I GoLog   : 2026/07/16 17:20:57.623752 [Info] [524971947] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:20:57.624 24310 24373 I GoLog   : 2026/07/16 17:20:57.623830 [Info] [524971947] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:20:57.624 24310 24373 I GoLog   : 2026/07/16 17:20:57.623877 [Info] [524971947] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:20:57.624 24310 24373 I GoLog   : 2026/07/16 17:20:57.623912 [Debug] [524971947] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:20:57.624 24310 24373 I GoLog   : 2026/07/16 17:20:57.624121 from tcp:127.0.0.1:44008 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.802844 [Info] [1728028232] proxy/socks: client UDP connection from udp:127.0.0.1:42560
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.803104 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.803154 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.803189 [Info] [1728028232] transport/internet/udp: establishing new connection for udp:142.251.150.119:443
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.804864 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:00.805 24310 24368 I GoLog   : 2026/07/16 17:21:00.804932 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:00.807 24310 24452 I GoLog   : 2026/07/16 17:21:00.806433 [Info] [1728028232] app/dispatcher: sniffed domain: www.google.com
+07-17 00:21:00.807 24310 24452 I GoLog   : 2026/07/16 17:21:00.806535 [Info] [1728028232] app/dispatcher: default route for udp:www.google.com:443
+07-17 00:21:00.807 24310 24452 I GoLog   : 2026/07/16 17:21:00.806568 [Info] [1728028232] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:21:00.807 24310 24452 I GoLog   : 2026/07/16 17:21:00.806592 [Debug] [1728028232] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:21:00.807 24310 24452 I GoLog   : 2026/07/16 17:21:00.806647 from udp:127.0.0.1:42560 accepted udp:142.251.150.119:443 [socks-in >> proxy-out]
+07-17 00:21:01.084 24310 24452 I GoLog   : 2026/07/16 17:21:01.084596 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:01.084 24310 24452 I GoLog   : 2026/07/16 17:21:01.084673 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:01.693 24310 24365 I GoLog   : 2026/07/16 17:21:01.691928 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:01.695 24310 24365 I GoLog   : 2026/07/16 17:21:01.694028 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:02.898 24310 24452 I GoLog   : 2026/07/16 17:21:02.896952 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:02.900 24310 24452 I GoLog   : 2026/07/16 17:21:02.899235 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:04.788 24310 24365 I GoLog   : 2026/07/16 17:21:04.787028 [Debug] [1728028232] proxy/socks: send packet to udp:142.251.150.119:443 with 1250 bytes
+07-17 00:21:04.794 24310 24365 I GoLog   : 2026/07/16 17:21:04.792900 [Debug] [1728028232] transport/internet/udp: dispatch request to: udp:142.251.150.119:443
+07-17 00:21:09.489 24310 24369 I GoLog   : 2026/07/16 17:21:09.489243 from tcp:127.0.0.1:36086 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:21:09.490 24310 24369 I GoLog   : 2026/07/16 17:21:09.489893 [Info] [1691185845] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:21:09.490 24310 24369 I GoLog   : 2026/07/16 17:21:09.489973 [Info] [1691185845] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:21:09.490 24310 24369 I GoLog   : 2026/07/16 17:21:09.490020 [Info] [1691185845] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:21:09.490 24310 24369 I GoLog   : 2026/07/16 17:21:09.490061 [Info] [1691185845] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:21:09.490 24310 24369 I GoLog   : 2026/07/16 17:21:09.490099 [Debug] [1691185845] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:21:09.717 24310 24373 I GoLog   : 2026/07/16 17:21:09.716497 [Info] [1691185845] proxy/vless/outbound: tunneling request to tcp:chrome.cloudflare-dns.com:443 via 144.31.104.124:443
+07-17 00:21:09.720 24310 24373 I GoLog   : 2026/07/16 17:21:09.719940 [Debug] [1691185845] proxy: XtlsFilterTls found tls client hello! 1805
+07-17 00:21:09.722 24310 24373 I GoLog   : 2026/07/16 17:21:09.721265 [Debug] [1691185845] proxy: XtlsPadding 1805 71 0
+07-17 00:21:09.824 24310 24369 I GoLog   : 2026/07/16 17:21:09.824122 [Debug] [1691185845] proxy: Xtls Unpadding new block, content 4042 padding 22 command 0
+07-17 00:21:09.825 24310 24369 I GoLog   : 2026/07/16 17:21:09.824431 [Debug] [1691185845] proxy: XtlsFilterTls inconclusive server hello 1163 52
+07-17 00:21:09.828 24310 24369 I GoLog   : 2026/07/16 17:21:09.828172 [Debug] [1691185845] proxy: XtlsFilterTls found tls 1.3! 2372 TLS_AES_128_GCM_SHA256
+07-17 00:21:09.843 24310 24452 I GoLog   : 2026/07/16 17:21:09.842799 [Debug] [1691185845] proxy: XtlsPadding 64 870 0
+07-17 00:21:09.878 24310 24369 I GoLog   : 2026/07/16 17:21:09.878085 [Debug] [1691185845] proxy: XtlsPadding 817 473 2
+07-17 00:21:09.939 24310 24373 I GoLog   : 2026/07/16 17:21:09.939421 [Debug] [1691185845] proxy: Xtls Unpadding new block, content 528 padding 372 command 2
+07-17 00:21:09.942 24310 24373 I GoLog   : 2026/07/16 17:21:09.942197 [Debug] [1691185845] proxy: CopyRawConn splice
+07-17 00:21:10.970 24310 24369 I GoLog   : 2026/07/16 17:21:10.969922 [Info] [3146875763] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:21:10.976 24310 24373 I GoLog   : 2026/07/16 17:21:10.975996 [Info] [3146875763] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:21:10.978 24310 24373 I GoLog   : 2026/07/16 17:21:10.977941 [Info] [3146875763] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:21:10.981 24310 24373 I GoLog   : 2026/07/16 17:21:10.980751 from tcp:127.0.0.1:36092 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:21:10.986 24310 24373 I GoLog   : 2026/07/16 17:21:10.984014 [Info] [3146875763] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:21:10.986 24310 24373 I GoLog   : 2026/07/16 17:21:10.984140 [Debug] [3146875763] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:21:12.624 24310 24369 I GoLog   : 2026/07/16 17:21:12.623852 [Info] [778420514] proxy/socks: TCP Connect request to tcp:[2803:f800:53::3]:443
+07-17 00:21:12.627 24310 24365 I GoLog   : 2026/07/16 17:21:12.626930 [Info] [778420514] app/dispatcher: sniffed domain: chrome.cloudflare-dns.com
+07-17 00:21:12.627 24310 24365 I GoLog   : 2026/07/16 17:21:12.627014 [Info] [778420514] app/dispatcher: default route for tcp:chrome.cloudflare-dns.com:443
+07-17 00:21:12.627 24310 24365 I GoLog   : 2026/07/16 17:21:12.627050 [Info] [778420514] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:21:12.627 24310 24365 I GoLog   : 2026/07/16 17:21:12.627073 [Debug] [778420514] transport/internet: dialing to tcp:144.31.104.124:443
+07-17 00:21:12.627 24310 24365 I GoLog   : 2026/07/16 17:21:12.627393 from tcp:127.0.0.1:37414 accepted tcp:[2803:f800:53::3]:443 [socks-in >> proxy-out]
+07-17 00:21:12.726 24310 24373 I GoLog   : 2026/07/16 17:21:12.725591 [Info] [4153045534] transport/internet/tcp: dialing TCP to tcp:144.31.104.124:443
+07-17 00:21:12.726 24310 24373 I GoLog   : 2026/07/16 17:21:12.725763 [Debug] [4153045534] transport/internet: dialing to tcp:144.31.104.124:443
