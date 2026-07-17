@@ -61,8 +61,16 @@ import org.yarokovisty.vpnis.core.domain.model.ConnectionError
  *
  * The service owns a [CoroutineScope] backed by [SupervisorJob] + [Dispatchers.IO].
  * A single child [Job] ([tunnelJob]) runs [Tun2SocksBridge.nativeStart], which blocks
- * the thread for the entire tunnel lifetime. All other work (network callbacks, cleanup)
- * executes on the service's main thread or inside [serviceScope] coroutines.
+ * the thread for the entire tunnel lifetime.
+ *
+ * **Main-thread discipline (issue #113):** the lifecycle callbacks ([onStartCommand],
+ * [onDestroy], [onRevoke]) must stay non-blocking. The full tunnel setup — `xrayCore.start`,
+ * `establish`, the hev loop — runs inside [serviceScope] ([startTunnel] is dispatched there by
+ * [requestStartTunnel]); [onStartCommand] only flips the [isStarting] guard synchronously.
+ * Teardown is likewise offloaded ([stopTunnel] → [finishTeardown]), and [onDestroy] never
+ * touches [Tun2SocksBridge] unless a tunnel actually ran (so `System.loadLibrary` is never
+ * triggered on the main thread). This is what keeps a connect/disconnect double-tap from
+ * blocking InputDispatcher into a 5 s ANR.
  *
  * ## fd ownership
  *
@@ -187,6 +195,25 @@ internal class VpnTunnelService :
     private var isRunning = false
 
     /**
+     * Set from the moment a connect request is accepted on the caller (main) thread until
+     * [startTunnel] finishes bringing the tunnel up (or fails) on [serviceScope]. Because the
+     * blocking native setup now runs asynchronously (issue #113), [isRunning] is not yet true
+     * during that window; [isStarting] closes the gap so a rapid second connect tap (TC-3b
+     * double-tap) is rejected synchronously in [requestStartTunnel] instead of launching a
+     * second overlapping [startTunnel]. Mutated only under [lifecycleLock].
+     */
+    private var isStarting = false
+
+    /**
+     * Set when an [ACTION_DISCONNECT] / [onRevoke] arrives while [isStarting] is still true —
+     * i.e. a disconnect that races an in-flight startup (issue #113). [stopTunnel] cannot tear
+     * down yet (nothing is up), so it records the intent here; [startTunnel] honours it once the
+     * tunnel has finished establishing, tearing straight back down instead of dropping the
+     * disconnect. Mutated only under [lifecycleLock].
+     */
+    private var stopRequestedDuringStart = false
+
+    /**
      * Set for the duration of a teardown so a second [stopTunnel] (e.g. onRevoke racing
      * onDestroy, or ACTION_DISCONNECT arriving twice) becomes a no-op — guards against
      * double-close of the fd and a duplicate [TunnelStateSink.onTunnelStopped].
@@ -245,7 +272,12 @@ internal class VpnTunnelService :
             // the OS sticky-intent store. If the service is killed and restarted by the OS, the
             // extras are dropped — startTunnel() treats a missing config as TunnelSetupFailed
             // and stops cleanly. The controller (#64 reconnect logic) drives re-establishment.
-            startTunnel(connectIntent = intent)
+            //
+            // requestStartTunnel() only flips the isStarting guard synchronously and hands the
+            // blocking native setup to serviceScope (issue #113): onStartCommand — a main-thread
+            // callback — must never run xrayCore.start()/establish(), or a second input event
+            // during that window trips the 5 s InputDispatcher ANR.
+            requestStartTunnel(connectIntent = intent)
             START_NOT_STICKY
         }
     }
@@ -265,12 +297,25 @@ internal class VpnTunnelService :
         // completed stopTunnel() (e.g. a low-memory kill). If the async teardown already ran,
         // tunPfd is null and the close is a no-op — guarded against double-close. Cancelling the
         // scope last stops any in-flight teardown coroutine (which, if it ran, already finished).
-        Tun2SocksBridge.nativeStop()
+        val hadTunnel: Boolean
+        val pfd: ParcelFileDescriptor?
         synchronized(lifecycleLock) {
-            runCatching { tunPfd?.close() }
+            // A tunnel actually ran iff the hev job was launched or isRunning was committed. In
+            // that case nativeStart already loaded libhev_tun2socks OFF the main thread, so the
+            // nativeStop below is the fast, documented no-op-safe signal.
+            hadTunnel = isRunning || tunnelJob != null
+            pfd = tunPfd
             tunPfd = null
             isRunning = false
         }
+        // Never touch Tun2SocksBridge on the main thread when no tunnel ran (issue #113): the
+        // first access triggers <clinit> → System.loadLibrary("hev_tun2socks") → JNI_OnLoad, a
+        // main-thread native load that has ANR'd/native-crashed historically. If nothing ran
+        // there is nothing to stop anyway, so skip it.
+        if (hadTunnel) {
+            Tun2SocksBridge.nativeStop()
+        }
+        runCatching { pfd?.close() }
         serviceScope.cancel()
         super.onDestroy()
     }
@@ -279,25 +324,67 @@ internal class VpnTunnelService :
     // Tunnel management
     // -------------------------------------------------------------------------
 
+    /**
+     * Accepts a connect request on the caller (main) thread and hands the blocking tunnel setup
+     * to [serviceScope] (Dispatchers.IO) — issue #113.
+     *
+     * The guard and the [isStarting] flip are the ONLY work done synchronously here, under
+     * [lifecycleLock], so:
+     * - a rapid second connect tap (TC-3b double-tap) is rejected immediately, before any native
+     *   work, instead of launching a second overlapping [startTunnel]; and
+     * - [onStartCommand]'s main thread returns at once — xrayCore.start()/establish() run on IO,
+     *   so a second input event can never freeze InputDispatcher into a 5 s ANR.
+     *
+     * Once [startTunnel] finishes (or fails) [isStarting] is cleared. If an [ACTION_DISCONNECT]
+     * arrived mid-startup, [stopTunnel] recorded it in [stopRequestedDuringStart]; the tunnel is
+     * then torn straight back down rather than left up against the user's wish.
+     */
+    private fun requestStartTunnel(connectIntent: Intent?) {
+        synchronized(lifecycleLock) {
+            if (isStarting || isRunning || isStopping) {
+                // Ignore a start that arrives while already starting/running, or while a teardown
+                // is still releasing the fd/port (a too-fast reconnect) — the caller retries once
+                // the state settles to Disconnected.
+                Log.d(TAG, "requestStartTunnel: already starting/running/stopping, ignoring start")
+                return
+            }
+            isStarting = true
+        }
+
+        serviceScope.launch {
+            try {
+                startTunnel(connectIntent)
+            } finally {
+                val stopNow: Boolean
+                synchronized(lifecycleLock) {
+                    isStarting = false
+                    // isRunning is true only if startTunnel established the tunnel; on any failure
+                    // path it stayed false, so a deferred disconnect only fires against a live tunnel.
+                    stopNow = isRunning && stopRequestedDuringStart
+                    stopRequestedDuringStart = false
+                }
+                if (stopNow) {
+                    Log.i(TAG, "requestStartTunnel: disconnect requested during startup — tearing down")
+                    stopTunnel()
+                }
+            }
+        }
+    }
+
     // ReturnCount: guard-clause early returns (config-missing / foreground / xray / establish
     //   failures) read more clearly than nested conditionals for this linear startup sequence.
     // TooGenericExceptionCaught: startForeground() can throw SecurityException,
     //   ForegroundServiceStartNotAllowedException, or IllegalStateException — all handled
     //   identically (log, report error, tear down), so catching the common base is intentional.
-    // LongMethod: the linear connect sequence (guard → read config → foreground → xray →
-    //   establish → hev → notify) is clearest kept together; each step is short and commented.
+    // LongMethod: the linear connect sequence (read config → foreground → xray → establish →
+    //   hev → notify) is clearest kept together; each step is short and commented.
+    //
+    // ALWAYS invoked on serviceScope (Dispatchers.IO) via requestStartTunnel — NEVER call this
+    // directly from a service lifecycle callback (issue #113): xrayCore.start() and establish()
+    // block for seconds and would ANR the main thread. The isStarting guard is owned by
+    // requestStartTunnel, so this body has no start-guard of its own.
     @Suppress("ReturnCount", "TooGenericExceptionCaught", "LongMethod")
     private fun startTunnel(connectIntent: Intent?) {
-        synchronized(lifecycleLock) {
-            if (isRunning || isStopping) {
-                // Ignore a start that arrives while running, or while a teardown is still
-                // releasing the fd/port (a too-fast reconnect) — the caller retries once the
-                // state settles to Disconnected.
-                Log.d(TAG, "startTunnel: already running or stopping, ignoring start")
-                return
-            }
-        }
-
         // Read the Xray JSON config from the connect intent. A null or blank value means the
         // intent was either missing (framework-restarted with no extras after a kill, which
         // cannot happen here because we use START_NOT_STICKY) or the caller did not attach
@@ -429,12 +516,28 @@ internal class VpnTunnelService :
         updateNotification(content = NotificationContent.Default)
     }
 
+    // ReturnCount: the three guard-clause early returns (teardown-in-progress / start-in-progress /
+    //   already-idle) each represent a distinct lifecycle state and read far clearer as flat guards
+    //   than as nested conditionals — same rationale as startTunnel above.
+    @Suppress("ReturnCount")
     private fun stopTunnel() {
         synchronized(lifecycleLock) {
-            if (isStopping || (!isRunning && tunnelJob == null)) {
-                // Already stopped, or a teardown is already in progress — idempotent. This is
-                // the double-close guard: onRevoke, onDestroy and a duplicate ACTION_DISCONNECT
-                // can all race, but only the first drives the teardown.
+            if (isStopping) {
+                // A teardown is already in progress — idempotent. This is the double-close guard:
+                // onRevoke, onDestroy and a duplicate ACTION_DISCONNECT can all race, but only the
+                // first drives the teardown.
+                return
+            }
+            if (isStarting) {
+                // A disconnect raced an in-flight startup (issue #113): the tunnel is not up yet,
+                // so there is nothing to tear down here. Don't drop the disconnect — record it and
+                // let requestStartTunnel's finalizer tear straight back down once startup finishes.
+                Log.d(TAG, "stopTunnel: startup in progress — deferring teardown until it completes")
+                stopRequestedDuringStart = true
+                return
+            }
+            if (!isRunning && tunnelJob == null) {
+                // Already stopped and idle.
                 return
             }
             isStopping = true
