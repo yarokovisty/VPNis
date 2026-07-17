@@ -30,8 +30,16 @@ package org.yarokovisty.vpnis.data.vpn
  *   `0..128`. Default `/128` is a host route (single address), matching the point-to-point
  *   nature of the link.
  * @param mtu Maximum transmission unit for the TUN interface in bytes. Must be positive.
- *   Default `8500` matches hev-socks5-tunnel's sample configuration and avoids
- *   fragmentation on most links.
+ *   Default `1500` — the standard Ethernet MTU used by mainstream VLESS clients (v2rayNG).
+ *
+ *   ## Why not hev's 8500 sample value (issue #111)
+ *
+ *   hev-socks5-tunnel's sample config uses `8500`, but on Android that oversizes the
+ *   MSS negotiated on Xray's *protected* upstream socket: on servers whose network path
+ *   has a reduced MTU (common with REALITY hosts), the first full-size data segment is
+ *   silently black-holed (no ICMP frag-needed → PMTUD fails), so the return path stalls
+ *   while the app keeps retransmitting — a one-way tunnel. Matching v2rayNG's `1500`
+ *   keeps segments within the path MTU and restores bidirectional traffic.
  * @param dnsServers List of DNS server addresses to push through the tunnel. Each entry
  *   must be non-blank. Default is Cloudflare DNS (`1.1.1.1`, `1.0.0.1`).
  * @param routes List of CIDR routes to capture through the TUN interface, expressed as
@@ -50,7 +58,7 @@ internal data class TunConfig(
     val prefixLength: Int = 30,
     val ipv6ClientAddress: String = "fd00::1",
     val ipv6PrefixLength: Int = 128,
-    val mtu: Int = 8500,
+    val mtu: Int = 1500,
     val dnsServers: List<String> = listOf("1.1.1.1", "1.0.0.1"),
     val routes: List<String> = listOf("0.0.0.0/0", "::/0"),
     val session: String = "VPNis",
@@ -103,9 +111,13 @@ internal data class TunConfig(
  *
  * The SOCKS5 proxy is always on the loopback address (`127.0.0.1`) — Xray binds there
  * (issue #63). [TunConfig.localSocksPort] carries the agreed port so both sides read
- * from the same source.
+ * from the same source. The TUN [clientAddress]/[ipv6ClientAddress] are forwarded as hev's
+ * `tunnel.ipv4`/`ipv6` so hev's internal lwip stack agrees with the addresses the Android
+ * `VpnService.Builder` assigned (v2rayNG parity, issue #111).
  */
 internal fun TunConfig.toTun2SocksConfig(): Tun2SocksConfig = Tun2SocksConfig(
     socksPort = localSocksPort,
+    ipv4Address = clientAddress,
+    ipv6Address = ipv6ClientAddress,
     mtu = mtu,
 )

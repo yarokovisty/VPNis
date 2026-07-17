@@ -24,3 +24,10 @@ swarm-report/
 
 # QA scratch artifacts (screenshots, logcat, uiautomator dumps from device runs)
 .qa-tmp/
+
+# Debugging / QA scratch (issue #111) — never commit
+/_debug_*.md
+/golog*.txt
+/g[0-9].txt
+/swarm-report/
+/*.png

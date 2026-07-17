@@ -33,24 +33,38 @@ import kotlinx.serialization.json.putJsonObject
  *
  * ```json
  * {
+ *   "dns": { "servers":["1.1.1.1","1.0.0.1"], "queryStrategy":"UseIPv4" },
+ *   "policy": { "levels":{ "8":{ "handshake":4,"connIdle":300,"uplinkOnly":1,"downlinkOnly":1 } } },
  *   "inbounds": [{ "tag":"socks-in", "protocol":"socks", "listen":"127.0.0.1",
  *                  "port":<localSocksPort>,
- *                  "settings":{ "auth":"noauth", "udp":true } }],
- *   "outbounds": [{
- *     "tag":"proxy-out", "protocol":"vless",
- *     "settings":{ "vnext":[{ "address":"<host>", "port":<port>,
- *       "users":[{ "id":"<uuid>", "encryption":"none" [, "flow":"<flow>"] }] }] },
- *     "streamSettings":{
- *       "network":"tcp",
- *       "security":"reality",
- *       "realitySettings":{
- *         "serverName":"<sni>", "fingerprint":"<fp>",
- *         "publicKey":"<pbk>", "shortId":"<sid>"
+ *                  "settings":{ "auth":"noauth", "udp":true, "userLevel":8 },
+ *                  "sniffing":{ "enabled":true, "destOverride":["http","tls","quic"] } }],
+ *   "outbounds": [
+ *     { "tag":"proxy-out", "protocol":"vless",
+ *       "settings":{ "vnext":[{ "address":"<host>", "port":<port>,
+ *         "users":[{ "id":"<uuid>", "encryption":"none" [, "flow":"<flow>"] }] }] },
+ *       "streamSettings":{
+ *         "network":"tcp",
+ *         "security":"reality",
+ *         "realitySettings":{
+ *           "serverName":"<sni>", "fingerprint":"firefox",  // DPI-resistant, overrides URI fp (#111)
+ *           "publicKey":"<pbk>", "shortId":"<sid>"
+ *         }
  *       }
- *     }
- *   }]
+ *     },
+ *     { "tag":"dns-out", "protocol":"dns" },
+ *     { "tag":"direct", "protocol":"freedom", "settings":{ "domainStrategy":"UseIP" } }
+ *   ],
+ *   "routing": { "domainStrategy":"IPIfNonMatch",
+ *                "rules":[{ "type":"field", "port":"53", "outboundTag":"dns-out" }] }
  * }
  * ```
+ *
+ * The `dns` object + port-53 → `dns-out` routing rule + inbound `sniffing` make Xray resolve
+ * DNS internally instead of tunnelling each app DNS query as a fresh vless connection. The
+ * `policy` (level 8, reaping half-closed connections after 1s) + the inbound `userLevel:8`
+ * keep the concurrent connection count low so reality handshakes are not dropped by the server's
+ * per-source concurrent-connection limit — together these restore the return path (issue #111).
  *
  * When `security` is NOT `reality`, [build] returns `null` (broader transport/security
  * coverage is tracked in issue #74).
@@ -69,6 +83,32 @@ internal object XrayConfigBuilder {
      * from the same authoritative source.
      */
     private val localSocksPort: Int = TunConfig().localSocksPort
+
+    /**
+     * DNS servers Xray's built-in resolver queries, sourced from [TunConfig.dnsServers] so the
+     * TUN's pushed DNS and Xray's internal DNS never drift. Consumed by the `dns` object which,
+     * paired with the port-53 → `dns-out` routing rule, stops the per-query connection storm
+     * (issue #111).
+     */
+    private val dnsServers: List<String> = TunConfig().dnsServers
+
+    /**
+     * uTLS fingerprint the REALITY client presents in its ClientHello — this OVERRIDES the URI's
+     * `fp` value (issue #111).
+     *
+     * Share links almost universally specify `fp=chrome`, but Russian DPI (TSPU / Rostelecom)
+     * actively fingerprints and silently DROPS the `chrome` ClientHello produced by current uTLS
+     * (widely reported since ~June 2026). That was the root cause of the one-way tunnel in #111:
+     * the reality handshake's first packet was black-holed by the ISP. The uTLS fingerprint is
+     * purely client-side browser mimicry that the REALITY server does not validate, so we are free
+     * to present a DPI-resistant one. `firefox` currently passes where `chrome` is blocked
+     * (XTLS/Xray-core discussion #4035, v2rayNG #5406; asuswrt-merlin-xrayui flipped its default
+     * chrome→firefox for the same reason).
+     *
+     * This is a moving target — if `firefox` is later blocked, try `edge` / `qq` / `randomized`.
+     * Making it URI/settings-configurable is a follow-up.
+     */
+    private const val UTLS_FINGERPRINT = "firefox"
 
     /**
      * Parses [uri] (a VLESS URI string) and returns an Xray-core JSON configuration, or
@@ -131,7 +171,10 @@ internal object XrayConfigBuilder {
             port = port,
             flow = reality.flow,
             pbk = reality.pbk,
-            fp = reality.fp,
+            // reality.fp (from the URI, typically "chrome") is intentionally NOT used — it is
+            // replaced by the DPI-resistant [UTLS_FINGERPRINT]. The URI's fp is still parsed and
+            // validated as present in parseReality (share-link fidelity / early rejection).
+            fp = UTLS_FINGERPRINT,
             sni = reality.sni,
             sid = reality.sid,
         )
@@ -208,6 +251,39 @@ internal object XrayConfigBuilder {
         sid: String,
     ): String {
         val root = buildJsonObject {
+            // ---- dns (issue #111) ----
+            // Xray's internal DNS resolver. Paired with the port-53 → "dns-out" routing rule
+            // below, this makes Xray answer the app's DNS queries itself instead of proxying
+            // each one as a fresh UDP-over-vless session — which opened a NEW reality connection
+            // per query and stormed the server before any handshake could finish (the one-way
+            // -tunnel root cause). queryStrategy=UseIPv4 keeps resolution on the working IPv4
+            // path, complementing the IPv6 fail-closed TUN routing (issue #106).
+            putJsonObject("dns") {
+                putJsonArray("servers") {
+                    dnsServers.forEach { add(JsonPrimitive(it)) }
+                }
+                put("queryStrategy", JsonPrimitive("UseIPv4"))
+            }
+
+            // ---- policy (issue #111) ----
+            // Level-8 connection policy, mirroring v2rayNG. uplinkOnly=1 / downlinkOnly=1 reap a
+            // connection 1s after one direction half-closes, so drained/stuck connections do not
+            // pile up. Without it (default level 0 = uplinkOnly 2 / downlinkOnly 5) our stuck
+            // reality handshakes accumulated to ~32 concurrent, tripping the server's per-source
+            // concurrent-connection limit so every new handshake's first segment was dropped —
+            // the residual dead-return-path cause. The socks inbound is tagged userLevel=8 below
+            // so this policy actually applies.
+            putJsonObject("policy") {
+                putJsonObject("levels") {
+                    putJsonObject("8") {
+                        put("handshake", JsonPrimitive(4))
+                        put("connIdle", JsonPrimitive(300))
+                        put("uplinkOnly", JsonPrimitive(1))
+                        put("downlinkOnly", JsonPrimitive(1))
+                    }
+                }
+            }
+
             // ---- inbounds ----
             putJsonArray("inbounds") {
                 add(
@@ -220,6 +296,19 @@ internal object XrayConfigBuilder {
                         putJsonObject("settings") {
                             put("auth", JsonPrimitive("noauth"))
                             put("udp", JsonPrimitive(true))
+                            // Tag traffic with level 8 so the `policy` above (aggressive
+                            // connection reaping) actually applies — issue #111.
+                            put("userLevel", JsonPrimitive(8))
+                        }
+                        // Sniff the real destination (SNI/host) so routing operates on
+                        // hostnames and DNS/routing behaves like v2rayNG (issue #111).
+                        putJsonObject("sniffing") {
+                            put("enabled", JsonPrimitive(true))
+                            putJsonArray("destOverride") {
+                                add(JsonPrimitive("http"))
+                                add(JsonPrimitive("tls"))
+                                add(JsonPrimitive("quic"))
+                            }
                         }
                     },
                 )
@@ -264,6 +353,44 @@ internal object XrayConfigBuilder {
                         }
                     },
                 )
+                // dns-out: Xray's built-in DNS handler. The port-53 routing rule sends the app's
+                // DNS queries here so they are resolved internally (via the `dns` object above)
+                // instead of tunneled per-query — this is what stops the connection storm (#111).
+                add(
+                    buildJsonObject {
+                        put("tag", JsonPrimitive("dns-out"))
+                        put("protocol", JsonPrimitive("dns"))
+                    },
+                )
+                // direct: freedom outbound (UseIP). Present for parity with standard Xray-Android
+                // clients (v2rayNG) as the non-tunneled path available to the DNS module; no
+                // routing rule sends user traffic to it, so all app traffic stays on proxy-out.
+                add(
+                    buildJsonObject {
+                        put("tag", JsonPrimitive("direct"))
+                        put("protocol", JsonPrimitive("freedom"))
+                        putJsonObject("settings") {
+                            put("domainStrategy", JsonPrimitive("UseIP"))
+                        }
+                    },
+                )
+            }
+
+            // ---- routing (issue #111) ----
+            // Route all port-53 (DNS) traffic to the dns-out handler; everything else falls
+            // through to the first outbound (proxy-out). MUST target dns-out, never direct —
+            // routing DNS to a freedom outbound would leak queries outside the tunnel.
+            putJsonObject("routing") {
+                put("domainStrategy", JsonPrimitive("IPIfNonMatch"))
+                putJsonArray("rules") {
+                    add(
+                        buildJsonObject {
+                            put("type", JsonPrimitive("field"))
+                            put("port", JsonPrimitive("53"))
+                            put("outboundTag", JsonPrimitive("dns-out"))
+                        },
+                    )
+                }
             }
         }
 

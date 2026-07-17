@@ -1,6 +1,7 @@
 package org.yarokovisty.vpnis.data.vpn
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -22,13 +23,15 @@ class Tun2SocksConfigTest {
         // Then
         val expected =
             "tunnel:\n" +
-                "  mtu: 8500\n" +
+                "  mtu: 1500\n" +
+                "  ipv4: 10.0.0.2\n" +
                 "socks5:\n" +
                 "  address: 127.0.0.1\n" +
                 "  port: 10808\n" +
                 "  udp: 'udp'\n" +
                 "misc:\n" +
-                "  task-stack-size: 20480\n" +
+                "  tcp-read-write-timeout: 300000\n" +
+                "  udp-read-write-timeout: 60000\n" +
                 "  log-level: warn\n"
         assertEquals(expected, yaml)
     }
@@ -47,6 +50,46 @@ class Tun2SocksConfigTest {
 
         // Then
         assertTrue(yaml.endsWith("\n"))
+    }
+
+    // -------------------------------------------------------------------------
+    // toYaml — tunnel addresses (v2rayNG parity, issue #111)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `toYaml with ipv4Address EXPECT tunnel ipv4 line`() {
+        // Given
+        val config = Tun2SocksConfig(socksPort = 10808, ipv4Address = "10.1.2.3")
+
+        // When
+        val yaml = config.toYaml()
+
+        // Then
+        assertTrue(yaml.contains("  ipv4: 10.1.2.3\n"))
+    }
+
+    @Test
+    fun `toYaml without ipv6Address EXPECT no ipv6 line`() {
+        // Given — ipv6Address defaults to null
+        val config = Tun2SocksConfig(socksPort = 10808)
+
+        // When
+        val yaml = config.toYaml()
+
+        // Then
+        assertFalse(yaml.contains("ipv6"))
+    }
+
+    @Test
+    fun `toYaml with ipv6Address EXPECT single-quoted ipv6 line`() {
+        // Given
+        val config = Tun2SocksConfig(socksPort = 10808, ipv6Address = "fd00::1")
+
+        // When
+        val yaml = config.toYaml()
+
+        // Then
+        assertTrue(yaml.contains("  ipv6: 'fd00::1'\n"))
     }
 
     // -------------------------------------------------------------------------
@@ -108,25 +151,26 @@ class Tun2SocksConfigTest {
     @Test
     fun `toYaml with custom mtu EXPECT mtu line reflects override`() {
         // Given
-        val config = Tun2SocksConfig(socksPort = 10808, mtu = 1500)
+        val config = Tun2SocksConfig(socksPort = 10808, mtu = 1400)
 
         // When
         val yaml = config.toYaml()
 
         // Then
-        assertTrue(yaml.contains("  mtu: 1500\n"))
+        assertTrue(yaml.contains("  mtu: 1400\n"))
     }
 
     @Test
-    fun `toYaml with custom taskStackSize EXPECT task-stack-size line reflects override`() {
+    fun `toYaml with custom timeouts EXPECT timeout lines reflect override`() {
         // Given
-        val config = Tun2SocksConfig(socksPort = 10808, taskStackSize = 4096)
+        val config = Tun2SocksConfig(socksPort = 10808, tcpTimeoutMs = 120_000, udpTimeoutMs = 30_000)
 
         // When
         val yaml = config.toYaml()
 
         // Then
-        assertTrue(yaml.contains("  task-stack-size: 4096\n"))
+        assertTrue(yaml.contains("  tcp-read-write-timeout: 120000\n"))
+        assertTrue(yaml.contains("  udp-read-write-timeout: 30000\n"))
     }
 
     @Test
@@ -147,9 +191,12 @@ class Tun2SocksConfigTest {
         val config = Tun2SocksConfig(
             socksAddress = "192.168.1.1",
             socksPort = 9090,
-            mtu = 1500,
+            ipv4Address = "10.9.9.2",
+            ipv6Address = "fd11::2",
+            mtu = 1400,
             udpMode = "tcp",
-            taskStackSize = 4096,
+            tcpTimeoutMs = 120_000,
+            udpTimeoutMs = 30_000,
             logLevel = "error",
         )
 
@@ -159,13 +206,16 @@ class Tun2SocksConfigTest {
         // Then
         val expected =
             "tunnel:\n" +
-                "  mtu: 1500\n" +
+                "  mtu: 1400\n" +
+                "  ipv4: 10.9.9.2\n" +
+                "  ipv6: 'fd11::2'\n" +
                 "socks5:\n" +
                 "  address: 192.168.1.1\n" +
                 "  port: 9090\n" +
                 "  udp: 'tcp'\n" +
                 "misc:\n" +
-                "  task-stack-size: 4096\n" +
+                "  tcp-read-write-timeout: 120000\n" +
+                "  udp-read-write-timeout: 30000\n" +
                 "  log-level: error\n"
         assertEquals(expected, yaml)
     }
@@ -244,28 +294,30 @@ class Tun2SocksConfigTest {
     }
 
     // -------------------------------------------------------------------------
-    // Validation — taskStackSize
+    // Validation — ipv4Address / timeouts
     // -------------------------------------------------------------------------
 
     @Test
-    fun `construct with taskStackSize 1 EXPECT no exception`() {
-        // Given / When / Then
-        Tun2SocksConfig(socksPort = 10808, taskStackSize = 1)
-    }
-
-    @Test
-    fun `construct with taskStackSize 0 EXPECT IllegalArgumentException`() {
+    fun `construct with blank ipv4Address EXPECT IllegalArgumentException`() {
         // Given / When / Then
         assertThrows(IllegalArgumentException::class.java) {
-            Tun2SocksConfig(socksPort = 10808, taskStackSize = 0)
+            Tun2SocksConfig(socksPort = 10808, ipv4Address = "  ")
         }
     }
 
     @Test
-    fun `construct with negative taskStackSize EXPECT IllegalArgumentException`() {
+    fun `construct with tcpTimeoutMs 0 EXPECT IllegalArgumentException`() {
         // Given / When / Then
         assertThrows(IllegalArgumentException::class.java) {
-            Tun2SocksConfig(socksPort = 10808, taskStackSize = -1024)
+            Tun2SocksConfig(socksPort = 10808, tcpTimeoutMs = 0)
+        }
+    }
+
+    @Test
+    fun `construct with negative udpTimeoutMs EXPECT IllegalArgumentException`() {
+        // Given / When / Then
+        assertThrows(IllegalArgumentException::class.java) {
+            Tun2SocksConfig(socksPort = 10808, udpTimeoutMs = -1)
         }
     }
 }

@@ -35,12 +35,14 @@ class TunConfigTest {
     }
 
     @Test
-    fun `construct with all defaults EXPECT mtu is 8500`() {
+    fun `construct with all defaults EXPECT mtu is 1500`() {
         // Given
         val config = TunConfig()
 
         // When / Then
-        assertEquals(8500, config.mtu)
+        // 1500 (standard Ethernet MTU) — not hev's 8500 sample: 8500 oversizes the upstream
+        // MSS and black-holes return traffic on reduced-MTU server paths (issue #111).
+        assertEquals(1500, config.mtu)
     }
 
     @Test
@@ -470,15 +472,27 @@ class TunConfigTest {
     }
 
     @Test
-    fun `toTun2SocksConfig EXPECT taskStackSize is default 20480`() {
+    fun `toTun2SocksConfig EXPECT ipv4Address mapped from clientAddress`() {
         // Given
-        val config = TunConfig(localSocksPort = 1080, mtu = 1500)
+        val config = TunConfig(clientAddress = "10.0.0.2", localSocksPort = 1080)
 
         // When
         val result = config.toTun2SocksConfig()
 
         // Then
-        assertEquals(20480, result.taskStackSize)
+        assertEquals("10.0.0.2", result.ipv4Address)
+    }
+
+    @Test
+    fun `toTun2SocksConfig EXPECT ipv6Address mapped from ipv6ClientAddress`() {
+        // Given
+        val config = TunConfig(ipv6ClientAddress = "fd00::1", localSocksPort = 1080)
+
+        // When
+        val result = config.toTun2SocksConfig()
+
+        // Then
+        assertEquals("fd00::1", result.ipv6Address)
     }
 
     @Test
