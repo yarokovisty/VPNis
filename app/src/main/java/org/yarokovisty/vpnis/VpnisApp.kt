@@ -1,5 +1,6 @@
 package org.yarokovisty.vpnis
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -37,6 +38,13 @@ import org.yarokovisty.vpnis.navigation.TabItem
  * Owns the [rememberNavController], the [Scaffold] with [VpnisBottomBar], and the
  * [VpnisNavHost] that maps type-safe route destinations to their screen composables.
  *
+ * **Inset ownership:** the [Scaffold] sets `contentWindowInsets = WindowInsets(0)` so
+ * the reported [innerPadding] carries ONLY the bottom nav-bar height (consumed by
+ * [VPNisNavigationBar] itself for the gesture zone). Top / horizontal system insets are
+ * owned by each screen composable individually — e.g. [HomeScreen] applies
+ * `windowInsetsPadding(safeDrawing.only(Horizontal + Top))` directly, ensuring the
+ * inset is consumed exactly once.
+ *
  * **Tab state preservation** uses `popUpTo(startDestination) { saveState = true }` +
  * `launchSingleTop = true` + `restoreState = true` so switching tabs does not
  * duplicate back-stack entries and each tab's scroll/VM state is preserved.
@@ -51,6 +59,7 @@ fun VpnisApp() {
 
         Scaffold(
             bottomBar = { VpnisBottomBar(navController, currentDestination, tabs) },
+            contentWindowInsets = WindowInsets(0),
         ) { innerPadding ->
             VpnisNavHost(navController, modifier = Modifier.padding(innerPadding))
         }
