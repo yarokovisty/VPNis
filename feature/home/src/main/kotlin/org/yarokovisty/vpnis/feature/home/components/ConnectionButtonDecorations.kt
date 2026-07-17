@@ -1,6 +1,6 @@
 package org.yarokovisty.vpnis.feature.home.components
 
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -69,7 +69,7 @@ internal fun ConnectedPulseRing() {
         initialValue = 1f,
         targetValue = 1.55f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = PULSE_DURATION_MS, easing = LinearEasing),
+            animation = tween(durationMillis = PULSE_DURATION_MS, easing = EaseOut),
             repeatMode = RepeatMode.Restart,
         ),
         label = "pulseScale",
@@ -78,7 +78,7 @@ internal fun ConnectedPulseRing() {
         initialValue = 0.45f,
         targetValue = 0f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = PULSE_DURATION_MS, easing = LinearEasing),
+            animation = tween(durationMillis = PULSE_DURATION_MS, easing = EaseOut),
             repeatMode = RepeatMode.Restart,
         ),
         label = "pulseAlpha",
@@ -86,13 +86,12 @@ internal fun ConnectedPulseRing() {
     val ringColor = LocalVPNisSemanticColors.current.connected
     Box(
         modifier = Modifier
-            .size(150.dp)
+            .size(200.dp)
             .scale(pulseScale)
             .drawBehind {
                 drawCircle(
                     color = ringColor.copy(alpha = pulseAlpha),
                     radius = size.minDimension / 2f,
-                    style = Stroke(width = 6.dp.toPx()),
                 )
             }
             .clearAndSetSemantics { },
