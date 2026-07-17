@@ -111,9 +111,13 @@ internal data class TunConfig(
  *
  * The SOCKS5 proxy is always on the loopback address (`127.0.0.1`) — Xray binds there
  * (issue #63). [TunConfig.localSocksPort] carries the agreed port so both sides read
- * from the same source.
+ * from the same source. The TUN [clientAddress]/[ipv6ClientAddress] are forwarded as hev's
+ * `tunnel.ipv4`/`ipv6` so hev's internal lwip stack agrees with the addresses the Android
+ * `VpnService.Builder` assigned (v2rayNG parity, issue #111).
  */
 internal fun TunConfig.toTun2SocksConfig(): Tun2SocksConfig = Tun2SocksConfig(
     socksPort = localSocksPort,
+    ipv4Address = clientAddress,
+    ipv6Address = ipv6ClientAddress,
     mtu = mtu,
 )

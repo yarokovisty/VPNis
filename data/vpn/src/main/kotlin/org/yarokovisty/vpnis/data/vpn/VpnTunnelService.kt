@@ -592,38 +592,47 @@ internal class VpnTunnelService :
 // =============================================================================
 
 /**
- * Registers a [ConnectivityManager.NetworkCallback] to track the physical (non-VPN)
- * network and keeps [VpnService.setUnderlyingNetworks] up to date.
+ * Tracks the single physical (non-VPN) default network and keeps
+ * [VpnService.setUnderlyingNetworks] pointed at exactly that one network.
  *
- * ## Why a filtered [NetworkRequest] instead of [ConnectivityManager.registerDefaultNetworkCallback]
+ * ## Why [ConnectivityManager.requestNetwork] + a single network (issue #111)
  *
- * [registerDefaultNetworkCallback] would deliver the VPN's own virtual network as the
- * "default" once it is active, causing [setUnderlyingNetworks] to be called with the TUN
- * interface — exactly the opposite of what we want. By requesting `NET_CAPABILITY_INTERNET`
- * + `NET_CAPABILITY_NOT_VPN` we filter to physical networks (Wi-Fi, cellular) only.
+ * The earlier implementation used [ConnectivityManager.registerNetworkCallback] and set the
+ * **union of every** matching network. In a multi-transport environment (Wi-Fi + cellular both
+ * up, or Wi-Fi flapping to an unvalidated/degraded state) that handed [setUnderlyingNetworks] a
+ * stale or degraded network alongside the good one, so protected outbound sockets could bind to
+ * a path that silently black-holes larger segments — the one-way-tunnel symptom.
  *
- * NOTE: [ConnectivityManager.requestNetwork] with a [NetworkRequest] requires the
- * `android.permission.CHANGE_NETWORK_STATE` permission, which issue #65 adds to the
- * AndroidManifest alongside `<uses-permission android:name="android.permission.INTERNET" />`
- * and the `<service>` entry.
+ * v2rayNG's `CoreVpnService` avoids this by using [ConnectivityManager.requestNetwork] with a
+ * capability request and always calling `setUnderlyingNetworks(arrayOf(network))` with the
+ * **single** current default. [registerDefaultNetworkCallback] can't be used here: once the VPN
+ * is up it reports the VPN's own virtual network as the default. Filtering on
+ * `NET_CAPABILITY_INTERNET` + `NET_CAPABILITY_NOT_VPN` and using [requestNetwork] yields only the
+ * real underlying default and follows it across transitions.
+ *
+ * NOTE: [ConnectivityManager.requestNetwork] requires `android.permission.CHANGE_NETWORK_STATE`
+ * (declared in this module's AndroidManifest).
  */
 private class UnderlyingNetworkMonitor(
     private val service: VpnService,
     private val connectivityManager: ConnectivityManager,
 ) {
 
-    private val availableNetworks = mutableSetOf<Network>()
-
     private val callback = object : ConnectivityManager.NetworkCallback() {
 
         override fun onAvailable(network: Network) {
-            availableNetworks += network
-            service.setUnderlyingNetworks(availableNetworks.toTypedArray())
+            service.setUnderlyingNetworks(arrayOf(network))
+        }
+
+        // Re-affirm the network when its capabilities change (e.g. it (re)gains validated
+        // internet) — mirrors v2rayNG so the VPN always rides the freshest good default.
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            service.setUnderlyingNetworks(arrayOf(network))
         }
 
         override fun onLost(network: Network) {
-            availableNetworks -= network
-            service.setUnderlyingNetworks(availableNetworks.toTypedArray())
+            // Fall back to the system default until the next network arrives.
+            service.setUnderlyingNetworks(null)
         }
     }
 
@@ -632,15 +641,14 @@ private class UnderlyingNetworkMonitor(
         .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
         .build()
 
-    // ACCESS_NETWORK_STATE is declared in this module's AndroidManifest (issue #65),
-    // so registerNetworkCallback() is permitted.
+    // requestNetwork (not registerNetworkCallback) tracks only THE default network satisfying the
+    // request. Requires CHANGE_NETWORK_STATE (declared in this module's AndroidManifest).
     fun register() {
-        connectivityManager.registerNetworkCallback(networkRequest, callback)
+        connectivityManager.requestNetwork(networkRequest, callback)
     }
 
     fun unregister() {
         runCatching { connectivityManager.unregisterNetworkCallback(callback) }
-        availableNetworks.clear()
         service.setUnderlyingNetworks(null)
     }
 }

@@ -11,8 +11,14 @@
 
     <!-- Tunnel + Xray outbound traffic. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- registerNetworkCallback() in UnderlyingNetworkMonitor (underlying-network tracking). -->
+    <!-- Underlying-network tracking in UnderlyingNetworkMonitor. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--
+        requestNetwork() in UnderlyingNetworkMonitor: unlike registerNetworkCallback(), it tracks
+        only THE single default network (not every matching one) so setUnderlyingNetworks() is
+        never handed a stale/degraded network — matching v2rayNG's CoreVpnService (issue #111).
+    -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- Foreground service that hosts the tunnel (issue #62). -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!--

@@ -472,15 +472,27 @@ class TunConfigTest {
     }
 
     @Test
-    fun `toTun2SocksConfig EXPECT taskStackSize is default 20480`() {
+    fun `toTun2SocksConfig EXPECT ipv4Address mapped from clientAddress`() {
         // Given
-        val config = TunConfig(localSocksPort = 1080, mtu = 1500)
+        val config = TunConfig(clientAddress = "10.0.0.2", localSocksPort = 1080)
 
         // When
         val result = config.toTun2SocksConfig()
 
         // Then
-        assertEquals(20480, result.taskStackSize)
+        assertEquals("10.0.0.2", result.ipv4Address)
+    }
+
+    @Test
+    fun `toTun2SocksConfig EXPECT ipv6Address mapped from ipv6ClientAddress`() {
+        // Given
+        val config = TunConfig(ipv6ClientAddress = "fd00::1", localSocksPort = 1080)
+
+        // When
+        val result = config.toTun2SocksConfig()
+
+        // Then
+        assertEquals("fd00::1", result.ipv6Address)
     }
 
     @Test
