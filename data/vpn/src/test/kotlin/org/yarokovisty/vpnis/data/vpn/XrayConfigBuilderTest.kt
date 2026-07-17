@@ -6,6 +6,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -198,16 +199,18 @@ class XrayConfigBuilderTest {
     }
 
     @Test
-    fun `valid VLESS URI EXPECT realitySettings fingerprint equals fp param`() {
-        // Given / When
+    fun `valid VLESS URI EXPECT realitySettings fingerprint is DPI-resistant firefox not URI chrome`() {
+        // Given — validUri carries fp=chrome, which Russian DPI drops (issue #111)
+        // When
         val json = requireNotNull(XrayConfigBuilder.build(validUri))
         val root = Json.parseToJsonElement(json).jsonObject
 
-        // Then
+        // Then — the emitted fingerprint is overridden to the DPI-resistant firefox, NOT the URI's fp
         val fingerprint = root["outbounds"]!!.jsonArray[0]
             .jsonObject["streamSettings"]!!.jsonObject["realitySettings"]!!
             .jsonObject["fingerprint"]!!.jsonPrimitive.content
-        assertEquals(fp, fingerprint)
+        assertEquals("firefox", fingerprint)
+        assertNotEquals(fp, fingerprint)
     }
 
     // -------------------------------------------------------------------------

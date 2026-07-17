@@ -47,7 +47,7 @@ import kotlinx.serialization.json.putJsonObject
  *         "network":"tcp",
  *         "security":"reality",
  *         "realitySettings":{
- *           "serverName":"<sni>", "fingerprint":"<fp>",
+ *           "serverName":"<sni>", "fingerprint":"firefox",  // DPI-resistant, overrides URI fp (#111)
  *           "publicKey":"<pbk>", "shortId":"<sid>"
  *         }
  *       }
@@ -91,6 +91,24 @@ internal object XrayConfigBuilder {
      * (issue #111).
      */
     private val dnsServers: List<String> = TunConfig().dnsServers
+
+    /**
+     * uTLS fingerprint the REALITY client presents in its ClientHello — this OVERRIDES the URI's
+     * `fp` value (issue #111).
+     *
+     * Share links almost universally specify `fp=chrome`, but Russian DPI (TSPU / Rostelecom)
+     * actively fingerprints and silently DROPS the `chrome` ClientHello produced by current uTLS
+     * (widely reported since ~June 2026). That was the root cause of the one-way tunnel in #111:
+     * the reality handshake's first packet was black-holed by the ISP. The uTLS fingerprint is
+     * purely client-side browser mimicry that the REALITY server does not validate, so we are free
+     * to present a DPI-resistant one. `firefox` currently passes where `chrome` is blocked
+     * (XTLS/Xray-core discussion #4035, v2rayNG #5406; asuswrt-merlin-xrayui flipped its default
+     * chrome→firefox for the same reason).
+     *
+     * This is a moving target — if `firefox` is later blocked, try `edge` / `qq` / `randomized`.
+     * Making it URI/settings-configurable is a follow-up.
+     */
+    private const val UTLS_FINGERPRINT = "firefox"
 
     /**
      * Parses [uri] (a VLESS URI string) and returns an Xray-core JSON configuration, or
@@ -153,7 +171,10 @@ internal object XrayConfigBuilder {
             port = port,
             flow = reality.flow,
             pbk = reality.pbk,
-            fp = reality.fp,
+            // reality.fp (from the URI, typically "chrome") is intentionally NOT used — it is
+            // replaced by the DPI-resistant [UTLS_FINGERPRINT]. The URI's fp is still parsed and
+            // validated as present in parseReality (share-link fidelity / early rejection).
+            fp = UTLS_FINGERPRINT,
             sni = reality.sni,
             sid = reality.sid,
         )
