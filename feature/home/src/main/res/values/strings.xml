@@ -37,6 +37,9 @@
     <!-- Traffic tiles (values are "—" on this milestone; the traffic counter is #69) -->
     <string name="home_traffic_download">Download</string>
     <string name="home_traffic_upload">Upload</string>
+    <!-- Bitrate units, rendered as a de-emphasised suffix after the numeric value. -->
+    <string name="home_traffic_unit_bps">B/s</string>
+    <string name="home_traffic_unit_kbps">KB/s</string>
     <string name="home_traffic_unit_mbps">MB/s</string>
 
     <!-- Error banner. %1$s is the server host/name. -->

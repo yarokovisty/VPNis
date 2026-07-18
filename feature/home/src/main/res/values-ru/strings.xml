@@ -34,6 +34,9 @@
     <!-- Плитки трафика (значения «—» на этом этапе; счётчик трафика — #69) -->
     <string name="home_traffic_download">Загрузка</string>
     <string name="home_traffic_upload">Отдача</string>
+    <!-- Единицы скорости, рендерятся как приглушённая подпись после числового значения. -->
+    <string name="home_traffic_unit_bps">Б/с</string>
+    <string name="home_traffic_unit_kbps">КБ/с</string>
     <string name="home_traffic_unit_mbps">МБ/с</string>
 
     <!-- Баннер ошибки. %1$s — хост/имя сервера. -->
