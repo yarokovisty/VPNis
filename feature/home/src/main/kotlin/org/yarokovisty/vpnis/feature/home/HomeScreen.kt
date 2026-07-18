@@ -422,9 +422,18 @@ private fun HomeConnectedContent(
         val downloadLabel = stringResource(R.string.home_traffic_download)
         val uploadLabel = stringResource(R.string.home_traffic_upload)
         val placeholder = stringResource(R.string.home_value_placeholder)
+        val unitBps = stringResource(R.string.home_traffic_unit_bps)
+        val unitKbps = stringResource(R.string.home_traffic_unit_kbps)
+        val unitMbps = stringResource(R.string.home_traffic_unit_mbps)
 
-        val downloadValue = state.traffic?.let { formatBitrate(it.rxBps) } ?: placeholder
-        val uploadValue = state.traffic?.let { formatBitrate(it.txBps) } ?: placeholder
+        fun unitLabel(unit: BitrateUnit): String = when (unit) {
+            BitrateUnit.BYTES -> unitBps
+            BitrateUnit.KILOBYTES -> unitKbps
+            BitrateUnit.MEGABYTES -> unitMbps
+        }
+
+        val download = state.traffic?.let { formatBitrate(it.rxBps) }
+        val upload = state.traffic?.let { formatBitrate(it.txBps) }
 
         Spacer(modifier = Modifier.height(ButtonTopSpacing))
 
@@ -471,8 +480,10 @@ private fun HomeConnectedContent(
         TrafficStats(
             downloadLabel = downloadLabel,
             uploadLabel = uploadLabel,
-            downloadValue = downloadValue,
-            uploadValue = uploadValue,
+            downloadValue = download?.value ?: placeholder,
+            downloadUnit = download?.let { unitLabel(it.unit) },
+            uploadValue = upload?.value ?: placeholder,
+            uploadUnit = upload?.let { unitLabel(it.unit) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

@@ -19,7 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,14 +36,20 @@ import org.yarokovisty.vpnis.feature.home.components.icons.HomeIcons
  * and 14 dp internal padding. Values use tabular-nums feature settings to keep digits stable-width
  * and avoid layout shifts as numbers update.
  *
- * String localisation note: [downloadLabel] and [uploadLabel] are caller-supplied.
+ * String localisation note: [downloadLabel]/[uploadLabel] and the unit suffixes are caller-supplied.
  * // TODO(#54): replace preview literals with string resources.
+ *
+ * The value is split into a prominent number and a de-emphasised unit suffix ("12.4" + " МБ/с"),
+ * matching the design canvas. When the unit is `null` (no live traffic) only the value is shown —
+ * typically the "—" placeholder, rendered in the muted [MaterialTheme.colorScheme.onSurfaceVariant].
  *
  * @param downloadLabel Label for the download tile, e.g. "Загрузка".
  * @param uploadLabel Label for the upload tile, e.g. "Отдача".
- * @param downloadValue Formatted download value, e.g. "1.2 MB/s". Default "—".
- * @param uploadValue Formatted upload value, e.g. "256 KB/s". Default "—".
  * @param modifier Optional [Modifier].
+ * @param downloadValue Numeric download value, e.g. "1.2". Default "—".
+ * @param downloadUnit Localised download unit suffix, e.g. "МБ/с", or `null` for the placeholder.
+ * @param uploadValue Numeric upload value, e.g. "256". Default "—".
+ * @param uploadUnit Localised upload unit suffix, e.g. "КБ/с", or `null` for the placeholder.
  */
 @Composable
 public fun TrafficStats(
@@ -48,7 +57,9 @@ public fun TrafficStats(
     uploadLabel: String,
     modifier: Modifier = Modifier,
     downloadValue: String = "—",
+    downloadUnit: String? = null,
     uploadValue: String = "—",
+    uploadUnit: String? = null,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -59,12 +70,14 @@ public fun TrafficStats(
         TrafficTile(
             label = downloadLabel,
             value = downloadValue,
+            unit = downloadUnit,
             isDownload = true,
             modifier = Modifier.weight(1f),
         )
         TrafficTile(
             label = uploadLabel,
             value = uploadValue,
+            unit = uploadUnit,
             isDownload = false,
             modifier = Modifier.weight(1f),
         )
@@ -72,7 +85,13 @@ public fun TrafficStats(
 }
 
 @Composable
-private fun TrafficTile(label: String, value: String, isDownload: Boolean, modifier: Modifier = Modifier) {
+private fun TrafficTile(
+    label: String,
+    value: String,
+    unit: String?,
+    isDownload: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Surface(
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -98,14 +117,33 @@ private fun TrafficTile(label: String, value: String, isDownload: Boolean, modif
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
+            val unitColor = MaterialTheme.colorScheme.onSurfaceVariant
             Text(
-                text = value,
+                text = buildAnnotatedString {
+                    append(value)
+                    if (unit != null) {
+                        withStyle(
+                            SpanStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = unitColor,
+                            ),
+                        ) {
+                            append(" $unit")
+                        }
+                    }
+                },
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 19.sp,
                     fontFeatureSettings = "tnum",
                     fontWeight = FontWeight.SemiBold,
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                // Active value → onSurface; bare placeholder ("—") → muted onSurfaceVariant.
+                color = if (unit != null) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
             )
         }
     }
@@ -133,8 +171,10 @@ private fun TrafficStatsActiveLightPreview() {
         TrafficStats(
             downloadLabel = "Загрузка",
             uploadLabel = "Отдача",
-            downloadValue = "1.2 MB/s",
-            uploadValue = "256 KB/s",
+            downloadValue = "12.4",
+            downloadUnit = "МБ/с",
+            uploadValue = "1.8",
+            uploadUnit = "МБ/с",
         )
     }
 }
@@ -157,8 +197,10 @@ private fun TrafficStatsActiveDarkPreview() {
         TrafficStats(
             downloadLabel = "Загрузка",
             uploadLabel = "Отдача",
-            downloadValue = "1.2 MB/s",
-            uploadValue = "256 KB/s",
+            downloadValue = "12.4",
+            downloadUnit = "МБ/с",
+            uploadValue = "1.8",
+            uploadUnit = "МБ/с",
         )
     }
 }
