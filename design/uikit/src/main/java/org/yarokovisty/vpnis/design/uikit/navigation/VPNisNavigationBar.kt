@@ -21,8 +21,9 @@ import org.yarokovisty.vpnis.design.theme.VPNisTheme
  * Bottom navigation bar for the VPNis design system.
  *
  * Wraps M3 [NavigationBar] and pins the container colour to
- * [MaterialTheme.colorScheme.surface] — the branded role for navigation surfaces
- * that blend with the page background rather than contrasting with it.
+ * [MaterialTheme.colorScheme.surfaceContainer] — the branded elevation role
+ * (`#EFEDF4` light / `#1F1F25` dark) that sits slightly above the page
+ * background so the active item's `secondaryContainer` pill stays legible.
  *
  * **Item iteration:** callers iterate their own descriptor list outside this
  * composable and emit one [VPNisNavigationBarItem] per entry.  `selected` is
@@ -60,7 +61,7 @@ public fun VPNisNavigationBar(
 ) {
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
         windowInsets = windowInsets,
         content = content,
     )
