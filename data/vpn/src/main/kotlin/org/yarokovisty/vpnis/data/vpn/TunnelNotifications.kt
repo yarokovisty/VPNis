@@ -123,7 +123,7 @@ internal object TunnelNotifications {
             PendingIntent.FLAG_IMMUTABLE,
         )
 
-        return NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_vpn)
             .setContentTitle(title)
             .setContentText(text)
@@ -133,14 +133,46 @@ internal object TunnelNotifications {
             // only on the first post so the low-importance channel never produces sound/heads-up.
             .setOnlyAlertOnce(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            // Suppress the "Tap to see all XXX notifications" footer in notification shade.
-            .setShowWhen(false)
             .addAction(
                 0, // icon — action icons are deprecated in API 23+; pass 0 per Material guidance
                 context.getString(R.string.vpn_notification_action_disconnect),
                 disconnectPendingIntent,
             )
-            .build()
+
+        // Session timer (issue #128) — Context-side wiring; the mapper stays pure and carries only
+        // `since: Instant`. Only the Connected state shows a running chronometer.
+        applyTimer(builder, content)
+
+        return builder.build()
+    }
+
+    /**
+     * Applies the session-timer fields to [builder] for the [NotificationContent.Connected] state,
+     * and suppresses the timestamp footer for every other state.
+     *
+     * For [NotificationContent.Connected] this sets the notification `when` to
+     * [NotificationContent.Connected.since] and enables the chronometer, so the system renders a
+     * live "counting up" session timer. Crucially the **system** ticks the chronometer once per
+     * second on its own — the presenter does **not** re-`notify()` per tick (epic #126 DoD: ≤1
+     * `notify()`/sec). Because `since` is captured once at `onTunnelEstablished` and never recomputed
+     * on a `Connected → Connected` traffic refresh, the timer is monotonic and never jumps or resets
+     * while the session is alive.
+     *
+     * `java.time.Instant.toEpochMilli()` is available natively on API 26 (our minSdk), so no core
+     * library desugaring is required.
+     *
+     * For non-Connected states, [NotificationCompat.Builder.setShowWhen] is disabled to suppress the
+     * "Tap to see all XXX notifications" timestamp footer in the notification shade.
+     */
+    private fun applyTimer(builder: NotificationCompat.Builder, content: NotificationContent) {
+        if (content is NotificationContent.Connected) {
+            builder
+                .setWhen(content.since.toEpochMilli())
+                .setShowWhen(true)
+                .setUsesChronometer(true)
+        } else {
+            builder.setShowWhen(false)
+        }
     }
 
     /**
@@ -157,7 +189,8 @@ internal object TunnelNotifications {
             is NotificationContent.Connecting ->
                 context.getString(R.string.vpn_notification_text_connecting, content.serverName)
             is NotificationContent.Connected ->
-                // TODO(#128): append the monotonic session timer (setUsesChronometer + setWhen).
+                // The monotonic session timer is rendered as a chronometer via [applyTimer]
+                // (setUsesChronometer + setWhen) — not embedded in this text (issue #128).
                 context.getString(R.string.vpn_notification_text_connected, content.serverName)
         }
         return title to text
