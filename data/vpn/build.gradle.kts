@@ -32,6 +32,9 @@ android {
     testOptions {
         unitTests {
             isReturnDefaultValues = true
+            // Robolectric needs the merged resources to resolve R.string/R.drawable in the
+            // notification tests (issue #127: createChannel/build call getString).
+            isIncludeAndroidResources = true
         }
     }
 
@@ -84,4 +87,9 @@ dependencies {
     }
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    // koin-test-junit4 brings koin-test transitively + the JUnit-4 runner support used by the
+    // checkModules graph tests; robolectric supplies an application Context for the real-graph check
+    // (both cataloged; robolectric already used by :feature:home tests — issue #127 T-8a).
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.robolectric)
 }

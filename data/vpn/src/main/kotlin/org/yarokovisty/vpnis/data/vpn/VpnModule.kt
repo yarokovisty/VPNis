@@ -4,6 +4,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.yarokovisty.vpnis.core.domain.connection.ConnectionController
+import org.yarokovisty.vpnis.core.domain.permission.NotificationPermissionState
 
 /**
  * Koin module for the `:data:vpn` layer.
@@ -57,4 +58,10 @@ public val vpnModule: Module = module {
     single { ConnectionControllerImpl(launcher = get(), consentChecker = get()) }
     single<ConnectionController> { get<ConnectionControllerImpl>() }
     single<TunnelStateSink> { get<ConnectionControllerImpl>() }
+
+    // NotificationPermissionState — two-part OS gate (app-level + channel importance).
+    single<NotificationPermissionState> { AndroidNotificationPermissionState(androidContext()) }
+
+    // TunnelNotificationPresenter — sole owner of NOTIFICATION_ID; lifecycle driven by the service.
+    single { TunnelNotificationPresenter(get(), androidContext()) }
 }

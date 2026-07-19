@@ -37,8 +37,9 @@ import org.yarokovisty.vpnis.core.domain.model.ConnectionError
  *
  * Intentionally OUT OF SCOPE for this service:
  * - ConnectionController state machine, libXray start/stop → issue #63. See [TODO #63]
- *   comments marking the seam points. Live notification content also arrives via #63
- *   through [updateNotification].
+ *   comments marking the seam points. Live notification content is driven by
+ *   [TunnelNotificationPresenter] (issue #127), which the service starts on the success path
+ *   and stops during teardown — the service itself only posts the initial `startForeground`.
  * - `<service>` AndroidManifest entry, `BIND_VPN_SERVICE` permission, and the
  *   `android:foregroundServiceType="specialUse"` declaration with its companion
  *   `<property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE">` — fixed in
@@ -107,6 +108,14 @@ internal class VpnTunnelService :
      * Start before the hev loop so the SOCKS inbound is ready when hev begins forwarding.
      */
     private val xrayCore: XrayCore by inject()
+
+    /**
+     * Sole owner of the foreground notification slot (issue #127). The service starts it on the
+     * success path (after [TunnelStateSink.onTunnelEstablished]) and stops it during teardown; the
+     * presenter — not the service — posts all live content updates. Injected via the koin-android
+     * [inject] Service extension, like [stateSink] / [xrayCore].
+     */
+    private val notificationPresenter: TunnelNotificationPresenter by inject()
 
     // -------------------------------------------------------------------------
     // Companion — actions and intent factories
@@ -315,6 +324,11 @@ internal class VpnTunnelService :
         if (hadTunnel) {
             Tun2SocksBridge.nativeStop()
         }
+        // Stop the presenter on the low-memory-kill path that skips finishTeardown (issue #127):
+        // releases its collector so the process-lifetime single never retains a stale job / dead
+        // serviceScope. Idempotent, so harmless if finishTeardown already stopped it. Runs before
+        // serviceScope.cancel() so stop()'s job.cancel() is the one that tears the collector down.
+        notificationPresenter.stop()
         runCatching { pfd?.close() }
         serviceScope.cancel()
         super.onDestroy()
@@ -510,10 +524,16 @@ internal class VpnTunnelService :
         }
 
         // 6. Notify the ConnectionController that the TUN is up and the tunnel is active.
-        //    This drives Connecting → Connected in the state machine and updates the
-        //    notification with live content.
+        //    This drives Connecting → Connected in the state machine.
         stateSink.onTunnelEstablished()
-        updateNotification(content = NotificationContent.Default)
+
+        // 7. Hand the notification slot to the presenter (issue #127). Started HERE — at the end of
+        //    the success path, NOT after startForeground — so the earlier abort paths
+        //    (xrayCore.start() false / establish() null, both of which stopForeground and return)
+        //    can never leave a live collector re-posting a zombie notification. The presenter owns
+        //    NOTIFICATION_ID from now until stop() in finishTeardown / onDestroy; it collects
+        //    controller.state on serviceScope (Dispatchers.IO — a non-Main scope, as it requires).
+        notificationPresenter.start(serviceScope)
     }
 
     // ReturnCount: the three guard-clause early returns (teardown-in-progress / start-in-progress /
@@ -584,51 +604,26 @@ internal class VpnTunnelService :
         // Stop Xray-core last: releases the local SOCKS inbound port for the next connect.
         xrayCore.stop()
 
+        // Stop the presenter BEFORE the terminal Disconnected emission (issue #127): flips its
+        // active gate and cancels its collector so onTunnelStopped() cannot drive a notify() after
+        // stopForeground. This must precede onTunnelStopped().
+        notificationPresenter.stop()
+
         // Drive the state machine to Disconnected (isLegalTransition makes it a no-op if already so).
         stateSink.onTunnelStopped()
 
         // Drop the foreground notification; stopSelf() then destroys the service.
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
 
+        // Final idempotent sweep (issue #127): removes any notification a lost cancellation race may
+        // have posted between the presenter's filter and its active gate. Cheap and always correct.
+        getSystemService(NotificationManager::class.java).cancel(TunnelNotifications.NOTIFICATION_ID)
+
         synchronized(lifecycleLock) {
             isRunning = false
             isStopping = false
         }
         stopSelf()
-    }
-
-    // -------------------------------------------------------------------------
-    // Notification update seam (issue #63)
-    // -------------------------------------------------------------------------
-
-    /**
-     * Re-posts the foreground service notification with updated [content].
-     *
-     * Must be called from the main thread (or any thread — [NotificationManager.notify]
-     * is thread-safe). Callers on a background coroutine can invoke this directly.
-     *
-     * ## Seam for issue #63
-     *
-     * ConnectionController will call this as the VPN connection state changes
-     * (e.g. Connecting → Connected → with server name and session timer).
-     * The notification is only re-posted when the tunnel is already running; calling
-     * this when [isRunning] is false is a no-op so callers do not need to guard against
-     * timing races during startup.
-     *
-     * Example from issue #63:
-     * ```kotlin
-     * // TODO(#63): connectionController.state.onEach { state ->
-     * //     updateNotification(state.toNotificationContent())
-     * // }.launchIn(serviceScope)
-     * ```
-     *
-     * @param content New content to display. Defaults to [NotificationContent.Default].
-     */
-    internal fun updateNotification(content: NotificationContent = NotificationContent.Default) {
-        if (!isRunning) return
-        val notification = TunnelNotifications.build(context = this, content = content)
-        val manager = getSystemService(NotificationManager::class.java)
-        manager.notify(TunnelNotifications.NOTIFICATION_ID, notification)
     }
 
     // -------------------------------------------------------------------------
