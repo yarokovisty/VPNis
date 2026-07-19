@@ -6,6 +6,46 @@ import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.design.theme.VPNisTheme
 
 // ---------------------------------------------------------------------------
+// Connected — notification banner visible (permission denied)
+// ---------------------------------------------------------------------------
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenConnectedNotificationBannerLightPreview() {
+    VPNisTheme(darkTheme = false) {
+        HomeScreen(
+            uiState = HomeUiState.Connected(
+                server = PreviewServer,
+                since = PreviewSince,
+                traffic = PreviewTraffic,
+            ),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenConnectedNotificationBannerDarkPreview() {
+    VPNisTheme(darkTheme = true) {
+        HomeScreen(
+            uiState = HomeUiState.Connected(
+                server = PreviewServer,
+                since = PreviewSince,
+                traffic = PreviewTraffic,
+            ),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Connected — with traffic
 // ---------------------------------------------------------------------------
 

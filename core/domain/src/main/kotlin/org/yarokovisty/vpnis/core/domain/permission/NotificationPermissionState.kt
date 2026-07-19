@@ -19,9 +19,10 @@ import kotlinx.coroutines.flow.Flow
  *   the first emission.
  * - [refresh] is idempotent and cheap — the cost is a couple of system-service reads; callers need
  *   not debounce it.
- * - This interface is **channel-agnostic**: it reports whether the OS will display the app's status
- *   notifications as a whole. The two-part OS check is an implementation detail of the Android
- *   layer, not part of this contract.
+ * - The **permission-evaluation logic** ([isGranted]) is channel-agnostic: the two-part OS check
+ *   (app-level grant AND channel importance) is an implementation detail of the Android layer, not
+ *   part of this contract. [channelId], by contrast, is a deep-link navigation target — it is
+ *   orthogonal to the permission evaluation and intentionally kept separate from [isGranted].
  *
  * @see kotlinx.coroutines.flow.StateFlow
  */
@@ -41,13 +42,31 @@ public interface NotificationPermissionState {
     public val isGranted: Flow<Boolean>
 
     /**
-     * Re-reads the OS notification-permission state and updates [isGranted] if the value changed.
+     * Opaque identifier for the notification channel associated with this permission gate.
      *
-     * This is a PULL operation — it queries the OS synchronously (on the calling coroutine's
-     * dispatcher) and pushes the result into the backing [kotlinx.coroutines.flow.StateFlow].
-     * Implementations may hop to a background dispatcher internally for defensive threading.
+     * Intended **only** as a deep-link navigation target — for example, building an
+     * `ACTION_CHANNEL_NOTIFICATION_SETTINGS` Intent that lands directly on the tunnel channel in
+     * system settings. It is NOT a permission-logic signal and MUST NOT be used to infer anything
+     * about channel state (importance, whether the channel is silenced, etc.). Do not add derived
+     * properties such as `importance` or `isSilenced` to this contract — those concerns belong
+     * to [isGranted]'s two-part evaluation, which is an implementation detail of the Android layer.
+     */
+    public val channelId: String
+
+    /**
+     * Re-reads the OS notification-permission state, updates [isGranted], and returns the freshly
+     * computed gate value.
+     *
+     * This is a PULL operation — it queries the OS (on the calling coroutine's dispatcher, or an
+     * internal background dispatcher), stores the result into the backing
+     * [kotlinx.coroutines.flow.StateFlow], and returns that **same computed value** directly.
+     * Callers that need the current grant status after a refresh MUST use the return value rather
+     * than reading [isGranted] separately, to avoid a stale-read race under interleaved refreshes.
      *
      * Safe to call on any dispatcher; idempotent; lightweight.
+     *
+     * @return `true` if the OS will display the app's status notifications after this refresh,
+     *   `false` otherwise — identical to the value just pushed into [isGranted].
      */
-    public suspend fun refresh()
+    public suspend fun refresh(): Boolean
 }

@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -16,11 +17,15 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 
 /**
- * Robolectric unit tests for [AndroidNotificationPermissionState] (issue #127, task T-4).
+ * Robolectric unit tests for [AndroidNotificationPermissionState] (issue #127, task T-4; updated T-1).
  *
  * Verifies the two-part AND gate: [AndroidNotificationPermissionState.isGranted] is `true` only
  * when app-level notifications are enabled AND the tunnel channel's importance is not
  * [NotificationManager.IMPORTANCE_NONE].
+ *
+ * Also verifies that [AndroidNotificationPermissionState.refresh] returns the same value that is
+ * subsequently emitted by [AndroidNotificationPermissionState.isGranted], and that
+ * [AndroidNotificationPermissionState.channelId] equals the expected tunnel channel id.
  *
  * Robolectric's [ShadowNotificationManager] allows controlling both dimensions without a
  * real device.
@@ -63,10 +68,18 @@ class AndroidNotificationPermissionStateTest {
         val state = AndroidNotificationPermissionState(context)
 
         // When
-        state.refresh()
+        val returned = state.refresh()
 
-        // Then
+        // Then — refresh() return value matches the subsequent isGranted emission (no stale-read)
+        assertTrue(returned)
         assertTrue(state.isGranted.first())
+        assertEquals(returned, state.isGranted.first())
+    }
+
+    @Test
+    fun `channelId EXPECT vpnis_tunnel`() {
+        val state = AndroidNotificationPermissionState(context)
+        assertEquals("vpnis_tunnel", state.channelId)
     }
 
     // -------------------------------------------------------------------------
@@ -81,10 +94,13 @@ class AndroidNotificationPermissionStateTest {
         val state = AndroidNotificationPermissionState(context)
 
         // When
-        state.refresh()
+        val returned = state.refresh()
 
-        // Then — the two-part AND fails on the channel check
+        // Then — the two-part AND fails on the channel check;
+        //         refresh() return value matches the subsequent isGranted emission
+        assertFalse(returned)
         assertFalse(state.isGranted.first())
+        assertEquals(returned, state.isGranted.first())
     }
 
     // -------------------------------------------------------------------------
@@ -101,9 +117,12 @@ class AndroidNotificationPermissionStateTest {
         val state = AndroidNotificationPermissionState(context)
 
         // When
-        state.refresh()
+        val returned = state.refresh()
 
-        // Then — the two-part AND fails on the app-level check
+        // Then — the two-part AND fails on the app-level check;
+        //         refresh() return value matches the subsequent isGranted emission
+        assertFalse(returned)
         assertFalse(state.isGranted.first())
+        assertEquals(returned, state.isGranted.first())
     }
 }

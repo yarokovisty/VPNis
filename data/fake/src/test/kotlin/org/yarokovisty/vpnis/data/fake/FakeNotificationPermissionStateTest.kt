@@ -6,11 +6,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
- * Unit tests for [FakeNotificationPermissionState] (issue #127, task T-5).
+ * Unit tests for [FakeNotificationPermissionState] (issue #127, task T-5; updated T-1).
  *
- * The three cases together falsify a naïve implementation that writes [isGranted] directly
+ * The three core cases together falsify a naïve implementation that writes [isGranted] directly
  * from [setGranted]: in the naïve version, case (b) would emit `false` without [refresh],
  * making the test trivially green regardless of whether [refresh] does anything.
+ *
+ * Additional cases (d)/(e) cover the new T-1 contract: [FakeNotificationPermissionState.refresh]
+ * must return the backing value, and [FakeNotificationPermissionState.channelId] must equal the
+ * expected tunnel channel id.
  */
 class FakeNotificationPermissionStateTest {
 
@@ -68,5 +72,52 @@ class FakeNotificationPermissionStateTest {
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // (d) refresh() return value — must equal the backing value (T-1)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `refresh returns true when backing is true`() = runTest {
+        // Given — default backing = true
+        val fake = FakeNotificationPermissionState()
+
+        // When
+        val returned = fake.refresh()
+
+        // Then — return value matches the value pushed into isGranted
+        assertEquals(true, returned)
+        fake.isGranted.test {
+            assertEquals(returned, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `refresh returns false when backing is false`() = runTest {
+        // Given
+        val fake = FakeNotificationPermissionState()
+        fake.setGranted(false)
+
+        // When
+        val returned = fake.refresh()
+
+        // Then — return value matches the value pushed into isGranted
+        assertEquals(false, returned)
+        fake.isGranted.test {
+            assertEquals(returned, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // (e) channelId — must equal the tunnel channel literal (T-1)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `channelId EXPECT vpnis_tunnel`() {
+        val fake = FakeNotificationPermissionState()
+        assertEquals("vpnis_tunnel", fake.channelId)
     }
 }

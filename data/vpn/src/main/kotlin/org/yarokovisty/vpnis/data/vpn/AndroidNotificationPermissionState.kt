@@ -54,9 +54,19 @@ internal class AndroidNotificationPermissionState(private val context: Context) 
 
     override val isGranted: Flow<Boolean> = _isGranted.asStateFlow()
 
-    override suspend fun refresh() {
+    /**
+     * Returns [TunnelNotifications.CHANNEL_ID] as an opaque deep-link target.
+     *
+     * This value is used by the UI layer to build a channel-level notification-settings Intent.
+     * [TunnelNotifications.CHANNEL_ID] remains `internal` to `:data:vpn`; the domain contract
+     * only exposes it as an opaque [String], keeping channel-identity knowledge out of `:core:domain`.
+     */
+    override val channelId: String get() = TunnelNotifications.CHANNEL_ID
+
+    override suspend fun refresh(): Boolean {
         val granted = withContext(Dispatchers.Default) { computeIsGranted() }
         _isGranted.value = granted
+        return granted
     }
 
     /**

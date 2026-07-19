@@ -51,8 +51,9 @@ internal class HomeViewModelTest {
     private fun buildViewModel(
         controller: FakeConnectionController = FakeConnectionController(),
         servers: FakeServerRepository = FakeServerRepository(),
+        notificationPermission: FakeNotificationPermissionState = FakeNotificationPermissionState(),
     ): Triple<HomeViewModel, FakeConnectionController, FakeServerRepository> {
-        val vm = HomeViewModel(controller, servers)
+        val vm = HomeViewModel(controller, servers, notificationPermission)
         return Triple(vm, controller, servers)
     }
 
@@ -78,7 +79,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository(initialSelected = serverA)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -98,7 +99,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository(initialSelected = null)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -119,7 +120,7 @@ internal class HomeViewModelTest {
             // Given
             val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
             val servers = FakeServerRepository(initialSelected = serverA)
-            val viewModel = HomeViewModel(controller, servers)
+            val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
             // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
             viewModel.uiState.test {
@@ -139,7 +140,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository()
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -159,7 +160,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository()
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -179,7 +180,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository()
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -199,7 +200,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Loading)
         val servers = FakeServerRepository(initialSelected = serverA)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // Then — subscriber must be active before emit so WhileSubscribed keeps the upstream alive
         viewModel.uiState.test {
@@ -222,7 +223,7 @@ internal class HomeViewModelTest {
     fun `entering PermissionRequired EXPECT RequestVpnPermission effect emitted exactly once`() = runTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
-        val viewModel = HomeViewModel(controller, FakeServerRepository())
+        val viewModel = HomeViewModel(controller, FakeServerRepository(), FakeNotificationPermissionState())
 
         viewModel.effects.test {
             // When
@@ -241,7 +242,7 @@ internal class HomeViewModelTest {
         runTest {
             // Given
             val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
-            val viewModel = HomeViewModel(controller, FakeServerRepository())
+            val viewModel = HomeViewModel(controller, FakeServerRepository(), FakeNotificationPermissionState())
 
             viewModel.effects.test {
                 // When — first entry into PermissionRequired
@@ -266,7 +267,7 @@ internal class HomeViewModelTest {
     fun `non-permission transition Disconnected to Connecting EXPECT no effect emitted`() = runTest {
         // Given
         val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
-        val viewModel = HomeViewModel(controller, FakeServerRepository())
+        val viewModel = HomeViewModel(controller, FakeServerRepository(), FakeNotificationPermissionState())
 
         viewModel.effects.test {
             // When
@@ -286,7 +287,8 @@ internal class HomeViewModelTest {
     @Test
     fun `onIntent AddServer EXPECT NavigateToServers effect emitted`() = runTest {
         // Given
-        val viewModel = HomeViewModel(FakeConnectionController(), FakeServerRepository())
+        val viewModel =
+            HomeViewModel(FakeConnectionController(), FakeServerRepository(), FakeNotificationPermissionState())
 
         viewModel.effects.test {
             // When
@@ -308,7 +310,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController()
         val servers = FakeServerRepository(initialSelected = serverA)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // When
         viewModel.onIntent(HomeIntent.Connect)
@@ -323,7 +325,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController()
         val servers = FakeServerRepository(initialSelected = null)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // When
         viewModel.onIntent(HomeIntent.Connect)
@@ -338,7 +340,7 @@ internal class HomeViewModelTest {
         // Given
         val controller = FakeConnectionController()
         val servers = FakeServerRepository(initialSelected = serverB)
-        val viewModel = HomeViewModel(controller, servers)
+        val viewModel = HomeViewModel(controller, servers, FakeNotificationPermissionState())
 
         // When
         viewModel.onIntent(HomeIntent.Retry)
@@ -352,7 +354,7 @@ internal class HomeViewModelTest {
     fun `onIntent Disconnect EXPECT controller disconnect called`() = runTest {
         // Given
         val controller = FakeConnectionController()
-        val viewModel = HomeViewModel(controller, FakeServerRepository())
+        val viewModel = HomeViewModel(controller, FakeServerRepository(), FakeNotificationPermissionState())
 
         // When
         viewModel.onIntent(HomeIntent.Disconnect)
@@ -366,7 +368,7 @@ internal class HomeViewModelTest {
     fun `onIntent Cancel EXPECT controller disconnect called`() = runTest {
         // Given
         val controller = FakeConnectionController()
-        val viewModel = HomeViewModel(controller, FakeServerRepository())
+        val viewModel = HomeViewModel(controller, FakeServerRepository(), FakeNotificationPermissionState())
 
         // When
         viewModel.onIntent(HomeIntent.Cancel)
@@ -380,7 +382,7 @@ internal class HomeViewModelTest {
     fun `onIntent SelectServer EXPECT servers selectServer called with provided id`() = runTest {
         // Given
         val servers = FakeServerRepository()
-        val viewModel = HomeViewModel(FakeConnectionController(), servers)
+        val viewModel = HomeViewModel(FakeConnectionController(), servers, FakeNotificationPermissionState())
         val targetId = ServerId("target-42")
 
         // When
@@ -389,5 +391,131 @@ internal class HomeViewModelTest {
 
         // Then
         assertEquals(listOf(targetId), servers.selectServerCalls)
+    }
+
+    // =======================================================================
+    // Effects — notification permission (T-2)
+    // =======================================================================
+
+    @Test
+    fun `entering Connected when gate not granted EXPECT RequestNotificationPermission emitted exactly once`() =
+        runTest {
+            // Given — gate starts not granted
+            val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
+            val notificationPermission = FakeNotificationPermissionState(initialGranted = false)
+            val viewModel = HomeViewModel(controller, FakeServerRepository(), notificationPermission)
+
+            viewModel.effects.test {
+                // When — transition INTO Connected
+                controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = null))
+                advanceUntilIdle()
+
+                // Then — exactly one effect, nothing more
+                assertEquals(HomeEffect.RequestNotificationPermission, awaitItem())
+                expectNoEvents()
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `entering Connected when gate IS granted EXPECT no notification permission effect`() = runTest {
+        // Given — gate starts granted (default)
+        val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
+        val notificationPermission = FakeNotificationPermissionState(initialGranted = true)
+        val viewModel = HomeViewModel(controller, FakeServerRepository(), notificationPermission)
+
+        viewModel.effects.test {
+            // When
+            controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = null))
+            advanceUntilIdle()
+
+            // Then — no notification effect
+            expectNoEvents()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Connected self-transition via traffic update EXPECT RequestNotificationPermission emitted only once`() =
+        runTest {
+            // Given — gate not granted; distinctUntilChangedBy must collapse Connected→Connected
+            val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
+            val notificationPermission = FakeNotificationPermissionState(initialGranted = false)
+            val viewModel = HomeViewModel(controller, FakeServerRepository(), notificationPermission)
+
+            viewModel.effects.test {
+                // When — initial Connected entry
+                controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = null))
+                advanceUntilIdle()
+                assertEquals(HomeEffect.RequestNotificationPermission, awaitItem())
+
+                // When — Connected→Connected self-transition (traffic field churn)
+                controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = traffic))
+                advanceUntilIdle()
+
+                // Then — no second emission
+                expectNoEvents()
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `reconnect Connected-Disconnected-Connected EXPECT RequestNotificationPermission NOT emitted again`() =
+        runTest {
+            // Given — requestedThisProcess guard prevents re-emission across reconnects
+            val controller = FakeConnectionController(initialState = VpnConnectionState.Disconnected)
+            val notificationPermission = FakeNotificationPermissionState(initialGranted = false)
+            val viewModel = HomeViewModel(controller, FakeServerRepository(), notificationPermission)
+
+            viewModel.effects.test {
+                // When — first Connected entry → effect fires once
+                controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = null))
+                advanceUntilIdle()
+                assertEquals(HomeEffect.RequestNotificationPermission, awaitItem())
+
+                // When — disconnect then reconnect
+                controller.emit(VpnConnectionState.Disconnected)
+                advanceUntilIdle()
+                controller.emit(VpnConnectionState.Connected(server = serverA, since = instant, traffic = null))
+                advanceUntilIdle()
+
+                // Then — no second emission for the rest of the process lifetime
+                expectNoEvents()
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `notificationsGranted reflects the gate value published by FakeNotificationPermissionState`() = runTest {
+        // Given — gate starts granted
+        val notificationPermission = FakeNotificationPermissionState(initialGranted = true)
+        val viewModel = HomeViewModel(
+            FakeConnectionController(),
+            FakeServerRepository(),
+            notificationPermission,
+        )
+
+        viewModel.notificationsGranted.test {
+            // Initial value
+            assertEquals(true, awaitItem())
+
+            // When — gate changes to not granted via refresh
+            notificationPermission.setGranted(false)
+            notificationPermission.refresh()
+            advanceUntilIdle()
+
+            assertEquals(false, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `notificationChannelId equals vpnis_tunnel`() {
+        // Given
+        val notificationPermission = FakeNotificationPermissionState()
+        val viewModel = HomeViewModel(FakeConnectionController(), FakeServerRepository(), notificationPermission)
+
+        // Then
+        assertEquals("vpnis_tunnel", viewModel.notificationChannelId)
     }
 }
