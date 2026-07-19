@@ -59,10 +59,7 @@ public class FakeNotificationPermissionState : NotificationPermissionState {
      * `:data:fake` must NOT depend on `:data:vpn`, so a shared constant reference is a forbidden
      * cross-module dependency. The duplicate is deliberate and acceptable here.
      */
-    @Suppress("MayBeConstant")
-    private val CHANNEL_ID = "vpnis_tunnel"
-
-    override val channelId: String get() = CHANNEL_ID
+    override val channelId: String = "vpnis_tunnel"
 
     /**
      * Simulates a change in OS notification permission state.

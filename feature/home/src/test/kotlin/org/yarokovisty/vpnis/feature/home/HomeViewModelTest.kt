@@ -287,7 +287,8 @@ internal class HomeViewModelTest {
     @Test
     fun `onIntent AddServer EXPECT NavigateToServers effect emitted`() = runTest {
         // Given
-        val viewModel = HomeViewModel(FakeConnectionController(), FakeServerRepository(), FakeNotificationPermissionState())
+        val viewModel =
+            HomeViewModel(FakeConnectionController(), FakeServerRepository(), FakeNotificationPermissionState())
 
         viewModel.effects.test {
             // When
@@ -485,29 +486,28 @@ internal class HomeViewModelTest {
         }
 
     @Test
-    fun `notificationsGranted reflects the gate value published by FakeNotificationPermissionState`() =
-        runTest {
-            // Given — gate starts granted
-            val notificationPermission = FakeNotificationPermissionState(initialGranted = true)
-            val viewModel = HomeViewModel(
-                FakeConnectionController(),
-                FakeServerRepository(),
-                notificationPermission,
-            )
+    fun `notificationsGranted reflects the gate value published by FakeNotificationPermissionState`() = runTest {
+        // Given — gate starts granted
+        val notificationPermission = FakeNotificationPermissionState(initialGranted = true)
+        val viewModel = HomeViewModel(
+            FakeConnectionController(),
+            FakeServerRepository(),
+            notificationPermission,
+        )
 
-            viewModel.notificationsGranted.test {
-                // Initial value
-                assertEquals(true, awaitItem())
+        viewModel.notificationsGranted.test {
+            // Initial value
+            assertEquals(true, awaitItem())
 
-                // When — gate changes to not granted via refresh
-                notificationPermission.setGranted(false)
-                notificationPermission.refresh()
-                advanceUntilIdle()
+            // When — gate changes to not granted via refresh
+            notificationPermission.setGranted(false)
+            notificationPermission.refresh()
+            advanceUntilIdle()
 
-                assertEquals(false, awaitItem())
-                cancelAndIgnoreRemainingEvents()
-            }
+            assertEquals(false, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
+    }
 
     @Test
     fun `notificationChannelId equals vpnis_tunnel`() {

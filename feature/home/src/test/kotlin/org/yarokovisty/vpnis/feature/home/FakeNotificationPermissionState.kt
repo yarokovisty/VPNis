@@ -16,9 +16,7 @@ import org.yarokovisty.vpnis.core.domain.permission.NotificationPermissionState
  * `FakeNotificationPermissionState` is NOT on the home test classpath (the modules share
  * no test dependency), so this local double is necessary.
  */
-internal class FakeNotificationPermissionState(
-    initialGranted: Boolean = true,
-) : NotificationPermissionState {
+internal class FakeNotificationPermissionState(initialGranted: Boolean = true) : NotificationPermissionState {
 
     private companion object {
         // Duplicate the literal — a shared reference would require either a forbidden
