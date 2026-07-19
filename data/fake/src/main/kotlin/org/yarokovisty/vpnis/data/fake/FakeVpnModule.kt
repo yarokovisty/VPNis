@@ -3,6 +3,7 @@ package org.yarokovisty.vpnis.data.fake
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.yarokovisty.vpnis.core.domain.connection.ConnectionController
+import org.yarokovisty.vpnis.core.domain.permission.NotificationPermissionState
 
 /**
  * Koin module that binds [FakeConnectionController] as the app-wide singleton for
@@ -23,4 +24,9 @@ import org.yarokovisty.vpnis.core.domain.connection.ConnectionController
  */
 public val fakeVpnModule: Module = module {
     single<ConnectionController> { FakeConnectionController() }
+
+    // NotificationPermissionState — fake pull-model gate; granted by default.
+    // Symmetric with vpnModule so the swap invariant and checkModules both hold,
+    // and #114 / #131 can wire a consumer without re-touching this module.
+    single<NotificationPermissionState> { FakeNotificationPermissionState() }
 }

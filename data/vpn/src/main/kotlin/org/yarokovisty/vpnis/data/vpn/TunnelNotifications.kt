@@ -7,6 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
+import org.yarokovisty.vpnis.core.domain.model.TrafficStats
+import java.time.Instant
 
 /**
  * Encapsulates all notification logic for the VPNis tunnel foreground service.
@@ -20,18 +23,22 @@ import androidx.core.app.NotificationCompat
  * - Builds the [Notification] object via [NotificationCompat.Builder] with:
  *     - `ongoing = true` (cannot be dismissed while the tunnel runs)
  *     - `PRIORITY_LOW` (low-importance status-bar slot; no sound, no heads-up)
+ *     - `setOnlyAlertOnce(true)` so live-content re-`notify()`s (issue #127's presenter, #128's
+ *       server name / timer, #130's traffic) never re-alert — epic #126 DoD "0 heads-up/sound"
  *     - A monochrome small icon ([R.drawable.ic_stat_vpn])
- *     - Static content title/text (issue #63 provides live content via [contentFor])
+ *     - State-driven content resolved by [contentFor] + rendered by [build]
  *     - A Disconnect action whose [PendingIntent] targets [VpnTunnelService] with
  *       [VpnTunnelService.ACTION_DISCONNECT]
  *
- * ## Pure content selection seam
+ * ## Pure content-selection seam (issue #127)
  *
- * [contentFor] maps a [NotificationContent] model to a `(title, text)` pair. Keeping this
- * logic in a standalone function (not mixed into [build]) means:
- * - It is pure Kotlin — no Android context required — so it is directly unit-testable.
- * - Issue #63's ConnectionController can supply a [NotificationContent] with live server
- *   name / session timer and call [build] without touching channel or action logic.
+ * [contentFor] maps a [VpnConnectionState] to a data-carrying [NotificationContent]. It is a pure
+ * Kotlin function — no Android context — so it is directly unit-testable without Robolectric.
+ * Crucially it carries **data** ([NotificationContent.Connected.since], server name, traffic), NOT
+ * pre-formatted strings: localisation happens in [build] via `getString`, so the mapper stays pure
+ * and Context-free while the displayed strings are still localisable. [TunnelNotificationPresenter]
+ * (issue #127) drives the pipeline `state.map { contentFor(it) }.distinctUntilChanged()` → [build] →
+ * `notify()`; #128/#130 extend the [NotificationContent] subtypes without touching [build]'s wiring.
  *
  * ## Issue #106 / #67 dependency
  *
@@ -55,8 +62,8 @@ internal object TunnelNotifications {
      * Stable notification ID for the tunnel foreground service notification.
      *
      * Must not be 0 — the system rejects 0 for foreground service notifications.
-     * Kept as a small positive constant so [VpnTunnelService] and any future
-     * [updateNotification] callers use the same slot.
+     * Kept as a small positive constant so [VpnTunnelService] and [TunnelNotificationPresenter]
+     * (the sole owner of this slot, issue #127) use the same ID.
      */
     const val NOTIFICATION_ID = 1001
 
@@ -93,19 +100,20 @@ internal object TunnelNotifications {
     // -------------------------------------------------------------------------
 
     /**
-     * Builds a [Notification] for the tunnel foreground service.
+     * Builds a [Notification] for the tunnel foreground service from a [NotificationContent].
      *
-     * Content (title, text) is derived by [contentFor] from [content], making the
-     * content model the only thing that changes between [build] calls during a live session.
-     * Issue #63 will call [build] with a populated [NotificationContent] after the
-     * ConnectionController updates the session state.
+     * [content] is rendered to a localised `(title, text)` pair here (Context available), keeping
+     * [contentFor] pure. The default [NotificationContent.Inactive] renders the static
+     * "VPNis / Tunnel active" copy used for the initial [android.app.Service.startForeground] post —
+     * byte-for-byte identical to the pre-#127 notification. Live states ([NotificationContent.Connected]
+     * / [NotificationContent.Connecting]) are posted by [TunnelNotificationPresenter] as the connection
+     * state changes.
      *
      * @param context Used to create the [PendingIntent] and resolve string resources.
-     * @param content Provides the title and body text. Defaults to [NotificationContent.Default]
-     *   which shows the static "VPNis / Tunnel active" placeholder.
+     * @param content The data-carrying content model. Defaults to [NotificationContent.Inactive].
      */
-    fun build(context: Context, content: NotificationContent = NotificationContent.Default): Notification {
-        val (title, text) = contentFor(content)
+    fun build(context: Context, content: NotificationContent = NotificationContent.Inactive): Notification {
+        val (title, text) = render(context, content)
 
         val disconnectPendingIntent = PendingIntent.getService(
             context,
@@ -121,6 +129,9 @@ internal object TunnelNotifications {
             .setContentText(text)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
+            // Live content re-posts the notification (presenter, #128 timer, #130 traffic); alert
+            // only on the first post so the low-importance channel never produces sound/heads-up.
+            .setOnlyAlertOnce(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             // Suppress the "Tap to see all XXX notifications" footer in notification shade.
             .setShowWhen(false)
@@ -132,24 +143,53 @@ internal object TunnelNotifications {
             .build()
     }
 
+    /**
+     * Renders a [NotificationContent] to a localised `(title, text)` pair.
+     *
+     * The only place strings are resolved — [contentFor] stays Context-free. #128 replaces the
+     * [NotificationContent.Connected] branch with server name + a session timer.
+     */
+    private fun render(context: Context, content: NotificationContent): Pair<String, String> {
+        val title = context.getString(R.string.vpn_notification_title)
+        val text = when (content) {
+            is NotificationContent.Inactive ->
+                context.getString(R.string.vpn_notification_text_active)
+            is NotificationContent.Connecting ->
+                context.getString(R.string.vpn_notification_text_connecting, content.serverName)
+            is NotificationContent.Connected ->
+                // TODO(#128): append the monotonic session timer (setUsesChronometer + setWhen).
+                context.getString(R.string.vpn_notification_text_connected, content.serverName)
+        }
+        return title to text
+    }
+
     // -------------------------------------------------------------------------
     // Pure content-selection seam (unit-testable — no Context required)
     // -------------------------------------------------------------------------
 
     /**
-     * Maps a [NotificationContent] model to a `(title, text)` string pair.
+     * Maps a [VpnConnectionState] to a data-carrying [NotificationContent].
      *
-     * This function is intentionally free of Android Context dependencies so it can be
-     * unit-tested without Robolectric or a running device. Localisation of the strings
-     * happens at the [build] call site where a Context is available.
+     * Pure and Context-free so it is unit-testable without Robolectric. Localisation happens in
+     * [build]/[render] where a Context is available; this function carries only data.
      *
-     * Issue #63 will expand [NotificationContent] with server name and session duration,
-     * and add branches here — no changes to [build] will be needed.
+     * Total `when` over [VpnConnectionState]: non-active states (Loading / Disconnected /
+     * PermissionRequired / Error) map to [NotificationContent.Inactive], which
+     * [TunnelNotificationPresenter] filters out so the tunnel notification is never posted for a
+     * state without a live tunnel. Exhaustiveness makes a newly added [VpnConnectionState] a
+     * compile error here rather than a silent gap.
      */
-    internal fun contentFor(content: NotificationContent): Pair<String, String> = when (content) {
-        is NotificationContent.Default -> Pair("VPNis", "Tunnel active")
-        // TODO(#63): NotificationContent.Connected(serverName, elapsedSeconds) ->
-        //   Pair("VPNis — Connected", "$serverName · ${formatDuration(elapsedSeconds)}")
+    internal fun contentFor(state: VpnConnectionState): NotificationContent = when (state) {
+        is VpnConnectionState.Loading -> NotificationContent.Inactive
+        is VpnConnectionState.Disconnected -> NotificationContent.Inactive
+        is VpnConnectionState.PermissionRequired -> NotificationContent.Inactive
+        is VpnConnectionState.Error -> NotificationContent.Inactive
+        is VpnConnectionState.Connecting -> NotificationContent.Connecting(serverName = state.server.name)
+        is VpnConnectionState.Connected -> NotificationContent.Connected(
+            serverName = state.server.name,
+            since = state.since,
+            traffic = state.traffic,
+        )
     }
 }
 
@@ -158,28 +198,34 @@ internal object TunnelNotifications {
 // =============================================================================
 
 /**
- * Represents the displayable content state for the tunnel foreground service notification.
+ * The displayable content state for the tunnel foreground service notification.
  *
- * Keeping this as a sealed hierarchy decouples the notification text from both
- * [TunnelNotifications] (which builds the [android.app.Notification]) and from
- * [VpnTunnelService] (which just passes the latest content down).
- *
- * ## Seam for issue #63
- *
- * Issue #63's ConnectionController will produce instances of this class as its state
- * transitions, passing them to [VpnTunnelService.updateNotification]. Add new subtypes
- * here and handle them in [TunnelNotifications.contentFor] — no other file needs changing.
+ * Carries **data only** — no pre-formatted or localised strings. [TunnelNotifications.render]
+ * turns this into localised title/text at build time. This decouples the notification copy from
+ * both [TunnelNotifications] (which builds the [android.app.Notification]) and the connection
+ * state machine, and keeps [TunnelNotifications.contentFor] pure.
  *
  * @see TunnelNotifications.contentFor
  */
 internal sealed interface NotificationContent {
 
     /**
-     * Static placeholder used until issue #63's ConnectionController provides live state.
+     * No live tunnel (Loading / Disconnected / PermissionRequired / Error).
      *
-     * Rendered as: title = "VPNis", text = "Tunnel active".
+     * Rendered as the static "VPNis / Tunnel active" copy for the initial `startForeground` post;
+     * [TunnelNotificationPresenter] filters this out and never `notify()`s it during a session.
      */
-    data object Default : NotificationContent
+    data object Inactive : NotificationContent
 
-    // TODO(#63): data class Connected(val serverName: String, val elapsedSeconds: Long) : NotificationContent
+    /** A connection attempt is in progress for [serverName]. */
+    data class Connecting(val serverName: String) : NotificationContent
+
+    /**
+     * The tunnel is active.
+     *
+     * @param serverName the connected server's display name.
+     * @param since       the moment the tunnel became active (issue #128 renders it as a timer).
+     * @param traffic     live traffic counters, or `null` when not yet available (issue #130).
+     */
+    data class Connected(val serverName: String, val since: Instant, val traffic: TrafficStats?) : NotificationContent
 }

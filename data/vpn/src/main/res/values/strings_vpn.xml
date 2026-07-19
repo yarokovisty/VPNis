@@ -15,4 +15,16 @@
 
     <!-- Label for the Disconnect action button inside the tunnel notification. -->
     <string name="vpn_notification_action_disconnect" translatable="true">Disconnect</string>
+
+    <!-- Tunnel notification title (shown for every connection state). -->
+    <string name="vpn_notification_title" translatable="true">VPNis</string>
+
+    <!-- Tunnel notification body: no live tunnel / initial foreground post. -->
+    <string name="vpn_notification_text_active" translatable="true">Tunnel active</string>
+
+    <!-- Tunnel notification body while connecting. %1$s = server name. -->
+    <string name="vpn_notification_text_connecting" translatable="true">Connecting to %1$s…</string>
+
+    <!-- Tunnel notification body while connected. %1$s = server name (issue #128 adds a session timer). -->
+    <string name="vpn_notification_text_connected" translatable="true">Connected · %1$s</string>
 </resources>
