@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,11 +29,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.yarokovisty.vpnis.core.domain.model.Server
 import org.yarokovisty.vpnis.design.uikit.banner.VPNisBanner
+import org.yarokovisty.vpnis.design.uikit.banner.VPNisBannerAction
 import org.yarokovisty.vpnis.design.uikit.banner.VPNisBannerVariant
 import org.yarokovisty.vpnis.design.uikit.button.VPNisButton
 import org.yarokovisty.vpnis.design.uikit.button.VPNisOutlinedButton
@@ -81,7 +87,14 @@ private val ButtonTopSpacingEmpty = 34.dp
  * @param modifier Optional [Modifier] applied to the outer container.
  */
 @Composable
-public fun HomeScreen(uiState: HomeUiState, onIntent: (HomeIntent) -> Unit, modifier: Modifier = Modifier) {
+public fun HomeScreen(
+    uiState: HomeUiState,
+    onIntent: (HomeIntent) -> Unit,
+    modifier: Modifier = Modifier,
+    showNotificationBanner: Boolean = false,
+    onOpenNotificationSettings: () -> Unit = {},
+    onDismissNotificationBanner: () -> Unit = {},
+) {
     when (uiState) {
         HomeUiState.Loading -> HomeLoadingContent(modifier = modifier)
         is HomeUiState.Disconnected -> HomeDisconnectedContent(
@@ -98,6 +111,9 @@ public fun HomeScreen(uiState: HomeUiState, onIntent: (HomeIntent) -> Unit, modi
             state = uiState,
             onIntent = onIntent,
             modifier = modifier,
+            showNotificationBanner = showNotificationBanner,
+            onOpenNotificationSettings = onOpenNotificationSettings,
+            onDismissNotificationBanner = onDismissNotificationBanner,
         )
         is HomeUiState.Error -> HomeErrorContent(
             state = uiState,
@@ -414,6 +430,9 @@ private fun HomeConnectedContent(
     state: HomeUiState.Connected,
     onIntent: (HomeIntent) -> Unit,
     modifier: Modifier = Modifier,
+    showNotificationBanner: Boolean = false,
+    onOpenNotificationSettings: () -> Unit = {},
+    onDismissNotificationBanner: () -> Unit = {},
 ) {
     HomeScaffold(modifier = modifier) {
         val contentLabel = stringResource(R.string.home_button_content_description)
@@ -465,6 +484,24 @@ private fun HomeConnectedContent(
         )
 
         Spacer(modifier = Modifier.height(ButtonBlockTopSpacing))
+
+        if (showNotificationBanner) {
+            VPNisBanner(
+                text = stringResource(R.string.home_notification_banner_text),
+                variant = VPNisBannerVariant.Info,
+                icon = Icons.Filled.Info,
+                primaryAction = VPNisBannerAction(
+                    label = stringResource(R.string.home_notification_banner_button),
+                    onClick = onOpenNotificationSettings,
+                ),
+                onDismiss = onDismissNotificationBanner,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { liveRegion = LiveRegionMode.Polite },
+            )
+
+            Spacer(modifier = Modifier.height(HomeSectionSpacing))
+        }
 
         ServerCard(
             name = state.server.name,

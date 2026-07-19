@@ -53,6 +53,18 @@ public class FakeNotificationPermissionState : NotificationPermissionState {
     override val isGranted: Flow<Boolean> = _isGranted.asStateFlow()
 
     /**
+     * Opaque channel id returned as the deep-link target.
+     *
+     * Intentional literal duplicate of `TunnelNotifications.CHANNEL_ID` from `:data:vpn` —
+     * `:data:fake` must NOT depend on `:data:vpn`, so a shared constant reference is a forbidden
+     * cross-module dependency. The duplicate is deliberate and acceptable here.
+     */
+    @Suppress("MayBeConstant")
+    private val CHANNEL_ID = "vpnis_tunnel"
+
+    override val channelId: String get() = CHANNEL_ID
+
+    /**
      * Simulates a change in OS notification permission state.
      *
      * Does **not** emit on [isGranted] — callers must subsequently call [refresh] to surface
@@ -66,12 +78,14 @@ public class FakeNotificationPermissionState : NotificationPermissionState {
     }
 
     /**
-     * Reads [backing] and pushes it into [isGranted].
+     * Reads [backing], pushes it into [isGranted], and returns the same value.
      *
      * Mirrors the real implementation's OS read: a change made via [setGranted] is NOT visible
-     * to [isGranted] collectors until this method is called.
+     * to [isGranted] collectors until this method is called. The return value is the same value
+     * written to the backing [kotlinx.coroutines.flow.StateFlow] — not a read-back.
      */
-    override suspend fun refresh() {
+    override suspend fun refresh(): Boolean {
         _isGranted.value = backing
+        return backing
     }
 }

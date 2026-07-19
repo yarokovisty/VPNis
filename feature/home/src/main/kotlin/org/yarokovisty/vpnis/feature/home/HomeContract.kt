@@ -99,6 +99,23 @@ public sealed interface HomeEffect {
      */
     public data object RequestVpnPermission : HomeEffect
 
+    /**
+     * The OS POST_NOTIFICATIONS runtime permission dialog must be launched.
+     *
+     * Fired **at most once per process** immediately after the tunnel first reaches the
+     * [org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState.Connected] state while
+     * the notification gate is not granted. The per-process guard lives in [HomeViewModel] —
+     * the route must not re-fire the dialog on its own after receiving this effect.
+     *
+     * The route:
+     * 1. Ignores this effect on API < 33 (no runtime permission exists below Tiramisu).
+     * 2. Launches `RequestPermission(Manifest.permission.POST_NOTIFICATIONS)` once if
+     *    the dialog has not been shown before in this Activity lifetime.
+     * 3. Suppresses the launch if the dialog was already shown (`hasRequestedBefore` flag
+     *    in route-local state) — the denial banner is the only remaining UX surface.
+     */
+    public data object RequestNotificationPermission : HomeEffect
+
     /** Navigate to the server-selection screen. */
     public data object NavigateToServers : HomeEffect
 }
