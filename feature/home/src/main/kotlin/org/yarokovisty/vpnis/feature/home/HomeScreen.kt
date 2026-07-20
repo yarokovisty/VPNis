@@ -103,6 +103,9 @@ public fun HomeScreen(
             state = uiState,
             onIntent = onIntent,
             modifier = modifier,
+            showNotificationBanner = showNotificationBanner,
+            onOpenNotificationSettings = onOpenNotificationSettings,
+            onDismissNotificationBanner = onDismissNotificationBanner,
         )
         is HomeUiState.Connecting -> HomeConnectingContent(
             state = uiState,
@@ -208,21 +211,37 @@ private fun HomeDisconnectedContent(
     state: HomeUiState.Disconnected,
     onIntent: (HomeIntent) -> Unit,
     modifier: Modifier = Modifier,
+    showNotificationBanner: Boolean = false,
+    onOpenNotificationSettings: () -> Unit = {},
+    onDismissNotificationBanner: () -> Unit = {},
 ) {
     HomeScaffold(modifier = modifier) {
         if (state.server == null) {
-            HomeEmptyContent(onIntent = onIntent)
+            HomeEmptyContent(
+                onIntent = onIntent,
+                showNotificationBanner = showNotificationBanner,
+                onOpenNotificationSettings = onOpenNotificationSettings,
+                onDismissNotificationBanner = onDismissNotificationBanner,
+            )
         } else {
             HomeDisconnectedWithServerContent(
                 server = state.server,
                 onIntent = onIntent,
+                showNotificationBanner = showNotificationBanner,
+                onOpenNotificationSettings = onOpenNotificationSettings,
+                onDismissNotificationBanner = onDismissNotificationBanner,
             )
         }
     }
 }
 
 @Composable
-private fun HomeEmptyContent(onIntent: (HomeIntent) -> Unit) {
+private fun HomeEmptyContent(
+    onIntent: (HomeIntent) -> Unit,
+    showNotificationBanner: Boolean = false,
+    onOpenNotificationSettings: () -> Unit = {},
+    onDismissNotificationBanner: () -> Unit = {},
+) {
     val contentLabel = stringResource(R.string.home_button_content_description)
     val stateLabel = stringResource(R.string.home_button_state_disconnected)
 
@@ -261,6 +280,18 @@ private fun HomeEmptyContent(onIntent: (HomeIntent) -> Unit) {
         onClick = { onIntent(HomeIntent.AddServer) },
         modifier = Modifier.fillMaxWidth(),
     )
+
+    // Notification section is placed BELOW the primary onboarding CTAs — the user's primary
+    // task on a no-server screen is adding a server, not fixing notifications (plan T-3, ux §2).
+    if (showNotificationBanner) {
+        Spacer(modifier = Modifier.height(HomeSectionSpacing))
+
+        NotificationsSection(
+            onOpenSettings = onOpenNotificationSettings,
+            onDismiss = onDismissNotificationBanner,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }
 
 @Composable
@@ -312,7 +343,13 @@ private fun HomeEmptyPromptCard() {
 }
 
 @Composable
-private fun HomeDisconnectedWithServerContent(server: Server, onIntent: (HomeIntent) -> Unit) {
+private fun HomeDisconnectedWithServerContent(
+    server: Server,
+    onIntent: (HomeIntent) -> Unit,
+    showNotificationBanner: Boolean = false,
+    onOpenNotificationSettings: () -> Unit = {},
+    onDismissNotificationBanner: () -> Unit = {},
+) {
     val contentLabel = stringResource(R.string.home_button_content_description)
     val stateLabel = stringResource(R.string.home_button_state_disconnected)
     val protocol = stringResource(R.string.home_server_protocol_vless_reality)
@@ -335,6 +372,18 @@ private fun HomeDisconnectedWithServerContent(server: Server, onIntent: (HomeInt
         title = stringResource(R.string.home_status_disconnected),
         subtitle = null,
     )
+
+    // Notification section sits after StatusIndicator, before ServerCard — a proactive
+    // recovery prompt on the resting home screen (plan T-3, ux anchor §2).
+    if (showNotificationBanner) {
+        Spacer(modifier = Modifier.height(HomeSectionSpacing))
+
+        NotificationsSection(
+            onOpenSettings = onOpenNotificationSettings,
+            onDismiss = onDismissNotificationBanner,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 
     Spacer(modifier = Modifier.height(ButtonBlockTopSpacing))
 
@@ -488,18 +537,10 @@ private fun HomeConnectedContent(
         Spacer(modifier = Modifier.height(ButtonBlockTopSpacing))
 
         if (showNotificationBanner) {
-            VPNisBanner(
-                text = stringResource(R.string.home_notification_banner_text),
-                variant = VPNisBannerVariant.Info,
-                icon = Icons.Filled.Info,
-                primaryAction = VPNisBannerAction(
-                    label = stringResource(R.string.home_notification_banner_button),
-                    onClick = onOpenNotificationSettings,
-                ),
+            NotificationsSection(
+                onOpenSettings = onOpenNotificationSettings,
                 onDismiss = onDismissNotificationBanner,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { liveRegion = LiveRegionMode.Polite },
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(modifier = Modifier.height(HomeSectionSpacing))
@@ -526,6 +567,39 @@ private fun HomeConnectedContent(
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+// ---------------------------------------------------------------------------
+// Notifications section (reused in Connected + both Disconnected sub-branches)
+// ---------------------------------------------------------------------------
+
+/**
+ * Stateless notification-permission rationale section (#131).
+ *
+ * A feature-level wrapper around [VPNisBanner] that owns the copy, icon, CTA, dismiss slot,
+ * and the `liveRegion = Polite` a11y annotation. Intentionally kept `internal` to
+ * `:feature:home` — it is NOT promoted to `:design:uikit` (plan DM-3, arch review Issue 4).
+ *
+ * Callers gate rendering with [shouldShowNotificationsSection]; this composable is purely
+ * presentational and has no visibility logic of its own.
+ *
+ * @param onOpenSettings Invoked when the user taps the "Open settings" CTA.
+ * @param onDismiss      Invoked when the user dismisses the banner.
+ * @param modifier       Optional [Modifier] applied to the [VPNisBanner].
+ */
+@Composable
+internal fun NotificationsSection(onOpenSettings: () -> Unit, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    VPNisBanner(
+        text = stringResource(R.string.home_notification_banner_text),
+        variant = VPNisBannerVariant.Info,
+        icon = Icons.Filled.Info,
+        primaryAction = VPNisBannerAction(
+            label = stringResource(R.string.home_notification_banner_button),
+            onClick = onOpenSettings,
+        ),
+        onDismiss = onDismiss,
+        modifier = modifier.semantics { liveRegion = LiveRegionMode.Polite },
+    )
 }
 
 // ---------------------------------------------------------------------------

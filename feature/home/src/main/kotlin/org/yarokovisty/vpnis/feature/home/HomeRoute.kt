@@ -160,14 +160,15 @@ public fun HomeRoute(
     // Banner visibility — gate-driven (plan §3, ux#2/#3)
     // ---------------------------------------------------------------------------
 
-    // Visible only when:
-    // - we already asked (otherwise the banner would appear before the dialog on the very
-    //   first Connected entry, which `requestedThisProcess` in the VM prevents);
-    // - the gate is still denied (two-part: app-level + channel importance);
-    // - the system dialog is not currently on screen (prevents banner + dialog at the same time);
-    // - the user has not dismissed it for this Connected session.
-    val showNotificationBanner =
-        hasRequestedBefore && !notificationsGranted && !requestInFlight && !dismissedThisSession
+    // Delegates to the pure predicate so (a) the logic has a single source of truth shared
+    // by both Connected and Disconnected placements (#131 / T-2), and (b) #132 can unit-test
+    // the truth-table without involving Compose or the route.
+    val showNotificationBanner = shouldShowNotificationsSection(
+        hasRequestedBefore = hasRequestedBefore,
+        granted = notificationsGranted,
+        requestInFlight = requestInFlight,
+        dismissed = dismissedThisSession,
+    )
 
     // ---------------------------------------------------------------------------
     // Screen
