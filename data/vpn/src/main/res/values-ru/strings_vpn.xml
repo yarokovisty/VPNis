@@ -16,6 +16,10 @@
     <string name="vpn_notification_text_active">Туннель активен</string>
     <string name="vpn_notification_text_connecting">Подключение к %1$s…</string>
     <string name="vpn_notification_text_connected">Подключено · %1$s</string>
+    <string name="vpn_notification_text_connected_traffic">%1$s · ↓ %2$s · ↑ %3$s</string>
+    <string name="vpn_traffic_unit_bps">Б/с</string>
+    <string name="vpn_traffic_unit_kbps">КБ/с</string>
+    <string name="vpn_traffic_unit_mbps">МБ/с</string>
 
     <!-- Error alert (issue #129). -->
     <string name="vpn_alert_channel_name">Оповещения VPN</string>

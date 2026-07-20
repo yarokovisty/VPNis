@@ -37,6 +37,7 @@ dependencyResolutionManagement {
 rootProject.name = "VPNis"
 include(":app")
 include(":core:domain")
+include(":core:format")
 include(":data:fake")
 include(":data:server")
 include(":data:vpn")

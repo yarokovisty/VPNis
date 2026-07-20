@@ -11,6 +11,7 @@ import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
 import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.core.domain.model.Server
 import org.yarokovisty.vpnis.core.domain.model.ServerId
+import org.yarokovisty.vpnis.core.domain.model.TrafficStats
 
 /**
  * Unit tests for [ConnectionControllerImpl].
@@ -593,6 +594,71 @@ class ConnectionControllerImplTest {
 
         // Then
         assertEquals(0, launcher.launchCount)
+    }
+
+    // -------------------------------------------------------------------------
+    // T-5 — onTrafficSample (TrafficSink): Connected → Connected self-transition
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `onTrafficSample while Connected EXPECT traffic is applied`() = runTest {
+        // Given
+        val controller = makeController()
+        controller.connect(server)
+        controller.onTunnelEstablished()
+        val stats = TrafficStats(rxBytes = 1_000, txBytes = 200, rxBps = 500, txBps = 100)
+
+        // When
+        controller.onTrafficSample(stats)
+
+        // Then
+        val state = controller.state.first() as VpnConnectionState.Connected
+        assertEquals(stats, state.traffic)
+    }
+
+    @Test
+    fun `onTrafficSample while Connected EXPECT server and since are preserved`() = runTest {
+        // Given
+        val controller = makeController()
+        controller.connect(server)
+        controller.onTunnelEstablished()
+        val before = controller.state.first() as VpnConnectionState.Connected
+
+        // When
+        controller.onTrafficSample(TrafficStats(rxBytes = 5, txBytes = 5, rxBps = 5, txBps = 5))
+
+        // Then — only traffic changes; the same server/since carry through the self-transition.
+        val after = controller.state.first() as VpnConnectionState.Connected
+        assertEquals(before.server, after.server)
+        assertEquals(before.since, after.since)
+    }
+
+    @Test
+    fun `onTrafficSample while Connecting EXPECT state stays Connecting (no synthetic Connected)`() = runTest {
+        // Given — Connecting, NOT yet Connected. Connecting → Connected is a *legal* edge, so a
+        // stray sample must be rejected by the explicit is-Connected read, not the transition guard.
+        val controller = makeController()
+        controller.connect(server)
+
+        // When
+        controller.onTrafficSample(TrafficStats(rxBytes = 1, txBytes = 1, rxBps = 1, txBps = 1))
+
+        // Then
+        val state = controller.state.first()
+        assertTrue(state is VpnConnectionState.Connecting)
+    }
+
+    @Test
+    fun `onTrafficSample while Disconnected EXPECT state stays Disconnected`() = runTest {
+        // Given — fresh controller, never connected.
+        val controller = makeController()
+
+        // When — a straggler sample after teardown.
+        controller.onTrafficSample(TrafficStats(rxBytes = 9, txBytes = 9, rxBps = 9, txBps = 9))
+
+        // Then
+        val state = controller.state.first()
+        assertEquals(VpnConnectionState.Disconnected, state)
     }
 }
 

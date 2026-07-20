@@ -61,6 +61,20 @@ internal class LibXrayCoreImpl(private val api: LibxrayApi, private val datDir: 
         return parseCallResponse(responseBase64)
     }
 
+    /**
+     * Polls the Xray expvar `/debug/vars` endpoint and extracts the proxy outbound's cumulative
+     * byte counters (issues #69/#130).
+     *
+     * The URL is built from [TunConfig.metricsPort] — the same value [XrayConfigBuilder] binds the
+     * `metrics` dokodemo-door inbound to — so the config and the query never drift. Loopback only.
+     * Returns `null` on any failure or when the counters are not yet present (see [parseStats]).
+     */
+    override fun queryStats(): TrafficCounters? {
+        val url = "http://127.0.0.1:${TunConfig().metricsPort}/debug/vars"
+        val responseBase64 = api.queryStats(url)
+        return parseStats(responseBase64)
+    }
+
     override fun stop() {
         Log.d(TAG, "stop: calling api.stop()")
         api.stop()
@@ -96,6 +110,50 @@ internal class LibXrayCoreImpl(private val api: LibxrayApi, private val datDir: 
     } catch (e: Exception) {
         Log.e(TAG, "start: failed to decode/parse CallResponse — treating as failure", e)
         false
+    }
+
+    /**
+     * Decodes the base64 `CallResponse` from [LibxrayApi.queryStats] and extracts the proxy
+     * outbound's cumulative `uplink`/`downlink` counters from the nested expvar body.
+     *
+     * The envelope's `data` field carries the raw `/debug/vars` body as a JSON-encoded string, so
+     * this is a two-level parse: decode the envelope, then parse `data` and navigate
+     * `stats.outbound.<PROXY_OUTBOUND_TAG>.{uplink,downlink}` (the nested expvar shape confirmed
+     * against Xray-core metrics docs — NOT the gRPC `>>>` naming).
+     *
+     * Returns `null` — a signal the poller skips — when the response is a failure, the body is
+     * blank, the counters are absent (no traffic since Xray start), or anything fails to parse.
+     */
+    // TooGenericExceptionCaught: base64/JSON decode throw heterogeneous exceptions all handled as
+    //   "stats unavailable". ReturnCount: linear guard-style extraction reads clearer as early nulls.
+    @Suppress("TooGenericExceptionCaught", "ReturnCount")
+    private fun parseStats(responseBase64: String): TrafficCounters? {
+        return try {
+            val decoded = java.util.Base64.getDecoder().decode(responseBase64)
+            val envelope = Json.parseToJsonElement(String(decoded, Charsets.UTF_8)).jsonObject
+            val success = envelope["success"]?.jsonPrimitive?.content?.toBoolean() ?: false
+            if (!success) {
+                Log.d(TAG, "queryStats: CallResponse success=false — stats unavailable")
+                return null
+            }
+            // `data` holds the expvar /debug/vars body as a JSON-encoded string.
+            val body = envelope["data"]?.jsonPrimitive?.content
+            if (body.isNullOrBlank()) return null
+
+            val outbound = Json.parseToJsonElement(body).jsonObject["stats"]?.jsonObject
+                ?.get("outbound")?.jsonObject
+                ?.get(XrayConfigBuilder.PROXY_OUTBOUND_TAG)?.jsonObject
+            val uplink = outbound?.get("uplink")?.jsonPrimitive?.content?.toLongOrNull()
+            val downlink = outbound?.get("downlink")?.jsonPrimitive?.content?.toLongOrNull()
+            if (uplink == null || downlink == null) {
+                // Counters not present yet (no traffic since Xray start) — skip this tick.
+                return null
+            }
+            TrafficCounters(rxBytes = downlink, txBytes = uplink)
+        } catch (e: Exception) {
+            Log.d(TAG, "queryStats: failed to decode/parse stats — treating as unavailable", e)
+            null
+        }
     }
 
     private companion object {

@@ -27,6 +27,7 @@ import libXray.LibXray
  * | `LibXray.registerDialerController(controller)` | `LibXray.registerDialerController(DialerController)` |
  * | `LibXray.newXrayRunFromJSONRequest(datDir, configJson)` | `LibXray.newXrayRunFromJSONRequest(String, String)` |
  * | `LibXray.runXrayFromJSON(req)` | `LibXray.runXrayFromJSON(String)` |
+ * | `LibXray.queryStats(base64Url)` | `LibXray.queryStats(String)` (Go `QueryStats`) |
  * | `LibXray.stopXray()` | `LibXray.stopXray()` |
  * | `DialerController.protectFd(fd)` | `protectFd(long): boolean` (Go `int` → Java `long`) |
  */
@@ -61,6 +62,19 @@ internal class RealLibxrayApi : LibxrayApi {
     override fun runFromJson(datDir: String, configJson: String): String {
         val request = LibXray.newXrayRunFromJSONRequest(datDir, configJson)
         return LibXray.runXrayFromJSON(request)
+    }
+
+    /**
+     * Queries the Xray metrics endpoint at [server] (a full `http://…/debug/vars` URL).
+     *
+     * The gomobile `QueryStats` entrypoint base64-**decodes** its argument to recover the URL, so
+     * the URL is base64-**encoded** here first (standard encoding, matching Go's
+     * `base64.StdEncoding`). The return value is the base64 `CallResponse` envelope, decoded and
+     * parsed in [LibXrayCoreImpl.queryStats] — no parsing happens behind the AAR seam.
+     */
+    override fun queryStats(server: String): String {
+        val base64Url = java.util.Base64.getEncoder().encodeToString(server.toByteArray(Charsets.UTF_8))
+        return LibXray.queryStats(base64Url)
     }
 
     /**

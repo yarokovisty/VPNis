@@ -1,15 +1,15 @@
-package org.yarokovisty.vpnis.feature.home
+package org.yarokovisty.vpnis.core.format
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
  * Unit tests for [formatBitrate] — verifies the numeric value / unit-bucket split and the
- * threshold boundaries. The unit is a [BitrateUnit] bucket (localised at the UI layer), so these
- * tests are locale-independent for the bucket; the numeric string uses the default locale's
+ * threshold boundaries. The unit is a [BitrateUnit] bucket (localised at the consuming layer), so
+ * these tests are locale-independent for the bucket; the numeric string uses the default locale's
  * decimal separator and is only asserted on integer (B/s) cases to stay locale-agnostic.
  */
-internal class HomeFormattersTest {
+class BitrateFormatterTest {
 
     @Test
     fun `zero bps - renders 0 bytes bucket`() {

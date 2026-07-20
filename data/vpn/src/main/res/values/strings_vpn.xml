@@ -28,6 +28,16 @@
     <!-- Tunnel notification body while connected. %1$s = server name (issue #128 adds a session timer). -->
     <string name="vpn_notification_text_connected" translatable="true">Connected · %1$s</string>
 
+    <!-- Connected body with live traffic (issues #69/#130). %1$s = server, %2$s = download rate,
+         %3$s = upload rate (each already "value unit", e.g. "1.2 MB/s"). ↓/↑ mark down/up. -->
+    <string name="vpn_notification_text_connected_traffic" translatable="true">%1$s · ↓ %2$s · ↑ %3$s</string>
+
+    <!-- Bitrate unit suffixes for the notification traffic line — mirror :feature:home units so the
+         notification and the Home tiles read identically (issues #69/#130). -->
+    <string name="vpn_traffic_unit_bps" translatable="true">B/s</string>
+    <string name="vpn_traffic_unit_kbps" translatable="true">KB/s</string>
+    <string name="vpn_traffic_unit_mbps" translatable="true">MB/s</string>
+
     <!-- ===== Error alert (issue #129): separate dismissible heads-up on the vpnis_alerts channel ===== -->
 
     <!-- Alert notification channel name (Settings → App notifications → VPN alerts). -->

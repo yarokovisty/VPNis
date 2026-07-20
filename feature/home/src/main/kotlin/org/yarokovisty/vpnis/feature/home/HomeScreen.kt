@@ -36,6 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.yarokovisty.vpnis.core.domain.model.Server
+import org.yarokovisty.vpnis.core.format.BitrateUnit
+import org.yarokovisty.vpnis.core.format.formatBitrate
 import org.yarokovisty.vpnis.design.uikit.banner.VPNisBanner
 import org.yarokovisty.vpnis.design.uikit.banner.VPNisBannerAction
 import org.yarokovisty.vpnis.design.uikit.banner.VPNisBannerVariant

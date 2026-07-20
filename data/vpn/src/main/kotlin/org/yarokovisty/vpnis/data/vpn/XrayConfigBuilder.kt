@@ -93,6 +93,25 @@ internal object XrayConfigBuilder {
     private val dnsServers: List<String> = TunConfig().dnsServers
 
     /**
+     * Loopback port for the `metrics` dokodemo-door inbound that serves expvar `/debug/vars`.
+     * Sourced from [TunConfig.metricsPort] so the config and [LibXrayCoreImpl]'s query URL agree
+     * (issues #69/#130).
+     */
+    private val metricsPort: Int = TunConfig().metricsPort
+
+    /**
+     * Tag of the VLESS proxy outbound. Its expvar counters are published under
+     * `stats.outbound.<PROXY_OUTBOUND_TAG>.{uplink,downlink}` when [`policy.system`] stats are
+     * enabled — [LibXrayCoreImpl.queryStats] reads exactly that path, so this is the single source
+     * of truth for the tag (issues #69/#130).
+     */
+    const val PROXY_OUTBOUND_TAG = "proxy-out"
+
+    /** Tag of the `metrics` handler outbound and the dokodemo-door inbound routed to it. */
+    private const val METRICS_OUTBOUND_TAG = "metrics-out"
+    private const val METRICS_INBOUND_TAG = "metrics-in"
+
+    /**
      * uTLS fingerprint the REALITY client presents in its ClientHello — this OVERRIDES the URI's
      * `fp` value (issue #111).
      *
@@ -282,6 +301,23 @@ internal object XrayConfigBuilder {
                         put("downlinkOnly", JsonPrimitive(1))
                     }
                 }
+                // system stats gate (issues #69/#130): activates the per-outbound byte counters
+                // that surface under stats.outbound.<tag>.{uplink,downlink} in the expvar output.
+                // Requires the root `stats {}` object below to be present.
+                putJsonObject("system") {
+                    put("statsOutboundUplink", JsonPrimitive(true))
+                    put("statsOutboundDownlink", JsonPrimitive(true))
+                }
+            }
+
+            // ---- stats + metrics (issues #69/#130) ----
+            // `stats {}` (no params) enables collection; `policy.system.statsOutbound*` above turns
+            // on the outbound counters. The `metrics` handler + a dokodemo-door inbound routed to it
+            // (below) expose those counters at http://127.0.0.1:<metricsPort>/debug/vars (Go expvar),
+            // which LibXrayCoreImpl.queryStats polls. Verified against Xray-core docs (metrics.md).
+            putJsonObject("stats") {}
+            putJsonObject("metrics") {
+                put("tag", JsonPrimitive(METRICS_OUTBOUND_TAG))
             }
 
             // ---- inbounds ----
@@ -312,13 +348,27 @@ internal object XrayConfigBuilder {
                         }
                     },
                 )
+                // metrics access inbound (issues #69/#130): a loopback dokodemo-door on metricsPort,
+                // routed to the `metrics` handler below, which serves expvar /debug/vars. Bound to
+                // 127.0.0.1 only — never exposed off-device.
+                add(
+                    buildJsonObject {
+                        put("tag", JsonPrimitive(METRICS_INBOUND_TAG))
+                        put("protocol", JsonPrimitive("dokodemo-door"))
+                        put("listen", JsonPrimitive("127.0.0.1"))
+                        put("port", JsonPrimitive(metricsPort))
+                        putJsonObject("settings") {
+                            put("address", JsonPrimitive("127.0.0.1"))
+                        }
+                    },
+                )
             }
 
             // ---- outbounds ----
             putJsonArray("outbounds") {
                 add(
                     buildJsonObject {
-                        put("tag", JsonPrimitive("proxy-out"))
+                        put("tag", JsonPrimitive(PROXY_OUTBOUND_TAG))
                         put("protocol", JsonPrimitive("vless"))
                         putJsonObject("settings") {
                             putJsonArray("vnext") {
@@ -383,6 +433,18 @@ internal object XrayConfigBuilder {
             putJsonObject("routing") {
                 put("domainStrategy", JsonPrimitive("IPIfNonMatch"))
                 putJsonArray("rules") {
+                    // metrics: route the dokodemo-door inbound to the `metrics` handler outbound so
+                    // /debug/vars is reachable (issues #69/#130). Placed first — a specific inboundTag
+                    // match — so it never falls through to proxy-out.
+                    add(
+                        buildJsonObject {
+                            put("type", JsonPrimitive("field"))
+                            putJsonArray("inboundTag") {
+                                add(JsonPrimitive(METRICS_INBOUND_TAG))
+                            }
+                            put("outboundTag", JsonPrimitive(METRICS_OUTBOUND_TAG))
+                        },
+                    )
                     add(
                         buildJsonObject {
                             put("type", JsonPrimitive("field"))

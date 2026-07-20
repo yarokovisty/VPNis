@@ -9,6 +9,7 @@ import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
 import org.yarokovisty.vpnis.core.domain.connection.isLegalTransition
 import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.core.domain.model.Server
+import org.yarokovisty.vpnis.core.domain.model.TrafficStats
 import java.time.Instant
 
 /**
@@ -71,10 +72,10 @@ import java.time.Instant
  *
  * ## Traffic counters
  *
- * MVP stub: [VpnConnectionState.Connected.traffic] is always `null`. Issue #69 will add
- * a polling loop that reads byte counters from the kernel (via `/proc/net/dev` or the
- * libXray stats API) and emits [VpnConnectionState.Connected] updates with live
- * [org.yarokovisty.vpnis.core.domain.model.TrafficStats].
+ * [VpnConnectionState.Connected.traffic] starts `null` at [onTunnelEstablished] and is filled in by
+ * [onTrafficSample] (the [TrafficSink] surface): [TrafficStatsPoller] polls the libXray stats API
+ * and pushes [org.yarokovisty.vpnis.core.domain.model.TrafficStats] here, driving `Connected →
+ * Connected` self-transitions (issues #69 / #130). Samples are applied only while `Connected`.
  *
  * ## Consent gate
  *
@@ -99,7 +100,8 @@ internal class ConnectionControllerImpl(
     private val launcher: TunnelLauncher,
     private val consentChecker: VpnConsentChecker,
 ) : ConnectionController,
-    TunnelStateSink {
+    TunnelStateSink,
+    TrafficSink {
 
     private val _state = MutableStateFlow<VpnConnectionState>(VpnConnectionState.Disconnected)
 
@@ -241,6 +243,33 @@ internal class ConnectionControllerImpl(
     override fun onTunnelError(reason: ConnectionError) {
         Log.d(TAG, "onTunnelError: reason=$reason")
         transition(VpnConnectionState.Error(reason))
+    }
+
+    // -------------------------------------------------------------------------
+    // TrafficSink — traffic samples from TrafficStatsPoller (issues #69 / #130)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Applies a live traffic snapshot as a `Connected → Connected` self-transition.
+     *
+     * Guarded by an **explicit `is Connected` read** of the current state — NOT by [isLegalTransition]:
+     * `Connecting → Connected` and `Loading → Connected` are *legal* edges, so relying on the
+     * transition guard as a backstop would let a stray sample synthesise a bogus [VpnConnectionState.Connected]
+     * with no real server/`since`. Only when the tunnel is already `Connected` do we emit
+     * `copy(traffic = stats)`; a sample arriving in any other state (e.g. a straggler after teardown,
+     * once the poller's [TrafficStatsPoller.stop] has run but a final loop iteration was already in
+     * flight) is silently dropped.
+     *
+     * Correctness relies on [TrafficStatsPoller] being a single sequential loop (one in-flight sample
+     * at a time), so there is no concurrent check-then-act race here.
+     */
+    override fun onTrafficSample(stats: TrafficStats) {
+        val current = _state.value
+        if (current is VpnConnectionState.Connected) {
+            transition(current.copy(traffic = stats))
+        } else {
+            Log.d(TAG, "onTrafficSample: state is $current (not Connected) — dropping sample")
+        }
     }
 
     // -------------------------------------------------------------------------

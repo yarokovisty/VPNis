@@ -67,6 +67,9 @@ android {
 
 dependencies {
     api(project(":core:domain"))
+    // Shared bitrate formatter (issues #69/#130) — same unit rounding/copy as the Home tiles.
+    // Unconditional (used from src/main by TunnelNotifications, runs on both flavors).
+    implementation(project(":core:format"))
     // ServiceCompat.startForeground / stopForeground, NotificationCompat.Builder
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.core)
