@@ -264,10 +264,14 @@ internal class VpnTunnelService :
 
     override fun onCreate() {
         super.onCreate()
-        // Create the notification channel once at service start.
+        // Create the notification channels once at service start.
         // NotificationChannel is available since API 26 (our minSdk) — no version guard needed.
         // createNotificationChannel is idempotent: safe to call on every onCreate.
         TunnelNotifications.createChannel(this)
+        // Alert channel for unexpected mid-session drops (issue #129). onRevoke is intentionally
+        // NOT wired to an error here: a revoke is often the user's own system-settings toggle, and
+        // Android cannot distinguish that from a takeover — so Revoked stays silent (owner decision).
+        TunnelNotifications.createAlertChannel(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = when (intent?.action) {

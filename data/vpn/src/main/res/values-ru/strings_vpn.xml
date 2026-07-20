@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Russian translations for the :data:vpn module.
+
+    Introduced for the error-alert strings (vpn_alert_*, issue #129); the ongoing FGS strings
+    (vpn_notification_*) are translated alongside them because Android lint requires a locale to be
+    complete once it exists (MissingTranslation is an error in this project) — and a Russian-market
+    VPN benefits from a fully localized notification surface.
+-->
+<resources>
+    <!-- Ongoing foreground-service notification (issues #62/#127/#128). -->
+    <string name="vpn_notification_channel_name">VPN-туннель</string>
+    <string name="vpn_notification_channel_description">Отображается, пока VPN-туннель активен</string>
+    <string name="vpn_notification_action_disconnect">Отключить</string>
+    <string name="vpn_notification_title">VPNis</string>
+    <string name="vpn_notification_text_active">Туннель активен</string>
+    <string name="vpn_notification_text_connecting">Подключение к %1$s…</string>
+    <string name="vpn_notification_text_connected">Подключено · %1$s</string>
+
+    <!-- Error alert (issue #129). -->
+    <string name="vpn_alert_channel_name">Оповещения VPN</string>
+    <string name="vpn_alert_channel_description">Предупреждает о неожиданном разрыве VPN-соединения</string>
+    <string name="vpn_alert_title">VPN-соединение потеряно</string>
+    <string name="vpn_alert_text_server_unreachable">Сервер недоступен. Нажмите, чтобы открыть VPNis.</string>
+    <string name="vpn_alert_text_tunnel_failed">Соединение прервано. Нажмите, чтобы открыть VPNis.</string>
+    <string name="vpn_alert_text_generic">Нажмите, чтобы открыть VPNis.</string>
+</resources>
