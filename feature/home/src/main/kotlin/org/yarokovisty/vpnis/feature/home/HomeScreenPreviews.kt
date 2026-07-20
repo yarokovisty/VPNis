@@ -107,3 +107,67 @@ private fun HomeScreenConnectingDarkPreview() {
         HomeScreen(uiState = HomeUiState.Connecting(server = PreviewServer), onIntent = {})
     }
 }
+
+// ---------------------------------------------------------------------------
+// Disconnected — with server + notification banner (#131)
+// ---------------------------------------------------------------------------
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenDisconnectedWithServerBannerLightPreview() {
+    VPNisTheme(darkTheme = false) {
+        HomeScreen(
+            uiState = HomeUiState.Disconnected(server = PreviewServer),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenDisconnectedWithServerBannerDarkPreview() {
+    VPNisTheme(darkTheme = true) {
+        HomeScreen(
+            uiState = HomeUiState.Disconnected(server = PreviewServer),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Disconnected — empty (no server) + notification banner (#131)
+// ---------------------------------------------------------------------------
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenDisconnectedEmptyBannerLightPreview() {
+    VPNisTheme(darkTheme = false) {
+        HomeScreen(
+            uiState = HomeUiState.Disconnected(server = null),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenDisconnectedEmptyBannerDarkPreview() {
+    VPNisTheme(darkTheme = true) {
+        HomeScreen(
+            uiState = HomeUiState.Disconnected(server = null),
+            onIntent = {},
+            showNotificationBanner = true,
+            onOpenNotificationSettings = {},
+            onDismissNotificationBanner = {},
+        )
+    }
+}

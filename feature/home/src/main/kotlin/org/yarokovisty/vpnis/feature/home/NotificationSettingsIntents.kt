@@ -20,10 +20,11 @@ import android.provider.Settings
  *
  * ## Reuse
  *
- * Kept local to `:feature:home` for now (issue #114 is the only consumer). Extraction to a shared
- * presentation module is deferred to #131 (the Settings "Notifications" section), at which point the
- * second consumer justifies the move — this object is intentionally self-contained (only [Context] +
- * a `channelId` string) so that extraction is a mechanical move.
+ * Kept local to `:feature:home` for now (issues #114 and #131 are the only consumers). Extraction
+ * to a shared presentation module is deferred to the **second settings surface** that needs
+ * notification settings deep-links, at which point the second consumer justifies the move — this
+ * object is intentionally self-contained (only [Context] + a `channelId` string) so that
+ * extraction is a mechanical move.
  */
 internal object NotificationSettingsIntents {
 

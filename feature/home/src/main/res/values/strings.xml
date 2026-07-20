@@ -48,9 +48,10 @@
     <!-- Neutral placeholder for a not-yet-available numeric value (ping, traffic). -->
     <string name="home_value_placeholder" translatable="false">—</string>
 
-    <!-- Notification-permission rationale banner (#114). Shown while Connected when the OS will not
-         display the tunnel notification. VPNisBanner has a single text slot — title folded into body. -->
-    <string name="home_notification_banner_text">Turn on notifications to see VPN status and disconnect from the shade without opening the app.</string>
+    <!-- Notification-permission rationale banner (#131). Shown in both Connected and Disconnected
+         states when the OS will not display the tunnel notification. VPNisBanner has a single
+         text slot — title folded into body. Copy is state-agnostic (no "shade/disconnect" wording). -->
+    <string name="home_notification_banner_text">Turn on notifications to see VPN status and control the connection without opening the app.</string>
     <string name="home_notification_banner_button">Open settings</string>
 
     <!-- Accessibility -->
