@@ -1,5 +1,6 @@
 package org.yarokovisty.vpnis.data.vpn
 
+import android.os.SystemClock
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -58,10 +59,22 @@ public val vpnModule: Module = module {
     single { ConnectionControllerImpl(launcher = get(), consentChecker = get()) }
     single<ConnectionController> { get<ConnectionControllerImpl>() }
     single<TunnelStateSink> { get<ConnectionControllerImpl>() }
+    // TrafficSink — the same ConnectionControllerImpl, exposed for the poller's narrow surface.
+    single<TrafficSink> { get<ConnectionControllerImpl>() }
 
     // NotificationPermissionState — two-part OS gate (app-level + channel importance).
     single<NotificationPermissionState> { AndroidNotificationPermissionState(androidContext()) }
 
     // TunnelNotificationPresenter — sole owner of NOTIFICATION_ID; lifecycle driven by the service.
     single { TunnelNotificationPresenter(get(), androidContext()) }
+
+    // TrafficStatsPoller — polls Xray stats and feeds TrafficSink; lifecycle driven by the service
+    // (issues #69/#130). elapsedRealtimeNanos counts real time across deep sleep (unlike nanoTime).
+    single {
+        TrafficStatsPoller(
+            xrayCore = get(),
+            trafficSink = get(),
+            elapsedNanos = { SystemClock.elapsedRealtimeNanos() },
+        )
+    }
 }

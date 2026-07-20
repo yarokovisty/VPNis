@@ -52,6 +52,10 @@ package org.yarokovisty.vpnis.data.vpn
  *   inbound, wired in issue #63). hev-socks5-tunnel forwards all TUN traffic to this
  *   port. Must be in `1..65535`. Both sides (hev config and Xray inbound) must agree on
  *   this value — expose it here so neither hardcodes it independently.
+ * @param metricsPort Loopback port for Xray's `metrics` dokodemo-door inbound, which serves
+ *   the expvar `/debug/vars` endpoint the traffic poller reads (issues #69/#130). Must be in
+ *   `1..65535` and distinct from [localSocksPort]. Both the `XrayConfigBuilder` metrics inbound
+ *   and the `LibXrayCoreImpl` query URL source this value so they never drift.
  */
 internal data class TunConfig(
     val clientAddress: String = "10.0.0.2",
@@ -63,6 +67,7 @@ internal data class TunConfig(
     val routes: List<String> = listOf("0.0.0.0/0", "::/0"),
     val session: String = "VPNis",
     val localSocksPort: Int = 10808,
+    val metricsPort: Int = 10809,
 ) {
     init {
         require(prefixLength in 0..MAX_PREFIX_LENGTH) {
@@ -76,6 +81,12 @@ internal data class TunConfig(
         }
         require(localSocksPort in 1..MAX_PORT) {
             "localSocksPort must be in 1..65535, got $localSocksPort"
+        }
+        require(metricsPort in 1..MAX_PORT) {
+            "metricsPort must be in 1..65535, got $metricsPort"
+        }
+        require(metricsPort != localSocksPort) {
+            "metricsPort ($metricsPort) must differ from localSocksPort ($localSocksPort)"
         }
         require(clientAddress.isNotBlank()) {
             "clientAddress must not be blank"

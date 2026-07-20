@@ -1,7 +1,11 @@
 package org.yarokovisty.vpnis.data.vpn
 
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -27,6 +31,19 @@ class LibXrayCoreImplTest {
 
     private val successResponse = base64("""{"success":true}""")
     private val failureResponse = base64("""{"success":false,"error":"boom"}""")
+
+    /**
+     * Builds the base64 `CallResponse` that [LibxrayApi.queryStats] returns for a successful poll:
+     * a `{success,data}` envelope whose `data` field carries [expvarBody] as a JSON-encoded string
+     * (mirroring how gomobile serialises `CallResponse[string]`).
+     */
+    private fun statsResponse(expvarBody: String): String {
+        val envelope = buildJsonObject {
+            put("success", JsonPrimitive(true))
+            put("data", JsonPrimitive(expvarBody))
+        }.toString()
+        return base64(envelope)
+    }
 
     private fun makeImpl(api: FakeLibxrayApi = FakeLibxrayApi(), datDir: String = "/data"): LibXrayCoreImpl =
         LibXrayCoreImpl(api = api, datDir = datDir)
@@ -142,6 +159,69 @@ class LibXrayCoreImplTest {
     }
 
     // -------------------------------------------------------------------------
+    // queryStats — expvar parsing (issues #69 / #130)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `queryStats with valid expvar EXPECT counters mapped downlink to rx and uplink to tx`() {
+        // Given — nested expvar shape: stats.outbound.<tag>.{uplink,downlink}
+        val body = """{"stats":{"outbound":{"proxy-out":{"uplink":1000,"downlink":5000}}}}"""
+        val api = FakeLibxrayApi(queryStatsResult = statsResponse(body))
+        val impl = makeImpl(api)
+
+        // When
+        val counters = impl.queryStats()
+
+        // Then — downlink → rxBytes, uplink → txBytes
+        assertEquals(TrafficCounters(rxBytes = 5000, txBytes = 1000), counters)
+    }
+
+    @Test
+    fun `queryStats EXPECT the polled URL targets the loopback metrics debug vars endpoint`() {
+        // Given
+        val body = """{"stats":{"outbound":{"proxy-out":{"uplink":1,"downlink":1}}}}"""
+        val api = FakeLibxrayApi(queryStatsResult = statsResponse(body))
+        val impl = makeImpl(api)
+
+        // When
+        impl.queryStats()
+
+        // Then — sourced from TunConfig().metricsPort, loopback only.
+        assertEquals("http://127.0.0.1:${TunConfig().metricsPort}/debug/vars", api.lastQueryStatsServer)
+    }
+
+    @Test
+    fun `queryStats when outbound counters absent EXPECT null (no traffic yet)`() {
+        // Given — stats present but the proxy-out entry has not appeared yet
+        val body = """{"stats":{"outbound":{}}}"""
+        val api = FakeLibxrayApi(queryStatsResult = statsResponse(body))
+        val impl = makeImpl(api)
+
+        // When / Then
+        assertNull(impl.queryStats())
+    }
+
+    @Test
+    fun `queryStats with success=false envelope EXPECT null`() {
+        // Given
+        val api = FakeLibxrayApi(queryStatsResult = failureResponse)
+        val impl = makeImpl(api)
+
+        // When / Then
+        assertNull(impl.queryStats())
+    }
+
+    @Test
+    fun `queryStats with malformed base64 EXPECT null`() {
+        // Given
+        val api = FakeLibxrayApi(queryStatsResult = "!!! not base64 !!!")
+        val impl = makeImpl(api)
+
+        // When / Then
+        assertNull(impl.queryStats())
+    }
+
+    // -------------------------------------------------------------------------
     // stop — delegation
     // -------------------------------------------------------------------------
 
@@ -169,13 +249,18 @@ class LibXrayCoreImplTest {
  * Tracks invocation order in [callOrder], captures the [onProtect] lambda so tests can
  * invoke it independently, and counts [stop] calls.
  */
-private class FakeLibxrayApi(private val runFromJsonResult: String = "") : LibxrayApi {
+private class FakeLibxrayApi(private val runFromJsonResult: String = "", private val queryStatsResult: String = "") :
+    LibxrayApi {
 
     /** Ordered log of method names that have been called. */
     val callOrder: MutableList<String> = mutableListOf()
 
     /** The lambda most recently passed to [registerDialerController], or null if never called. */
     var capturedOnProtect: ((Int) -> Boolean)? = null
+        private set
+
+    /** The last URL passed to [queryStats], or null if never called. */
+    var lastQueryStatsServer: String? = null
         private set
 
     var stopCount: Int = 0
@@ -189,6 +274,12 @@ private class FakeLibxrayApi(private val runFromJsonResult: String = "") : Libxr
     override fun runFromJson(datDir: String, configJson: String): String {
         callOrder += "runFromJson"
         return runFromJsonResult
+    }
+
+    override fun queryStats(server: String): String {
+        callOrder += "queryStats"
+        lastQueryStatsServer = server
+        return queryStatsResult
     }
 
     override fun stop() {

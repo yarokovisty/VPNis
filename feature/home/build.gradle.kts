@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:format"))
     implementation(project(":design:theme"))
     implementation(project(":design:uikit"))
     implementation(libs.androidx.activity.compose)

@@ -357,6 +357,85 @@ class XrayConfigBuilderTest {
     }
 
     // -------------------------------------------------------------------------
+    // Traffic stats / metrics expvar (issues #69 / #130)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `valid VLESS URI EXPECT stats object is present (enables collection)`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — presence of the stats object is what enables collection (no params needed).
+        assertNotNull(root["stats"])
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT policy system enables outbound uplink and downlink stats`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — without these the expvar counters stay zero.
+        val system = root["policy"]!!.jsonObject["system"]!!.jsonObject
+        assertEquals("true", system["statsOutboundUplink"]!!.jsonPrimitive.content)
+        assertEquals("true", system["statsOutboundDownlink"]!!.jsonPrimitive.content)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT metrics handler outbound tag is set`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val metricsTag = root["metrics"]!!.jsonObject["tag"]!!.jsonPrimitive.content
+        assertEquals("metrics-out", metricsTag)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT metrics dokodemo-door inbound listens on loopback at metricsPort`() {
+        // Given
+        val expectedPort = TunConfig().metricsPort
+
+        // When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — a loopback dokodemo-door inbound on metricsPort is the expvar access point.
+        val metricsInbound = root["inbounds"]!!.jsonArray
+            .map { it.jsonObject }
+            .single { it["protocol"]?.jsonPrimitive?.content == "dokodemo-door" }
+        assertEquals("127.0.0.1", metricsInbound["listen"]!!.jsonPrimitive.content)
+        assertEquals(expectedPort, metricsInbound["port"]!!.jsonPrimitive.int)
+    }
+
+    @Test
+    fun `valid VLESS URI EXPECT routing sends the metrics inbound to the metrics handler`() {
+        // Given / When
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then — the metrics inbound tag routes to the metrics-out handler (never proxy-out).
+        val rule = root["routing"]!!.jsonObject["rules"]!!.jsonArray
+            .map { it.jsonObject }
+            .single { it["inboundTag"]?.jsonArray?.any { t -> t.jsonPrimitive.content == "metrics-in" } == true }
+        assertEquals("metrics-out", rule["outboundTag"]!!.jsonPrimitive.content)
+    }
+
+    @Test
+    fun `proxy outbound tag constant matches the emitted first outbound tag`() {
+        // Given / When — LibXrayCoreImpl.queryStats reads stats.outbound.<PROXY_OUTBOUND_TAG>.*,
+        // so the constant must equal the tag actually emitted for the proxy outbound.
+        val json = requireNotNull(XrayConfigBuilder.build(validUri))
+        val root = Json.parseToJsonElement(json).jsonObject
+
+        // Then
+        val firstTag = root["outbounds"]!!.jsonArray[0].jsonObject["tag"]!!.jsonPrimitive.content
+        assertEquals(XrayConfigBuilder.PROXY_OUTBOUND_TAG, firstTag)
+    }
+
+    // -------------------------------------------------------------------------
     // Malformed / unsupported input → null (parameterized)
     // -------------------------------------------------------------------------
     // Covered by the dedicated parameterized class below.

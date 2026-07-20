@@ -49,9 +49,29 @@ internal interface XrayCore {
      */
     fun start(configJson: String, protector: VpnSocketProtector): Boolean
 
+    /**
+     * Reads the current cumulative traffic counters for the proxy outbound (issues #69/#130).
+     *
+     * Polls Xray's expvar `/debug/vars` endpoint (exposed by the `metrics` config
+     * [XrayConfigBuilder] emits) and extracts the `stats.outbound.<proxy>.{uplink,downlink}`
+     * totals. Returns `null` when counters are not yet available (no traffic, endpoint not up,
+     * or a query/parse failure) — the caller ([TrafficStatsPoller]) simply skips that tick.
+     * [NoOpXrayCore] always returns `null`.
+     */
+    fun queryStats(): TrafficCounters?
+
     /** Stops the running Xray proxy, releasing the local SOCKS inbound port. */
     fun stop()
 }
+
+/**
+ * Cumulative byte counters for the proxy outbound, as read from Xray's expvar stats (issues #69/#130).
+ *
+ * Both totals are cumulative since the Xray instance started (i.e. since the tunnel came up).
+ * [rxBytes] is the outbound's `downlink` (bytes received from the server) and [txBytes] its
+ * `uplink` (bytes sent to the server). [TrafficRateCalculator] turns successive snapshots into rates.
+ */
+internal data class TrafficCounters(val rxBytes: Long, val txBytes: Long)
 
 /**
  * No-op placeholder for [XrayCore] used until the real libXray gomobile AAR lands.
@@ -73,6 +93,11 @@ internal class NoOpXrayCore : XrayCore {
         // Protector is intentionally ignored — this impl opens no sockets.
         Log.d(TAG, "start: no-op — real libXray AAR wired in issue #66 (configJson length=${configJson.length})")
         return true
+    }
+
+    override fun queryStats(): TrafficCounters? {
+        // no-op: no real proxy, so no expvar endpoint to poll — the poller skips null ticks.
+        return null
     }
 
     override fun stop() {

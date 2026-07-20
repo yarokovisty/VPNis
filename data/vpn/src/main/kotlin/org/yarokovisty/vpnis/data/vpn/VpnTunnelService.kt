@@ -117,6 +117,13 @@ internal class VpnTunnelService :
      */
     private val notificationPresenter: TunnelNotificationPresenter by inject()
 
+    /**
+     * Polls Xray's traffic counters and feeds them into the state machine (issues #69/#130).
+     * Started on the success path alongside [notificationPresenter]; stopped in teardown **before**
+     * [xrayCore] so no in-flight query races the Xray shutdown. Injected like the other collaborators.
+     */
+    private val trafficStatsPoller: TrafficStatsPoller by inject()
+
     // -------------------------------------------------------------------------
     // Companion — actions and intent factories
     // -------------------------------------------------------------------------
@@ -328,6 +335,11 @@ internal class VpnTunnelService :
         if (hadTunnel) {
             Tun2SocksBridge.nativeStop()
         }
+        // Stop the traffic poller on the low-memory-kill path that skips finishTeardown
+        // (issues #69/#130). Idempotent; releases its collector so the process-lifetime single
+        // never retains a stale job. Runs before serviceScope.cancel() for the same reason as the
+        // presenter below.
+        trafficStatsPoller.stop()
         // Stop the presenter on the low-memory-kill path that skips finishTeardown (issue #127):
         // releases its collector so the process-lifetime single never retains a stale job / dead
         // serviceScope. Idempotent, so harmless if finishTeardown already stopped it. Runs before
@@ -538,6 +550,11 @@ internal class VpnTunnelService :
         //    NOTIFICATION_ID from now until stop() in finishTeardown / onDestroy; it collects
         //    controller.state on serviceScope (Dispatchers.IO — a non-Main scope, as it requires).
         notificationPresenter.start(serviceScope)
+
+        // 8. Start polling Xray's traffic counters (issues #69/#130). Same serviceScope (IO — the
+        //    blocking queryStats GET belongs off-Main). Feeds TrafficSink → Connected.traffic; the
+        //    presenter (above) throttles the resulting notify()s to ≤1/sec.
+        trafficStatsPoller.start(serviceScope)
     }
 
     // ReturnCount: the three guard-clause early returns (teardown-in-progress / start-in-progress /
@@ -604,6 +621,11 @@ internal class VpnTunnelService :
             runCatching { tunPfd?.close() }
             tunPfd = null
         }
+
+        // Stop the traffic poller BEFORE Xray (issues #69/#130): a poll in flight would otherwise
+        // hit the torn-down expvar endpoint. Its samples are also gated by the controller's
+        // is-Connected check, so any straggler is a no-op regardless.
+        trafficStatsPoller.stop()
 
         // Stop Xray-core last: releases the local SOCKS inbound port for the next connect.
         xrayCore.stop()

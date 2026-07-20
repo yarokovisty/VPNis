@@ -6,10 +6,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import androidx.core.app.NotificationCompat
 import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
 import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.core.domain.model.TrafficStats
+import org.yarokovisty.vpnis.core.format.BitrateUnit
+import org.yarokovisty.vpnis.core.format.FormattedBitrate
+import org.yarokovisty.vpnis.core.format.formatBitrate
 import java.time.Instant
 
 /**
@@ -141,6 +145,42 @@ internal object TunnelNotifications {
     // -------------------------------------------------------------------------
 
     /**
+     * Cached disconnect [PendingIntent] (issue #130).
+     *
+     * The action target (service + [VpnTunnelService.ACTION_DISCONNECT]) and flags
+     * ([PendingIntent.FLAG_IMMUTABLE]) are constant, and [build] now runs up to once per second on
+     * a live-traffic session — so building it once avoids a per-`notify()` binder round-trip through
+     * [PendingIntent.getService]. Built from the **application** context so the cached instance is
+     * safe for the process lifetime. `@Volatile` for visibility across the presenter's Default/IO
+     * dispatchers; a benign double-create is harmless (the OS returns an equivalent PendingIntent).
+     */
+    @Volatile
+    private var cachedDisconnectPendingIntent: PendingIntent? = null
+
+    /**
+     * Returns the cached disconnect [PendingIntent], creating it on first use from the application
+     * context (see [cachedDisconnectPendingIntent]).
+     */
+    private fun disconnectPendingIntent(context: Context): PendingIntent =
+        cachedDisconnectPendingIntent ?: PendingIntent.getService(
+            context.applicationContext,
+            0, // requestCode — unused; 0 is sufficient for a single action per service
+            Intent(VpnTunnelService.ACTION_DISCONNECT)
+                .apply { setClass(context.applicationContext, VpnTunnelService::class.java) },
+            PendingIntent.FLAG_IMMUTABLE,
+        ).also { cachedDisconnectPendingIntent = it }
+
+    /**
+     * Clears the [cachedDisconnectPendingIntent]. Test-only: this is a process-lifetime `object`, so
+     * without a reset the cache (built from the first test's Robolectric application context) leaks
+     * across test classes in the same JVM run. Call from a Robolectric test `@Before`.
+     */
+    @VisibleForTesting
+    internal fun resetCachesForTest() {
+        cachedDisconnectPendingIntent = null
+    }
+
+    /**
      * Builds a [Notification] for the tunnel foreground service from a [NotificationContent].
      *
      * [content] is rendered to a localised `(title, text)` pair here (Context available), keeping
@@ -156,14 +196,6 @@ internal object TunnelNotifications {
     fun build(context: Context, content: NotificationContent = NotificationContent.Inactive): Notification {
         val (title, text) = render(context, content)
 
-        val disconnectPendingIntent = PendingIntent.getService(
-            context,
-            0, // requestCode — unused; 0 is sufficient for a single action per service
-            Intent(VpnTunnelService.ACTION_DISCONNECT)
-                .apply { setClass(context, VpnTunnelService::class.java) },
-            PendingIntent.FLAG_IMMUTABLE,
-        )
-
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_vpn)
             .setContentTitle(title)
@@ -177,7 +209,7 @@ internal object TunnelNotifications {
             .addAction(
                 0, // icon — action icons are deprecated in API 23+; pass 0 per Material guidance
                 context.getString(R.string.vpn_notification_action_disconnect),
-                disconnectPendingIntent,
+                disconnectPendingIntent(context),
             )
 
         // Session timer (issue #128) — Context-side wiring; the mapper stays pure and carries only
@@ -231,8 +263,17 @@ internal object TunnelNotifications {
                 context.getString(R.string.vpn_notification_text_connecting, content.serverName)
             is NotificationContent.Connected ->
                 // The monotonic session timer is rendered as a chronometer via [applyTimer]
-                // (setUsesChronometer + setWhen) — not embedded in this text (issue #128).
-                context.getString(R.string.vpn_notification_text_connected, content.serverName)
+                // (setUsesChronometer + setWhen) — not embedded in this text (issue #128). When live
+                // traffic is available (issue #130) the body shows down/up rates; otherwise it falls
+                // back to the plain "Connected · <server>" copy until the first sample lands.
+                content.traffic?.let { traffic ->
+                    context.getString(
+                        R.string.vpn_notification_text_connected_traffic,
+                        content.serverName,
+                        rateText(context, traffic.rxBps),
+                        rateText(context, traffic.txBps),
+                    )
+                } ?: context.getString(R.string.vpn_notification_text_connected, content.serverName)
             is NotificationContent.Error ->
                 // Error content is surfaced out-of-band by [buildAlert] on the [ALERT_CHANNEL_ID]
                 // channel (issue #129), never as the ongoing slot-1001 notification. The presenter's
@@ -241,6 +282,27 @@ internal object TunnelNotifications {
                 error("Error content must be routed to buildAlert, not rendered as ongoing")
         }
         return title to text
+    }
+
+    /**
+     * Formats a bytes-per-second rate as a localised "value unit" string (e.g. "1.2 MB/s", RU
+     * "1.2 МБ/с") for the notification traffic line (issue #130).
+     *
+     * Uses the shared [formatBitrate] so the bucketing/rounding matches the Home traffic tiles
+     * exactly; the [BitrateUnit] → label mapping is resolved from this module's own string resources
+     * ([unitLabel]) — keeping [formatBitrate] free of Android/i18n while the displayed copy stays
+     * localisable (the same data-carrying pattern as [contentFor]).
+     */
+    private fun rateText(context: Context, bps: Long): String {
+        val formatted: FormattedBitrate = formatBitrate(bps)
+        return "${formatted.value} ${unitLabel(context, formatted.unit)}"
+    }
+
+    /** Resolves a [BitrateUnit] bucket to its localised label from this module's resources. */
+    private fun unitLabel(context: Context, unit: BitrateUnit): String = when (unit) {
+        BitrateUnit.BYTES -> context.getString(R.string.vpn_traffic_unit_bps)
+        BitrateUnit.KILOBYTES -> context.getString(R.string.vpn_traffic_unit_kbps)
+        BitrateUnit.MEGABYTES -> context.getString(R.string.vpn_traffic_unit_mbps)
     }
 
     // -------------------------------------------------------------------------

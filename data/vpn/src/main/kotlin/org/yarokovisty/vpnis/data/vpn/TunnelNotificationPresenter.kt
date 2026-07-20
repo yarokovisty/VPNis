@@ -5,13 +5,18 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.sample
 import org.yarokovisty.vpnis.core.domain.connection.ConnectionController
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -61,12 +66,16 @@ import java.util.concurrent.atomic.AtomicBoolean
  * - **Precondition:** [start] requires a **non-Main** scope. A Main-dispatched scope would move
  *   `notify()` onto the Main thread, which is unnecessary and potentially janky.
  *
- * ## `distinctUntilChanged` scope
+ * ## `distinctUntilChanged` + throttle scope (issue #130)
  *
- * Collapses repeated identical [NotificationContent] values (e.g. state-machine churn that maps to
- * the same `Connecting("Server")` twice). It does **not** rate-limit live-traffic updates once
- * [NotificationContent.Connected.traffic] starts changing on every tick — that requires a
- * `sample(1.seconds)` / `conflate` added by issue #130.
+ * `distinctUntilChanged` collapses repeated identical [NotificationContent] values (e.g. state-machine
+ * churn mapping to the same `Connecting("Server")` twice). On its own it does **not** rate-limit
+ * live-traffic updates once [NotificationContent.Connected.traffic] changes every tick, so the
+ * pipeline additionally `sample(1s)`s the **Connected sub-stream only**: the deduped stream is split
+ * into `Connected` (sampled → ≤1 `notify()`/sec, epic #126 DoD) and everything else (`Connecting` /
+ * `Error`, passed through immediately so lifecycle transitions and the #129 drop alert are never
+ * delayed by a sample window), then merged. The sampler sits upstream of `flowOn(mapDispatcher)` so
+ * its ticker runs on Default, off the collector.
  *
  * @param connectionController Source of [org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState].
  * @param appContext            Application [Context]; used to resolve [NotificationManager] once at
@@ -153,10 +162,7 @@ internal class TunnelNotificationPresenter(
         // that would swallow this session's first error (issue #129).
         alertPosted = false
 
-        val j = connectionController.state
-            .map { TunnelNotifications.contentFor(it) }
-            .filter { it !is NotificationContent.Inactive }
-            .distinctUntilChanged()
+        val j = contentPipeline()
             .flowOn(mapDispatcher)
             .onEach { content ->
                 // Secondary guard: drops an emission that was in the flowOn hand-off when stop() fired.
@@ -194,6 +200,35 @@ internal class TunnelNotificationPresenter(
     }
 
     /**
+     * Builds the throttled notification-content stream consumed by [start] (issue #130).
+     *
+     * The deduped active-tunnel content is split by type and re-merged so that:
+     * - `Connecting` / `Error` pass through **immediately** (lifecycle transitions and the #129 drop
+     *   alert are never delayed by a sample window — review R3);
+     * - the `Connected` traffic-refresh sub-stream is `sample`d to at most one emission per
+     *   [NOTIFY_THROTTLE_MS], bounding the ongoing notification to ≤1 `notify()`/sec (epic #126 DoD)
+     *   independently of the poll cadence.
+     *
+     * `contents` is cold and collected twice (once per branch); the source is a conflated StateFlow
+     * and `contentFor` is pure, so re-collection is cheap. Extracted as an `internal` seam so the
+     * throttle is unit-testable by counting emissions directly (Robolectric cannot count re-`notify()`s
+     * to the same slot). Callers apply their own `flowOn`; `sample` stays upstream of it so the ticker
+     * runs off the collector.
+     */
+    @OptIn(FlowPreview::class) // Flow.sample is @FlowPreview
+    internal fun contentPipeline(): Flow<NotificationContent> {
+        val contents = connectionController.state
+            .map { TunnelNotifications.contentFor(it) }
+            .filter { it !is NotificationContent.Inactive }
+            .distinctUntilChanged()
+
+        return merge(
+            contents.filter { it !is NotificationContent.Connected },
+            contents.filterIsInstance<NotificationContent.Connected>().sample(NOTIFY_THROTTLE_MS),
+        )
+    }
+
+    /**
      * Posts the ongoing foreground-service notification to slot [TunnelNotifications.NOTIFICATION_ID]
      * for an active-tunnel [content] ([NotificationContent.Connecting] / [NotificationContent.Connected]).
      */
@@ -216,5 +251,15 @@ internal class TunnelNotificationPresenter(
         active.set(false)
         job?.cancel()
         job = null
+    }
+
+    private companion object {
+        /**
+         * Sample window for the Connected traffic-refresh sub-stream — bounds the ongoing
+         * notification to ≤1 `notify()`/sec (epic #126 DoD). Decoupled from the poll cadence
+         * ([TrafficStatsPoller.DEFAULT_POLL_INTERVAL_MS]); the poll may be faster or slower without
+         * changing the notify rate.
+         */
+        const val NOTIFY_THROTTLE_MS = 1_000L
     }
 }
