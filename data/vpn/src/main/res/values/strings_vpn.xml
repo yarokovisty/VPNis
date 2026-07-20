@@ -27,4 +27,24 @@
 
     <!-- Tunnel notification body while connected. %1$s = server name (issue #128 adds a session timer). -->
     <string name="vpn_notification_text_connected" translatable="true">Connected · %1$s</string>
+
+    <!-- ===== Error alert (issue #129): separate dismissible heads-up on the vpnis_alerts channel ===== -->
+
+    <!-- Alert notification channel name (Settings → App notifications → VPN alerts). -->
+    <string name="vpn_alert_channel_name" translatable="true">VPN alerts</string>
+
+    <!-- Alert notification channel description. -->
+    <string name="vpn_alert_channel_description" translatable="true">Warns when the VPN connection drops unexpectedly</string>
+
+    <!-- Alert title. Names the event AND that it is involuntary (not a routine user disconnect). -->
+    <string name="vpn_alert_title" translatable="true">VPN connection lost</string>
+
+    <!-- Alert body: server could not be reached. -->
+    <string name="vpn_alert_text_server_unreachable" translatable="true">Server unreachable. Tap to open VPNis.</string>
+
+    <!-- Alert body: the active tunnel was interrupted (the real mid-session-drop copy users see). -->
+    <string name="vpn_alert_text_tunnel_failed" translatable="true">The connection dropped. Tap to open VPNis.</string>
+
+    <!-- Alert body: generic fallback (Unknown/other reasons; raw error detail is never shown here). -->
+    <string name="vpn_alert_text_generic" translatable="true">Tap to open VPNis.</string>
 </resources>

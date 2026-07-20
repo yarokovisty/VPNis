@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Russian translations for the :data:vpn module (issue #129).
+
+    Only the error-alert strings (vpn_alert_*) are translated here — this is a high-salience
+    heads-up on a Russian-market VPN. The lower-visibility ongoing FGS strings (vpn_notification_*)
+    remain English-base for now and fall back to the default locale; translating them is a separate
+    module-wide localization pass.
+-->
+<resources>
+    <string name="vpn_alert_channel_name">Оповещения VPN</string>
+    <string name="vpn_alert_channel_description">Предупреждает о неожиданном разрыве VPN-соединения</string>
+    <string name="vpn_alert_title">VPN-соединение потеряно</string>
+    <string name="vpn_alert_text_server_unreachable">Сервер недоступен. Нажмите, чтобы открыть VPNis.</string>
+    <string name="vpn_alert_text_tunnel_failed">Соединение прервано. Нажмите, чтобы открыть VPNis.</string>
+    <string name="vpn_alert_text_generic">Нажмите, чтобы открыть VPNis.</string>
+</resources>

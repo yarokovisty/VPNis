@@ -11,6 +11,8 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,6 +22,7 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import org.yarokovisty.vpnis.core.domain.connection.ConnectionController
 import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
+import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.core.domain.model.Server
 import org.yarokovisty.vpnis.core.domain.model.ServerId
 import java.time.Instant
@@ -65,11 +68,17 @@ class TunnelNotificationPresenterTest {
         context = RuntimeEnvironment.getApplication()
         notificationManager = context.getSystemService(NotificationManager::class.java)
 
-        // Create the channel so build() can reference it without a crash.
+        // Create both channels so build()/buildAlert() can reference them without a crash.
         TunnelNotifications.createChannel(context)
+        TunnelNotifications.createAlertChannel(context)
     }
 
     private fun postedCount(): Int = Shadows.shadowOf(notificationManager).allNotifications.size
+
+    private fun notificationAt(id: Int) = Shadows.shadowOf(notificationManager).getNotification(id)
+
+    private fun textOf(id: Int): String =
+        notificationAt(id)?.extras?.getCharSequence(android.app.Notification.EXTRA_TEXT)?.toString().orEmpty()
 
     // -------------------------------------------------------------------------
     // (a) Active-state filter: Disconnected → Inactive → no post
@@ -173,6 +182,105 @@ class TunnelNotificationPresenterTest {
 
         // Then — exactly ONE notification posted (not two); scopeA's collector was cancelled
         assertEquals(1, postedCount())
+    }
+
+    // -------------------------------------------------------------------------
+    // (e) Error → alert on slot 1002 (vpnis_alerts), ongoing slot 1001 never touched (issue #129)
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `Error EXPECT alert on the alert slot and nothing on the ongoing slot`() = runTest {
+        // Given
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val stateFlow = MutableStateFlow<VpnConnectionState>(VpnConnectionState.Disconnected)
+        val presenter = TunnelNotificationPresenter(FakeConnectionControllerStub(stateFlow), context, dispatcher)
+        presenter.start(TestScope(dispatcher))
+
+        // When — an active tunnel drops (emit → advance → assert, proving delivery ordering)
+        stateFlow.value = VpnConnectionState.Error(ConnectionError.TunnelSetupFailed)
+        advanceUntilIdle()
+
+        // Then — the alert is on slot 1002 / vpnis_alerts; the ongoing slot 1001 is untouched
+        val alert = notificationAt(TunnelNotifications.ALERT_NOTIFICATION_ID)
+        assertNotNull(alert)
+        assertEquals(TunnelNotifications.ALERT_CHANNEL_ID, alert!!.channelId)
+        assertNull(notificationAt(TunnelNotifications.NOTIFICATION_ID))
+    }
+
+    @Test
+    fun `Connected then Error EXPECT ongoing on 1001 and alert on 1002, distinct slots`() = runTest {
+        // Given
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val stateFlow = MutableStateFlow<VpnConnectionState>(VpnConnectionState.Disconnected)
+        val presenter = TunnelNotificationPresenter(FakeConnectionControllerStub(stateFlow), context, dispatcher)
+        presenter.start(TestScope(dispatcher))
+
+        // When
+        stateFlow.value = VpnConnectionState.Connected(server, since, traffic = null)
+        advanceUntilIdle()
+        stateFlow.value = VpnConnectionState.Error(ConnectionError.TunnelSetupFailed)
+        advanceUntilIdle()
+
+        // Then — the Connected notification still lives on 1001; the Error alert lives on 1002
+        assertEquals(TunnelNotifications.CHANNEL_ID, notificationAt(TunnelNotifications.NOTIFICATION_ID)!!.channelId)
+        assertEquals(
+            TunnelNotifications.ALERT_CHANNEL_ID,
+            notificationAt(TunnelNotifications.ALERT_NOTIFICATION_ID)!!.channelId,
+        )
+    }
+
+    // -------------------------------------------------------------------------
+    // (f) Dedup — at most one alert per reconnect chain
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun `two consecutive distinct Errors EXPECT only the first alert (gate)`() = runTest {
+        // Given — two DIFFERENT reasons so distinctUntilChanged does not collapse them; only the
+        // alertPosted gate can suppress the second. Distinguish by body text.
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val controller = FakeConnectionControllerStub(
+            flowOf(
+                VpnConnectionState.Error(ConnectionError.ServerUnreachable),
+                VpnConnectionState.Error(ConnectionError.TunnelSetupFailed),
+            ),
+        )
+        val presenter = TunnelNotificationPresenter(controller, context, dispatcher)
+
+        // When
+        presenter.start(TestScope(dispatcher))
+        advanceUntilIdle()
+
+        // Then — the alert still shows the FIRST reason's copy; the second Error was gated out
+        assertEquals(
+            context.getString(R.string.vpn_alert_text_server_unreachable),
+            textOf(TunnelNotifications.ALERT_NOTIFICATION_ID),
+        )
+    }
+
+    @Test
+    fun `start Error stop start Error EXPECT the gate resets so the new session re-alerts`() = runTest {
+        // Given
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val stateFlow = MutableStateFlow<VpnConnectionState>(VpnConnectionState.Disconnected)
+        val presenter = TunnelNotificationPresenter(FakeConnectionControllerStub(stateFlow), context, dispatcher)
+
+        // Session 1 — drop with ServerUnreachable
+        presenter.start(TestScope(dispatcher))
+        stateFlow.value = VpnConnectionState.Error(ConnectionError.ServerUnreachable)
+        advanceUntilIdle()
+        presenter.stop()
+
+        // Session 2 — a fresh start must reset the gate and re-alert on a new drop
+        stateFlow.value = VpnConnectionState.Disconnected
+        presenter.start(TestScope(dispatcher))
+        stateFlow.value = VpnConnectionState.Error(ConnectionError.TunnelSetupFailed)
+        advanceUntilIdle()
+
+        // Then — the alert now shows the SECOND session's reason, proving reset-in-start()
+        assertEquals(
+            context.getString(R.string.vpn_alert_text_tunnel_failed),
+            textOf(TunnelNotifications.ALERT_NOTIFICATION_ID),
+        )
     }
 }
 

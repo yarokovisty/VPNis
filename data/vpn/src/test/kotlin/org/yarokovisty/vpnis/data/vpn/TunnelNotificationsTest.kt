@@ -40,11 +40,22 @@ class TunnelNotificationsTest {
     }
 
     @Test
-    fun `contentFor Error EXPECT Inactive`() {
-        assertEquals(
-            NotificationContent.Inactive,
-            TunnelNotifications.contentFor(VpnConnectionState.Error(ConnectionError.TunnelSetupFailed)),
+    fun `contentFor Error EXPECT Error carrying the reason`() {
+        // issue #129: Error now maps to NotificationContent.Error(reason), not Inactive, so the
+        // presenter can route it to the out-of-band alert.
+        val reasons = listOf(
+            ConnectionError.TunnelSetupFailed,
+            ConnectionError.ServerUnreachable,
+            ConnectionError.Revoked,
+            ConnectionError.PermissionDenied,
+            ConnectionError.Unknown("boom"),
         )
+        reasons.forEach { reason ->
+            assertEquals(
+                NotificationContent.Error(reason),
+                TunnelNotifications.contentFor(VpnConnectionState.Error(reason)),
+            )
+        }
     }
 
     @Test

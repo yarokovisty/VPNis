@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import org.yarokovisty.vpnis.core.domain.connection.VpnConnectionState
+import org.yarokovisty.vpnis.core.domain.model.ConnectionError
 import org.yarokovisty.vpnis.core.domain.model.TrafficStats
 import java.time.Instant
 
@@ -67,6 +68,25 @@ internal object TunnelNotifications {
      */
     const val NOTIFICATION_ID = 1001
 
+    /**
+     * Notification channel ID for the interrupting error alert (issue #129).
+     *
+     * Separate from [CHANNEL_ID] because the tunnel channel is [NotificationManager.IMPORTANCE_LOW]
+     * (no heads-up / no sound) and its notification is `ongoing` (cannot be dismissed). An
+     * unexpected mid-session drop must produce a **dismissible heads-up**, which requires a
+     * dedicated [NotificationManager.IMPORTANCE_DEFAULT] channel.
+     */
+    const val ALERT_CHANNEL_ID = "vpnis_alerts"
+
+    /**
+     * Stable notification ID for the error alert (issue #129).
+     *
+     * Distinct from [NOTIFICATION_ID] so the alert lives in its own slot: the FGS teardown's
+     * `stopForeground(REMOVE)` + `cancel(NOTIFICATION_ID)` sweep does not remove it, and it stays
+     * until the user dismisses it (`setAutoCancel(true)`, not `ongoing`).
+     */
+    const val ALERT_NOTIFICATION_ID = 1002
+
     // -------------------------------------------------------------------------
     // Channel
     // -------------------------------------------------------------------------
@@ -90,6 +110,27 @@ internal object TunnelNotifications {
         ).apply {
             description = context.getString(R.string.vpn_notification_channel_description)
             setShowBadge(false)
+        }
+        val manager = context.getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
+    }
+
+    /**
+     * Creates the notification channel for the interrupting error alert (issue #129).
+     *
+     * [NotificationManager.IMPORTANCE_DEFAULT] so the alert produces a heads-up — deliberately
+     * distinct from the [CHANNEL_ID] tunnel channel ([NotificationManager.IMPORTANCE_LOW]) whose
+     * epic-DoD contract is "0 heads-up/sound". Idempotent, so safe to call on every `onCreate`.
+     *
+     * @param context Any context; used to retrieve [NotificationManager] and resolve strings.
+     */
+    fun createAlertChannel(context: Context) {
+        val channel = NotificationChannel(
+            ALERT_CHANNEL_ID,
+            context.getString(R.string.vpn_alert_channel_name),
+            NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
+            description = context.getString(R.string.vpn_alert_channel_description)
         }
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
@@ -192,8 +233,73 @@ internal object TunnelNotifications {
                 // The monotonic session timer is rendered as a chronometer via [applyTimer]
                 // (setUsesChronometer + setWhen) — not embedded in this text (issue #128).
                 context.getString(R.string.vpn_notification_text_connected, content.serverName)
+            is NotificationContent.Error ->
+                // Error content is surfaced out-of-band by [buildAlert] on the [ALERT_CHANNEL_ID]
+                // channel (issue #129), never as the ongoing slot-1001 notification. The presenter's
+                // onEach routes Error to buildAlert, so this branch is unreachable — fail loudly if
+                // a future caller ever puts Error through build()/render().
+                error("Error content must be routed to buildAlert, not rendered as ongoing")
         }
         return title to text
+    }
+
+    // -------------------------------------------------------------------------
+    // Error alert (issue #129) — separate dismissible heads-up on ALERT_CHANNEL_ID
+    // -------------------------------------------------------------------------
+
+    /**
+     * Builds the interrupting error alert for an unexpected mid-session tunnel drop (issue #129).
+     *
+     * Unlike the ongoing FGS notification this is **dismissible** (`setAutoCancel(true)`, not
+     * `setOngoing`) and lives on the [ALERT_CHANNEL_ID] ([NotificationManager.IMPORTANCE_DEFAULT])
+     * channel so it produces a heads-up. Tapping it opens the app via the launcher intent —
+     * resolved through [android.content.pm.PackageManager.getLaunchIntentForPackage] so `:data:vpn`
+     * never references `:app`'s Activity (epic #126 dependency-direction guard). If no launchable
+     * activity resolves (`null`), the alert is built without a content intent rather than crashing.
+     *
+     * @param context Application context (as [build]); resolves strings, the launch intent, and the
+     *                [NotificationManager]. Rebuilt per `notify()` — nothing is cached.
+     * @param reason  The failure reason, rendered to localized copy by [alertTextFor]. A
+     *                [ConnectionError.Unknown] never surfaces its raw `message` (logs only).
+     */
+    fun buildAlert(context: Context, reason: ConnectionError): Notification {
+        val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+        val contentIntent = launchIntent?.let {
+            PendingIntent.getActivity(context, 0, it, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        val builder = NotificationCompat.Builder(context, ALERT_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_stat_vpn)
+            .setContentTitle(context.getString(R.string.vpn_alert_title))
+            .setContentText(alertTextFor(context, reason))
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
+
+        if (contentIntent != null) {
+            builder.setContentIntent(contentIntent)
+        }
+
+        return builder.build()
+    }
+
+    /**
+     * Resolves a [ConnectionError] to localized alert body copy (issue #129).
+     *
+     * Exhaustive over [ConnectionError]. [ConnectionError.Unknown]'s `message` is **never** rendered
+     * into the notification (it may carry technical/credential detail) — it maps to the generic body,
+     * as do the non-drop reasons that cannot realistically reach an active-tunnel alert.
+     */
+    private fun alertTextFor(context: Context, reason: ConnectionError): String = when (reason) {
+        is ConnectionError.ServerUnreachable ->
+            context.getString(R.string.vpn_alert_text_server_unreachable)
+        is ConnectionError.TunnelSetupFailed ->
+            context.getString(R.string.vpn_alert_text_tunnel_failed)
+        is ConnectionError.Revoked,
+        is ConnectionError.PermissionDenied,
+        is ConnectionError.Unknown,
+        ->
+            context.getString(R.string.vpn_alert_text_generic)
     }
 
     // -------------------------------------------------------------------------
@@ -207,16 +313,19 @@ internal object TunnelNotifications {
      * [build]/[render] where a Context is available; this function carries only data.
      *
      * Total `when` over [VpnConnectionState]: non-active states (Loading / Disconnected /
-     * PermissionRequired / Error) map to [NotificationContent.Inactive], which
-     * [TunnelNotificationPresenter] filters out so the tunnel notification is never posted for a
-     * state without a live tunnel. Exhaustiveness makes a newly added [VpnConnectionState] a
-     * compile error here rather than a silent gap.
+     * PermissionRequired) map to [NotificationContent.Inactive], which [TunnelNotificationPresenter]
+     * filters out so the tunnel notification is never posted for a state without a live tunnel.
+     * [VpnConnectionState.Error] maps to [NotificationContent.Error] carrying the reason, which the
+     * presenter routes to the out-of-band alert (issue #129). Exhaustiveness makes a newly added
+     * [VpnConnectionState] a compile error here rather than a silent gap.
      */
     internal fun contentFor(state: VpnConnectionState): NotificationContent = when (state) {
         is VpnConnectionState.Loading -> NotificationContent.Inactive
         is VpnConnectionState.Disconnected -> NotificationContent.Inactive
         is VpnConnectionState.PermissionRequired -> NotificationContent.Inactive
-        is VpnConnectionState.Error -> NotificationContent.Inactive
+        // Error carries the reason so the presenter can render the out-of-band alert (issue #129).
+        // Only a running presenter (active tunnel) sees this — setup-time errors never reach it.
+        is VpnConnectionState.Error -> NotificationContent.Error(reason = state.reason)
         is VpnConnectionState.Connecting -> NotificationContent.Connecting(serverName = state.server.name)
         is VpnConnectionState.Connected -> NotificationContent.Connected(
             serverName = state.server.name,
@@ -243,7 +352,8 @@ internal object TunnelNotifications {
 internal sealed interface NotificationContent {
 
     /**
-     * No live tunnel (Loading / Disconnected / PermissionRequired / Error).
+     * No live tunnel (Loading / Disconnected / PermissionRequired). [Error] is a distinct subtype
+     * routed to the out-of-band alert, not folded in here (issue #129).
      *
      * Rendered as the static "VPNis / Tunnel active" copy for the initial `startForeground` post;
      * [TunnelNotificationPresenter] filters this out and never `notify()`s it during a session.
@@ -261,4 +371,14 @@ internal sealed interface NotificationContent {
      * @param traffic     live traffic counters, or `null` when not yet available (issue #130).
      */
     data class Connected(val serverName: String, val since: Instant, val traffic: TrafficStats?) : NotificationContent
+
+    /**
+     * The active tunnel dropped unexpectedly with [reason] (issue #129).
+     *
+     * Routed by [TunnelNotificationPresenter] to a **separate** dismissible heads-up alert
+     * ([TunnelNotifications.buildAlert] on [TunnelNotifications.ALERT_CHANNEL_ID]) — never rendered
+     * on the ongoing slot ([TunnelNotifications.render] rejects it). Only a running presenter (i.e.
+     * an already-established tunnel) observes this; setup-time errors never reach it.
+     */
+    data class Error(val reason: ConnectionError) : NotificationContent
 }

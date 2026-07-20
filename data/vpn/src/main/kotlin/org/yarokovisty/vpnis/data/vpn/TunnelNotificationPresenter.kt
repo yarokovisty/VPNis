@@ -115,6 +115,24 @@ internal class TunnelNotificationPresenter(
     private val active = AtomicBoolean(false)
 
     /**
+     * Dedup gate for the error alert (issue #129): at most one alert per reconnect chain.
+     *
+     * A "chain" today equals one presenter session ([start] → drop → [stop]) — there is no
+     * auto-reconnect yet, so the tunnel is torn down on the first drop. Reset to `false` in [start]
+     * (a fresh session begins a fresh chain — this is what stops a process-lifetime `single` from
+     * carrying a stale `true` into a new session and swallowing its first genuine error) and,
+     * defensively, on a `Connected` emission (future-proofs an in-session reconnect once a
+     * `Reconnecting` domain state / #64 land).
+     *
+     * `@Volatile` (not [AtomicBoolean] — unlike [active], no cross-dispatcher CAS is needed): the
+     * only in-flight writer/reader is the single collector `onEach`, and the [start] reset runs after
+     * `job?.cancel()` has cancelled any prior collector, so there is no *concurrent* second writer —
+     * only a visibility barrier is required.
+     */
+    @Volatile
+    private var alertPosted = false
+
+    /**
      * Starts the notification pipeline, replacing any stale pipeline from a previous service start.
      *
      * The defensive `job?.cancel()` at the top makes [start] re-entrant across service
@@ -131,6 +149,9 @@ internal class TunnelNotificationPresenter(
         // Cancel any stale job from a previous (possibly un-stopped) service start.
         job?.cancel()
         active.set(true)
+        // Fresh session = fresh reconnect chain: a prior session must not carry a stale gate
+        // that would swallow this session's first error (issue #129).
+        alertPosted = false
 
         val j = connectionController.state
             .map { TunnelNotifications.contentFor(it) }
@@ -140,16 +161,47 @@ internal class TunnelNotificationPresenter(
             .onEach { content ->
                 // Secondary guard: drops an emission that was in the flowOn hand-off when stop() fired.
                 if (active.get()) {
-                    notificationManager.notify(
-                        TunnelNotifications.NOTIFICATION_ID,
-                        TunnelNotifications.build(context, content),
-                    )
+                    // Exhaustive over all four NotificationContent subtypes (not relying on the
+                    // upstream filter to type-narrow, which Kotlin does not do) so a future subtype
+                    // is a compile error. Inactive is dropped by the filter above → unreachable.
+                    when (content) {
+                        is NotificationContent.Connecting ->
+                            postOngoing(content)
+                        is NotificationContent.Connected -> {
+                            // A healthy session ends the previous reconnect chain (issue #129).
+                            alertPosted = false
+                            postOngoing(content)
+                        }
+                        is NotificationContent.Error ->
+                            // Out-of-band dismissible alert on ALERT_CHANNEL_ID (slot 1002), never
+                            // the ongoing slot 1001 — at most one per chain (issue #129).
+                            if (!alertPosted) {
+                                alertPosted = true
+                                notificationManager.notify(
+                                    TunnelNotifications.ALERT_NOTIFICATION_ID,
+                                    TunnelNotifications.buildAlert(context, content.reason),
+                                )
+                            }
+                        is NotificationContent.Inactive ->
+                            error("Inactive is filtered upstream")
+                    }
                 }
             }
             .launchIn(scope)
 
         job = j
         return j
+    }
+
+    /**
+     * Posts the ongoing foreground-service notification to slot [TunnelNotifications.NOTIFICATION_ID]
+     * for an active-tunnel [content] ([NotificationContent.Connecting] / [NotificationContent.Connected]).
+     */
+    private fun postOngoing(content: NotificationContent) {
+        notificationManager.notify(
+            TunnelNotifications.NOTIFICATION_ID,
+            TunnelNotifications.build(context, content),
+        )
     }
 
     /**
