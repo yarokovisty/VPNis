@@ -20,3 +20,7 @@
 - Dedup tests distinguish alerts by body copy (same slot id 1002 overwrites, so call-count can't be
   read from ShadowNotificationManager) — first-reason-wins proves the gate; second-session-reason
   proves reset-in-start().
+- CI Android Lint failed: this project promotes `MissingTranslation` to an ERROR (my plan assumed
+  it was a non-error warning). A partial `values-ru` makes all 7 existing translatable
+  `vpn_notification_*` strings "missing" in ru. Fix: translated the ongoing strings to RU too, so
+  the locale is complete. Verified with `:data:vpn:lintDebug` (the exact CI task).

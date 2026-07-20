@@ -264,8 +264,10 @@ item is the real OS heads-up rendering, tracked in #133 (qa-and-testing §4 trac
 - A "Reconnect" alert action / reconnect deep-link — deferred (D2); can reuse the #114/#131 route
   helper later.
 - Live traffic in the notification — task **#130** (blocked by #69).
-- RU translation of the ongoing `vpn_notification_*` strings — a separate module-wide localization
-  pass (only the new `vpn_alert_*` keys are translated here, per D3).
+- ~~RU translation of the ongoing `vpn_notification_*` strings~~ — done together with the alert
+  strings: the project promotes lint `MissingTranslation` to an **error**, so once `values-ru` exists
+  the locale must be complete. The whole `:data:vpn` notification surface is now RU (a superset of
+  D3, strictly better for the RU market).
 - Full mapper/gate/effect unit suite consolidation — task **#132** (this plan adds targeted
   regression tests inline).
 
