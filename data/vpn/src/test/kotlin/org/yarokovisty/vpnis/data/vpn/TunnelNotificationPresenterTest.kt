@@ -3,9 +3,11 @@ package org.yarokovisty.vpnis.data.vpn
 import android.app.NotificationManager
 import android.content.Context
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -134,6 +136,43 @@ class TunnelNotificationPresenterTest {
         advanceUntilIdle()
 
         assertEquals(1, postedCount())
+    }
+
+    @Test
+    fun `consecutive identical Connected states EXPECT distinctUntilChanged collapses to one emission`() = runTest {
+        // Issue #132: covers the Connected→Connected identical-content dedup gap.
+        //
+        // WHY a hand-rolled cold flow instead of MutableStateFlow:
+        // MutableStateFlow conflates equal values — assigning `value = x` twice with the same `x`
+        // produces only ONE emission under the hood, so distinctUntilChanged would never even see
+        // the duplicate. A hand-rolled flow { emit; emit; awaitCancellation() } forces TWO upstream
+        // emissions through the pipeline, letting distinctUntilChanged (not the source) do the
+        // collapsing. The sampler then sees only the single deduplicated value and emits it once
+        // per window — so the list must contain exactly 1 entry after one THROTTLE_SETTLE_MS window.
+
+        // Given
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val traffic = TrafficStats(1L, 1L, 100L, 10L)
+        val duplicateSource: Flow<VpnConnectionState> = flow {
+            emit(connected(traffic))
+            emit(connected(traffic)) // byte-identical — distinctUntilChanged must collapse this
+            awaitCancellation()
+        }
+        val presenter = TunnelNotificationPresenter(FakeConnectionControllerStub(duplicateSource), context, dispatcher)
+
+        val emissions = mutableListOf<NotificationContent.Connected>()
+        val job = presenter.contentPipeline()
+            .filterIsInstance<NotificationContent.Connected>()
+            .onEach { emissions += it }
+            .launchIn(backgroundScope)
+
+        // When — advance past exactly one sample window so the sampler fires once
+        settle()
+
+        // Then — distinctUntilChanged collapsed both identical emissions to one; the sampler
+        // emits that single value once → list size must be exactly 1, not 0 and not 2
+        assertEquals(1, emissions.size)
+        job.cancel()
     }
 
     // -------------------------------------------------------------------------
